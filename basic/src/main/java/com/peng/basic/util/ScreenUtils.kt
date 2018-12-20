@@ -47,6 +47,7 @@ object ScreenUtils {
      * 截屏
      */
     @JvmStatic
+    @JvmOverloads
     fun screenShot(activity: Activity, isDeleteStatusBar: Boolean = false): Bitmap? {
         val decorView = activity.window.decorView
         decorView.isDrawingCacheEnabled = true

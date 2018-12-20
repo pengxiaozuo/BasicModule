@@ -65,15 +65,6 @@ object AppUtils {
 
     }
 
-    /**
-     * 获取应用签名的的SHA1值
-     *
-     * @return 应用签名的SHA1字符串, 比如：58:E1:C4:13:3F:74:41:EC:3D:2C:27:02:70:A1:48:02:DA:47:BA:0E
-     */
-    @JvmStatic
-    fun getAppSignatureSHA1(context: Context): String? {
-        return getAppSignatureSHA1(context, context.packageName)
-    }
 
     /**
      * 获取应用签名的的SHA1值
@@ -81,10 +72,27 @@ object AppUtils {
      * @return 应用签名的SHA1字符串, 比如：58:E1:C4:13:3F:74:41:EC:3D:2C:27:02:70:A1:48:02:DA:47:BA:0E
      */
     @JvmStatic
-    fun getAppSignatureSHA1(context: Context, packageName: String): String? {
+    @JvmOverloads
+    fun getAppSignatureSha1(context: Context, packageName: String = context.packageName): String? {
         val signature = getAppSignature(context, packageName) ?: return null
-        return SignUtils.sha1ToString(signature[0].toByteArray())
-                ?.replace("(?<=[0-9A-F]{2})[0-9A-F]{2}".toRegex(), ":$0")
+        return signature[0].toByteArray().sha1().hex().toUpperCase()
+            .replace("(?<=[0-9A-F]{2})[0-9A-F]{2}".toRegex(), ":$0")
+
+    }
+
+
+    /**
+     * 获取应用签名的的SHA1值
+     *
+     * @return 应用签名的SHA1字符串, 比如：58:E1:C4:13:3F:74:41:EC:3D:2C:27:02:70:A1:48:02:DA:47:BA:0E
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun getAppSignatureMd5(context: Context, packageName: String = context.packageName): String? {
+        val signature = getAppSignature(context, packageName) ?: return null
+        return signature[0].toByteArray().md5().hex().toUpperCase()
+            .replace("(?<=[0-9A-F]{2})[0-9A-F]{2}".toRegex(), ":$0")
+
     }
 
     /**

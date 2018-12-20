@@ -51,6 +51,7 @@ object IntentUtils {
      * 启动应用特定页面Intent
      */
     @JvmStatic
+    @JvmOverloads
     fun componentNameIntent(packageName: String, className: String, bundle: Bundle? = null): Intent {
         val intent = Intent(Intent.ACTION_VIEW)
         if (bundle != null) intent.putExtras(bundle)

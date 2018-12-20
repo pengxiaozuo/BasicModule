@@ -22,6 +22,7 @@ object BitmapUtils {
      * Bitmap 转 ByteArray
      */
     @JvmStatic
+    @JvmOverloads
     fun bitmap2ByteArray(bitmap: Bitmap, format: Bitmap.CompressFormat, recycle: Boolean = true): ByteArray {
         val bos = ByteArrayOutputStream()
         bitmap.compress(format, 100, bos)
@@ -57,6 +58,7 @@ object BitmapUtils {
      * 缩放
      */
     @JvmStatic
+    @JvmOverloads
     fun scaleByNewSize(src: Bitmap, newWidth: Int, newHeight: Int, recycle: Boolean = true): Bitmap {
         val bitmap = Bitmap.createScaledBitmap(src, newWidth, newHeight, true)
         if (recycle) src.recycle()
@@ -67,6 +69,7 @@ object BitmapUtils {
      * 缩放
      */
     @JvmStatic
+    @JvmOverloads
     fun scale(src: Bitmap, scaleX: Float, scaleY: Float, recycle: Boolean = true): Bitmap {
         val matrix = Matrix()
         matrix.setScale(scaleX, scaleY)
@@ -79,6 +82,7 @@ object BitmapUtils {
      * 剪切
      */
     @JvmStatic
+    @JvmOverloads
     fun clip(src: Bitmap, x: Int, y: Int, width: Int, height: Int, recycle: Boolean = true): Bitmap {
         val bitmap = Bitmap.createBitmap(src, x, y, width, height)
         if (recycle) src.recycle()
@@ -89,6 +93,7 @@ object BitmapUtils {
      * 旋转
      */
     @JvmStatic
+    @JvmOverloads
     fun rotate(src: Bitmap, px: Float, py: Float, degrees: Float, recycle: Boolean = true): Bitmap {
         val matrix = Matrix()
         matrix.setRotate(degrees, px, py)
@@ -99,6 +104,7 @@ object BitmapUtils {
      * 转换为圆角
      */
     @JvmStatic
+    @JvmOverloads
     fun round(src: Bitmap, radiusX: Float, radiusY: Float, recycle: Boolean = true): Bitmap {
         val bitmap = Bitmap.createBitmap(src.width, src.height, src.config)
         val bitmapShader = BitmapShader(src, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
@@ -116,6 +122,7 @@ object BitmapUtils {
      * 转换为圆形
      */
     @JvmStatic
+    @JvmOverloads
     fun circle(src: Bitmap, recycle: Boolean = true): Bitmap {
         val radius = Math.min(src.width, src.height) / 2
 
@@ -136,6 +143,7 @@ object BitmapUtils {
      * 灰度
      */
     @JvmStatic
+    @JvmOverloads
     fun gray(src: Bitmap, recycle: Boolean = true): Bitmap {
         val bitmap = Bitmap.createBitmap(src.width, src.height, Bitmap.Config.ARGB_4444)
         val paint = Paint()
@@ -152,6 +160,7 @@ object BitmapUtils {
      * 压缩
      */
     @JvmStatic
+    @JvmOverloads
     fun compress(src: Bitmap, maxSize: Long, recycle: Boolean = true): Bitmap {
         val bos = ByteArrayOutputStream()
         var quality = 100
@@ -171,6 +180,7 @@ object BitmapUtils {
      * 压缩
      */
     @JvmStatic
+    @JvmOverloads
     fun compress(src: Bitmap, sampleSize: Int, recycle: Boolean = true): Bitmap {
         val opt = BitmapFactory.Options()
         opt.inSampleSize = sampleSize

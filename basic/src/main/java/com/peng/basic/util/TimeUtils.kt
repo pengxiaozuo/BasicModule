@@ -13,6 +13,7 @@ object TimeUtils {
      * 毫秒格式化为字符串
      */
     @JvmStatic
+    @JvmOverloads
     fun millis2String(millis: Long, format: DateFormat = defaultFormat): String {
         return format.format(Date(millis))
     }
@@ -22,6 +23,7 @@ object TimeUtils {
      * 字符串时间转换为毫秒值
      */
     @JvmStatic
+    @JvmOverloads
     fun string2Millis(time: String, format: DateFormat = defaultFormat): Long {
         val date = string2Date(time, format)
         return date.time
@@ -31,6 +33,7 @@ object TimeUtils {
      * 字符串转换为Date
      */
     @JvmStatic
+    @JvmOverloads
     fun string2Date(time: String, format: DateFormat = defaultFormat): Date {
         return format.parse(time)
     }
@@ -39,6 +42,7 @@ object TimeUtils {
      * Date格式化字符串
      */
     @JvmStatic
+    @JvmOverloads
     fun date2String(date: Date, format: DateFormat = defaultFormat): String {
         return format.format(date)
     }
@@ -66,6 +70,7 @@ object TimeUtils {
      * 判断是否闰年
      */
     @JvmStatic
+    @JvmOverloads
     fun isLeapYear(time: String, format: DateFormat = defaultFormat): Boolean {
 
         return isLeapYear(string2Date(time, format))

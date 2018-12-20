@@ -9,6 +9,7 @@ object ToastUtils {
     private var mToast: Toast? = null
 
     @SuppressLint("ShowToast")
+    @JvmOverloads
     fun showToast(context: Context, text: String, duration: Int = Toast.LENGTH_SHORT) {
         if (mToast == null) {
             mToast = Toast.makeText(context.applicationContext, text, duration)

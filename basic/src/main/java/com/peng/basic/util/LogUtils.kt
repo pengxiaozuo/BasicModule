@@ -51,46 +51,55 @@ object LogUtils {
     var filename = "-logcat.log"
 
     @JvmStatic
+    @JvmOverloads
     fun i(tag: String, msg: String, throwable: Throwable? = null) {
         println(Log.INFO, tag, msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun i(msg: String, throwable: Throwable? = null) {
         println(Log.INFO, getTag(), msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun d(tag: String, msg: String, throwable: Throwable? = null) {
         println(Log.DEBUG, tag, msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun d(msg: String, throwable: Throwable? = null) {
         println(Log.DEBUG, getTag(), msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun w(tag: String, msg: String, throwable: Throwable? = null) {
         println(Log.WARN, tag, msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun w(msg: String, throwable: Throwable? = null) {
         println(Log.WARN, getTag(), msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun e(tag: String, msg: String, throwable: Throwable? = null) {
         println(Log.ERROR, tag, msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     fun e(msg: String, throwable: Throwable? = null) {
         println(Log.ERROR, getTag(), msg, throwable)
     }
 
     @JvmStatic
+    @JvmOverloads
     private fun println(level: Int, tag: String, msg: String, throwable: Throwable? = null) {
         val sb = StringBuilder()
         if (debug) {

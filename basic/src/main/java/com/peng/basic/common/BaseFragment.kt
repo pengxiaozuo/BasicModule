@@ -41,7 +41,7 @@ abstract class BaseFragment : Fragment(), IBaseUi {
             getLayoutView()!!
         }
 
-        initView(view)
+        initView(view, savedInstanceState)
 
         initData()
 
@@ -52,12 +52,14 @@ abstract class BaseFragment : Fragment(), IBaseUi {
     override fun initParams() {}
 
 
+    @JvmOverloads
     fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
         activity?.let {
             ToastUtils.showToast(it, msg, duration)
         }
     }
 
+    @JvmOverloads
     fun <T : Activity> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
         activity?.let {
             val intent = Intent(it, clazz)
@@ -66,6 +68,11 @@ abstract class BaseFragment : Fragment(), IBaseUi {
             }
             startActivity(intent)
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
     }
 
 }

@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity(), IBaseUi {
         configActivity(config)
 
         config.contentView?.let {
-            initView(it)
+            initView(it, savedInstanceState)
         }
 
         initData()
@@ -38,8 +38,10 @@ abstract class BaseActivity : AppCompatActivity(), IBaseUi {
         }
 
         if (config.fullScreen) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
 
 
@@ -79,12 +81,12 @@ abstract class BaseActivity : AppCompatActivity(), IBaseUi {
     override fun initParams() {}
 
 
-
-
+    @JvmOverloads
     fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
         ToastUtils.showToast(this, msg, duration)
     }
 
+    @JvmOverloads
     fun <T : Activity> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
         val intent = Intent(this, clazz)
         if (bundle != null) {
