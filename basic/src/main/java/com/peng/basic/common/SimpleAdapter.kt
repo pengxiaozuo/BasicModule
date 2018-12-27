@@ -9,7 +9,7 @@ import android.view.ViewGroup
  * 简单适配器
  */
 abstract class SimpleAdapter<T>(protected var data: List<T>, val layout: Int) :
-        RecyclerView.Adapter<SimpleViewHolder>() {
+    RecyclerView.Adapter<SimpleViewHolder>() {
 
 
     var onItemClickListener: ((SimpleViewHolder, Int, T) -> Unit)? = null
@@ -18,15 +18,18 @@ abstract class SimpleAdapter<T>(protected var data: List<T>, val layout: Int) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         val holder = SimpleViewHolder(view)
-        view.setOnClickListener {
-            onItemClickListener(holder, holder.adapterPosition, data[holder.adapterPosition])
-        }
+        if (view.isClickable)
+            view.setOnClickListener {
+                onItemClickListener(holder, holder.adapterPosition, data[holder.adapterPosition])
+            }
+        if (view.isLongClickable)
+            view.setOnLongClickListener {
+                return@setOnLongClickListener onLongItemClickListener(
+                    holder, holder.adapterPosition,
+                    data[holder.adapterPosition]
+                )
 
-        view.setOnLongClickListener {
-            return@setOnLongClickListener onLongItemClickListener(holder, holder.adapterPosition,
-                    data[holder.adapterPosition])
-
-        }
+            }
 
         return holder
     }

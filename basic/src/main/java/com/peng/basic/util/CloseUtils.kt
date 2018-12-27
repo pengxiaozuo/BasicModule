@@ -10,7 +10,17 @@ object CloseUtils {
             try {
                 closeable?.close()
             } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
 
+    @JvmStatic
+    fun closeQuietly(vararg closeables: Closeable?) {
+        for (closeable in closeables) {
+            try {
+                closeable?.close()
+            } catch (e: IOException) {
             }
         }
     }

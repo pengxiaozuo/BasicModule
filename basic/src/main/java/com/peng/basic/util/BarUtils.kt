@@ -10,8 +10,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
-import java.lang.reflect.Array.setInt
-import java.lang.reflect.AccessibleObject.setAccessible
 
 
 object BarUtils {
@@ -56,6 +54,7 @@ object BarUtils {
     /**
      * 设置状态了暗色模式
      */
+    @JvmStatic
     fun setDarkMode(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -65,6 +64,7 @@ object BarUtils {
     /**
      * 设置状态了亮色模式
      */
+    @JvmStatic
     fun setLightMode(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.window.decorView.systemUiVisibility =
@@ -76,6 +76,7 @@ object BarUtils {
     /**
      * 设置状态了颜色
      */
+    @JvmStatic
     fun setBarColor(activity: Activity, color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -96,7 +97,8 @@ object BarUtils {
 
     }
 
-    fun createStatusBar(activity: Activity, color: Int): View {
+    @JvmStatic
+    private fun createStatusBar(activity: Activity, color: Int): View {
         val statusBarView = View(activity)
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(activity))
         statusBarView.layoutParams = params
@@ -108,6 +110,7 @@ object BarUtils {
     /**
      * 透明状态栏
      */
+    @JvmStatic
     fun setTransparentMode(activity: Activity) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -130,6 +133,7 @@ object BarUtils {
     /**
      * 沉侵式
      */
+    @JvmStatic
     fun setImmersiveMode(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val decorView = activity.window.decorView

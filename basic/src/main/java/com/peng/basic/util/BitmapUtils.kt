@@ -1,9 +1,11 @@
 package com.peng.basic.util
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -201,7 +203,7 @@ object BitmapUtils {
         var width = options.outWidth
         var inSampleSize = 1
         while (height.apply { height = height shr 1 } >= maxHeight
-                && width.apply { width = width shr 1 } >= maxWidth) {
+            && width.apply { width = width shr 1 } >= maxWidth) {
             inSampleSize = inSampleSize shl 1
         }
         return inSampleSize
@@ -236,4 +238,7 @@ object BitmapUtils {
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeStream(inputStream, null, options)
     }
+
+    @JvmStatic
+    fun getDrawable(context: Context, resId: Int) = ContextCompat.getDrawable(context, resId)
 }

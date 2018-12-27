@@ -15,7 +15,7 @@ import com.peng.basic.util.ToastUtils
 abstract class BaseActivity : AppCompatActivity(), IBaseUi {
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    final override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = UiConfig()
         initParams()

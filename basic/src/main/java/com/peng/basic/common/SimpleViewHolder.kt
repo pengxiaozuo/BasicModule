@@ -11,13 +11,16 @@ open class SimpleViewHolder(private val contentView: View) : RecyclerView.ViewHo
 
     private val views: SparseArray<View> = SparseArray()
 
+    var any:Any? = null
+
     fun <T : View> getView(id: Int): T? {
         var view = views[id]
         if (view == null) {
             view = contentView.findViewById(id)
-            if (view != null) {
+            if (view == null) {
+                return null
+            } else {
                 views.put(id, view)
-                return view as T
             }
         }
         return view as T

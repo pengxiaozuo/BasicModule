@@ -18,8 +18,7 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewType = getItemViewType(position)
-        itemBinders[viewType].onBinderViewHolder(holder, data!!, position)
+        getItemViewBinderByViewHolder(holder).onBinderViewHolder(holder, data!!, position)
     }
 
     override fun getItemCount(): Int {
@@ -31,10 +30,45 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return if (data == null)
             super.getItemViewType(position)
         else
-            getItemViewTypeForItem(data!![position])
+            getItemViewTypeByItem(data!![position])
     }
 
-    private fun getItemViewTypeForItem(any: Any): Int {
+    override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder): Boolean {
+        return getItemViewBinderByViewHolder(holder).onFailedToRecycleView(holder)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        itemBinders.forEach {
+            it.onAttachedToRecyclerView(recyclerView)
+        }
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        itemBinders.forEach {
+            it.onDetachedFromRecyclerView(recyclerView)
+        }
+    }
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        getItemViewBinderByViewHolder(holder).onViewRecycled(holder)
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        getItemViewBinderByViewHolder(holder).onViewAttachedToWindow(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        getItemViewBinderByViewHolder(holder).onViewDetachedFromWindow(holder)
+    }
+
+
+
+    private fun getItemViewTypeByItem(any: Any): Int {
         var index = clazzs.indexOf(any::class.java)
         if (index < 0) {
             for (i in 0 until clazzs.size) {
@@ -61,16 +95,23 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return index
     }
 
+    private fun <VH : RecyclerView.ViewHolder> getItemViewBinderByViewHolder(holder: VH): ItemViewBinder<*, VH> {
 
-    fun <T, VM : RecyclerView.ViewHolder> registerType(clazz: Class<T>, itemViewBinder: ItemViewBinder<T, VM>) {
+        return itemBinders[holder.itemViewType] as ItemViewBinder<*, VH>
+    }
+
+
+    fun <T, VH : RecyclerView.ViewHolder> registerType(clazz: Class<T>, itemViewBinder: ItemViewBinder<T, VH>) {
         removeClassAndHolder(clazz)
         this.clazzs.add(clazz)
         this.itemBinders.add(itemViewBinder)
         itemViewBinder.adapter = this
     }
 
-    fun <T, VM : RecyclerView.ViewHolder> registerType(clazz: Class<T>, vararg itemViewBinders: ItemViewBinder<T, VM>,
-                                                       typeBinder: (Any) -> Int) {
+    fun <T, VH : RecyclerView.ViewHolder> registerType(
+        clazz: Class<T>, vararg itemViewBinders: ItemViewBinder<T, VH>,
+        typeBinder: (Any) -> Int
+    ) {
         removeClassAndHolder(clazz)
         for (itemViewBinder in itemViewBinders) {
             this.clazzs.add(clazz)

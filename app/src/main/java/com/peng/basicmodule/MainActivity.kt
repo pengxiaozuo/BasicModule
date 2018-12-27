@@ -1,12 +1,25 @@
 package com.peng.basicmodule
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import com.peng.basic.common.BaseActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+class MainActivity : BaseActivity() {
+    override fun configUi(config: UiConfig) {
+        config.layoutId = R.layout.activity_main
     }
+
+    override fun initView(contentView: View, savedInstanceState: Bundle?) {
+        btn_multi_type.setOnClickListener {
+            startActivity(MultiTypeActivity::class.java)
+        }
+    }
+
+    override fun initData() {
+
+    }
+
 }
