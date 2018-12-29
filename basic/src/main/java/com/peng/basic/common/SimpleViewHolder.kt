@@ -13,6 +13,7 @@ open class SimpleViewHolder(private val contentView: View) : RecyclerView.ViewHo
 
     var any:Any? = null
 
+    @Suppress("UNCHECKED_CAST")
     fun <T : View> getView(id: Int): T? {
         var view = views[id]
         if (view == null) {

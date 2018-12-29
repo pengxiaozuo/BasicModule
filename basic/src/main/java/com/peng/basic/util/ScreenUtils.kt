@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.view.WindowManager
 
-
+/**
+ * 屏幕工具类
+ */
 object ScreenUtils {
 
     /**

@@ -7,8 +7,13 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 
-
+/**
+ * 应用工具类
+ */
 object AppUtils {
+    /**
+     * 是否系统app
+     */
     @JvmStatic
     fun isSystemApp(context: Context, packageName: String): Boolean {
         if (packageName.isEmpty()) return false

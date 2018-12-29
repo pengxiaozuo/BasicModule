@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerView">
+        <attr name="auto_play" format="boolean"/>
+        <attr name="scroll" format="boolean"/>
+        <attr name="loop" format="boolean"/>
+        <attr name="period" format="integer"/>
+    </declare-styleable>
+</resources>

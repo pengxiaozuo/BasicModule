@@ -10,6 +10,7 @@ abstract class ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
 
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 
+    @Suppress("UNCHECKED_CAST")
     open fun onBinderViewHolder(holder: VH, data: List<Any>, position: Int) {
         val item = data[position]
         onBinderViewHolder(item as T, holder)

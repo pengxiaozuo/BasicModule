@@ -8,7 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import java.io.File
 
-
+/**
+ * Intent工具类，提供常用的系统隐式启动意图
+ */
 object IntentUtils {
     /**
      * 安装应用Intent

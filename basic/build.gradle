@@ -49,7 +49,6 @@ dependencies {
         exclude group: 'com.android.support'
     }
     api "io.reactivex.rxjava2:rxkotlin:$rx_version"
-
 }
 
 apply plugin: 'com.novoda.bintray-release'

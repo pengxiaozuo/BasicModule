@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.support.annotation.RequiresPermission
 
-
+/**
+ * 网络工具类
+ */
 object NetUtils {
 
     /**

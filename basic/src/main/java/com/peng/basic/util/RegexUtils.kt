@@ -2,6 +2,9 @@ package com.peng.basic.util
 
 import java.util.regex.Pattern
 
+/**
+ * 正则表达式工具类
+ */
 object RegexUtils {
 
     /**

@@ -9,7 +9,9 @@ import android.support.v4.content.ContextCompat
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-
+/**
+ * 图片工具类
+ */
 object BitmapUtils {
 
     /**
@@ -209,6 +211,9 @@ object BitmapUtils {
         return inSampleSize
     }
 
+    /**
+     * 通过路径获取Bitmap
+     */
     @JvmStatic
     fun getBitmap(path: String, maxWidth: Int, maxHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
@@ -219,6 +224,9 @@ object BitmapUtils {
         return BitmapFactory.decodeFile(path, options)
     }
 
+    /**
+     * 通过资源获取bitmap
+     */
     @JvmStatic
     fun getBitmap(resources: Resources, id: Int, maxWidth: Int, maxHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
@@ -229,6 +237,9 @@ object BitmapUtils {
         return BitmapFactory.decodeResource(resources, id, options)
     }
 
+    /**
+     * 通过inputStream获取bitmap
+     */
     @JvmStatic
     fun getBitmap(inputStream: InputStream, maxWidth: Int, maxHeight: Int): Bitmap {
         val options = BitmapFactory.Options()

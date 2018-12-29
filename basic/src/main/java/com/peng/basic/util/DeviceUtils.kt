@@ -7,6 +7,9 @@ import android.provider.Settings
 import android.support.annotation.RequiresPermission
 import android.telephony.TelephonyManager
 
+/**
+ * 设备工具类
+ */
 object DeviceUtils {
 
     /**

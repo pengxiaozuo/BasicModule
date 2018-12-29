@@ -95,7 +95,8 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return index
     }
 
-    private fun <VH : RecyclerView.ViewHolder> getItemViewBinderByViewHolder(holder: VH): ItemViewBinder<*, VH> {
+    @Suppress("UNCHECKED_CAST")
+    private inline fun <reified VH : RecyclerView.ViewHolder> getItemViewBinderByViewHolder(holder: VH): ItemViewBinder<*, VH> {
 
         return itemBinders[holder.itemViewType] as ItemViewBinder<*, VH>
     }

@@ -11,7 +11,9 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
 
-
+/**
+ * 状态栏导航栏工具类
+ */
 object BarUtils {
 
     /**

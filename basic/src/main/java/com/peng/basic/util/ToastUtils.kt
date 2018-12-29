@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 
+/**
+ * Toast工具类
+ */
 object ToastUtils {
 
     private var mToast: Toast? = null

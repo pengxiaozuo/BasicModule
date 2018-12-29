@@ -4,8 +4,14 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 时间工具类
+ */
 object TimeUtils {
 
+    /**
+     * 默认格式化格式
+     */
     @JvmStatic
     val defaultFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
@@ -47,18 +53,24 @@ object TimeUtils {
         return format.format(date)
     }
 
+    /**
+     * 毫秒值转化为Date
+     */
     @JvmStatic
     fun millis2Date(millis: Long): Date {
         return Date(millis)
     }
 
+    /**
+     * Date值转化为毫秒值
+     */
     @JvmStatic
     fun date2Millis(date: Date): Long {
         return date.time
     }
 
     /**
-     * 从[scr]格式转为[desc]格式
+     * 将已经格式化的时间字符串格式化为其他格式
      */
     @JvmStatic
     fun format2Format(time: String, scr: DateFormat, desc: DateFormat): String {

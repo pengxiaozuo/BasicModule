@@ -4,6 +4,9 @@ import java.io.Closeable
 import java.io.IOException
 
 object CloseUtils {
+    /**
+     * 关闭IO通道
+     */
     @JvmStatic
     fun close(vararg closeables: Closeable?) {
         for (closeable in closeables) {
@@ -15,6 +18,9 @@ object CloseUtils {
         }
     }
 
+    /**
+     * 静默关闭IO通道
+     */
     @JvmStatic
     fun closeQuietly(vararg closeables: Closeable?) {
         for (closeable in closeables) {

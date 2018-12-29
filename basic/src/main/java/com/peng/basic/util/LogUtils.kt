@@ -8,47 +8,69 @@ import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
-
+/**
+ * 日志工具类
+ */
 object LogUtils {
 
     /**
      * 是否打印日志
      */
+    @JvmField
     var debug = true
     /**
      * 是否缓存到本地
      */
+    @JvmField
     var diskToCache = false
     /**
      * 是否打印线程信息
      */
+    @JvmField
     var threadInfo = true
     /**
      * 缓存到本地时每条日志加入的时间格式
      */
+    @JvmField
     var logDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     /**
      * 缓存到本地时文件名加入的时间格式
      */
+    @JvmField
     var fileDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     /**
      * 缓存目录
      */
+    @JvmField
     var cacheDir: File? = null
     /**
      * 缓存级别
      * [Log.DEBUG],[Log.INFO],[Log.WARN],[Log.ERROR]
      */
+    @JvmField
     var cacheLevel: Int = Log.ERROR
     /**
      * 日志缓存的天数
      */
+    @JvmField
     var cacheDays = 30
     /**
      * 日志文件的后缀名
      */
+    @JvmField
     var filename = "-logcat.log"
+
+    private val executorService = ThreadPoolExecutor(0, 1, 60, TimeUnit.SECONDS,
+        SynchronousQueue<Runnable>(), ThreadFactory {
+            val result = Thread(it, "LogUtils-Write-Thread")
+            result.isDaemon = true
+            return@ThreadFactory result
+        })
 
     @JvmStatic
     @JvmOverloads
@@ -98,19 +120,17 @@ object LogUtils {
         println(Log.ERROR, getTag(), msg, throwable)
     }
 
-    @JvmStatic
-    @JvmOverloads
     private fun println(level: Int, tag: String, msg: String, throwable: Throwable? = null) {
         val sb = StringBuilder()
         if (debug) {
             if (threadInfo) {
-                sb.append("Thread: ${Thread.currentThread().name}: ")
+                sb.append("Thread: ${Thread.currentThread().name}\n")
                 sb.append(msg)
                 if (throwable != null) {
                     sb.append("\n ${Log.getStackTraceString(throwable)}")
                 }
             }
-            Log.println(level, tag, sb.toString())
+            formatPrint(level, tag, sb.toString())
         }
 
         if (diskToCache && level >= cacheLevel) {
@@ -120,13 +140,15 @@ object LogUtils {
             if (threadInfo) {
                 sb.append("Thread: ${Thread.currentThread().name} ")
             }
-            sb.append(when (level) {
-                Log.INFO -> "I/"
-                Log.DEBUG -> "D/"
-                Log.WARN -> "W/"
-                Log.ERROR -> "E/"
-                else -> "UNKNOWN/"
-            })
+            sb.append(
+                when (level) {
+                    Log.INFO -> "I/"
+                    Log.DEBUG -> "D/"
+                    Log.WARN -> "W/"
+                    Log.ERROR -> "E/"
+                    else -> "UNKNOWN/"
+                }
+            )
             sb.append("$tag: ")
 
             sb.append(msg)
@@ -135,11 +157,30 @@ object LogUtils {
                 sb.append("\n ${Log.getStackTraceString(throwable)}")
             }
 
-            writeToDisk(date, sb.toString())
+            executorService.submit {
+                writeToDisk(date, sb.toString())
+            }
         }
     }
 
-    @JvmStatic
+    private const val TOP_LEFT_CORNER = "╔"
+    private const val BOTTOM_LEFT_CORNER = "╚"
+    private const val LEFT_CORNER = "║"
+    private const val LINE = "══════════════════════════════════════════"
+
+    private fun formatPrint(level: Int, tag: String, msg: String) {
+        val lines = msg.split(System.getProperty("line.separator"))
+        if (lines.size > 1) {
+            Log.println(level, tag, "$TOP_LEFT_CORNER$LINE$LINE")
+            lines.forEach { s ->
+                Log.println(level, tag, "$LEFT_CORNER $s")
+            }
+            Log.println(level, tag, "$BOTTOM_LEFT_CORNER$LINE$LINE")
+        } else {
+            Log.println(level, tag, msg)
+        }
+    }
+
     private fun writeToDisk(date: Date, msg: String) {
         cacheDir?.let {
 
@@ -179,7 +220,6 @@ object LogUtils {
         }
     }
 
-    @JvmStatic
     private fun deleteFile(date: Date) {
         cacheDir?.let {
             val calendar = Calendar.getInstance()
@@ -214,7 +254,6 @@ object LogUtils {
      *
      * @return
      */
-    @JvmStatic
     private fun getTag(): String {
 
         val thisClassName = LogUtils::class.java.name
