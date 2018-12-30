@@ -16,6 +16,10 @@ class MainActivity : BaseActivity() {
         btn_multi_type.setOnClickListener {
             startActivity(MultiTypeActivity::class.java)
         }
+
+        btn_banner.setOnClickListener {
+            startActivity(BannerActivity::class.java)
+        }
     }
 
     override fun initData() {

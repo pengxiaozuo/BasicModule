@@ -8,7 +8,7 @@ import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -66,7 +66,7 @@ object LogUtils {
     var filename = "-logcat.log"
 
     private val executorService = ThreadPoolExecutor(0, 1, 60, TimeUnit.SECONDS,
-        SynchronousQueue<Runnable>(), ThreadFactory {
+        LinkedBlockingQueue<Runnable>(), ThreadFactory {
             val result = Thread(it, "LogUtils-Write-Thread")
             result.isDaemon = true
             return@ThreadFactory result

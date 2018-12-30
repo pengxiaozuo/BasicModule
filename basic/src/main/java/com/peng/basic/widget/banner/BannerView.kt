@@ -24,14 +24,9 @@ class BannerView @JvmOverloads constructor(
     var autoPlay = true
 
     /**
-     * 自动播放延迟时间 单位毫秒
+     * 自动播放周期 单位毫秒
      */
     var period = 5000L
-
-    /**
-     * 是否可手动滑动
-     */
-    var scroll = true
 
     /**
      * 循环滑动
@@ -55,7 +50,6 @@ class BannerView @JvmOverloads constructor(
 
             val ta = getContext().obtainStyledAttributes(attrs, R.styleable.BannerView)
             autoPlay = ta.getBoolean(R.styleable.BannerView_auto_play, autoPlay)
-            scroll = ta.getBoolean(R.styleable.BannerView_scroll, scroll)
             loop = ta.getBoolean(R.styleable.BannerView_loop, loop)
             period = ta.getInt(R.styleable.BannerView_period, 5000).toLong()
 
@@ -70,12 +64,16 @@ class BannerView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         val vp = findViewById<ViewPager>(R.id.basic_banner_vp)
+        val indicatorView = findViewById<View>(R.id.basic_banner_indicator)
+        if (indicatorView is BannerIndicator) {
+            indicator = indicatorView
+        }
         if (vp != null) {
             viewPager = vp
         } else {
             val layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             viewPager.layoutParams = layoutParams
-            addView(viewPager)
+            addView(viewPager,0)
         }
 
         addListener()
@@ -109,8 +107,14 @@ class BannerView @JvmOverloads constructor(
 
     private val mHandler = Handler(Handler.Callback {
         if (autoPlay) {
-            viewPager.setCurrentItem(viewPager.currentItem + 1, true)
-            startPlay()
+            var nextItem = viewPager.currentItem + 1
+            if (nextItem >= pagerAdapter.count) {
+                nextItem = 0
+                viewPager.setCurrentItem(nextItem, false)
+                startPlay()
+            } else {
+                viewPager.setCurrentItem(nextItem, true)
+            }
         }
         true
     })
@@ -119,8 +123,12 @@ class BannerView @JvmOverloads constructor(
     private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {
             when (state) {
-                1 -> if (autoPlay) stopPlay()
-                2 -> if (autoPlay && views.size > 0) startPlay()
+                1 -> {
+                    if (autoPlay) stopPlay()
+                }
+                2 -> {
+                    if (autoPlay && views.size > 0) startPlay()
+                }
             }
         }
 
@@ -129,14 +137,13 @@ class BannerView @JvmOverloads constructor(
         }
 
         override fun onPageSelected(position: Int) {
-            LogUtils.d("position = $position")
-            indicator?.onSelected(position)
+            indicator?.onSelected(position % (data?.size?: 0))
         }
     }
 
     private val onDataChangeListener = object : OnDataChangeListener {
 
-        override fun onDataChanged(data: List<*>?) {
+        override fun onDataChanged(data: List<Any>?) {
             if (this@BannerView.data == data) return
             adapter?.let { ad ->
                 if (autoPlay) {
@@ -148,17 +155,17 @@ class BannerView @JvmOverloads constructor(
                 data?.let {
                     addView(it)
                 }
-                if (views.size > 0)
+                if (views.size > 0 && loop)
                     while (views.size < 4) {
                         data?.let {
                             addView(it)
                         }
                     }
-                LogUtils.d("views size = ${views.size}")
 
                 indicator?.onDataChanged(data)
+                indicator?.onSelected(0)
                 pagerAdapter.notifyDataSetChanged()
-                if (views.size > 0) {
+                if (views.size > 0 && loop) {
                     val currentPosition = (Int.MAX_VALUE / views.size / 2) * views.size
                     viewPager.currentItem = currentPosition
                 }
@@ -168,7 +175,7 @@ class BannerView @JvmOverloads constructor(
             }
         }
 
-        private fun addView(data: List<*>) {
+        private fun addView(data: List<Any>) {
             adapter?.let { ad ->
                 data.forEach { t ->
                     val view = ad.onCreateView(t)
@@ -180,12 +187,12 @@ class BannerView @JvmOverloads constructor(
     }
 
     abstract class Adapter {
-        var data: List<*>? = null
+        var data: List<Any>? = null
         private val onDataChangeListeners = ArrayList<OnDataChangeListener>()
 
-        abstract fun onCreateView(any: Any?): View
+        abstract fun onCreateView(any: Any): View
 
-        abstract fun onBindView(view: View, any: Any?)
+        abstract fun onBindView(view: View, any: Any)
 
         fun notifyDataSetChanged() {
             onDataChangeListeners.forEach {
@@ -202,7 +209,7 @@ class BannerView @JvmOverloads constructor(
         }
 
         interface OnDataChangeListener {
-            fun onDataChanged(data: List<*>?)
+            fun onDataChanged(data: List<Any>?)
         }
     }
 

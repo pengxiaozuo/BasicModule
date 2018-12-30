@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.peng.basicmodule">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -26,6 +28,7 @@
         <activity
             android:name=".MultiTypeActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".BannerActivity"/>
     </application>
 
 </manifest>
