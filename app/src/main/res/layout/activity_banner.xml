@@ -8,16 +8,24 @@
 
     <com.peng.basic.widget.banner.BannerView
         android:id="@+id/banner"
+        app:period="26000"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-        <com.peng.basic.widget.banner.DefaultBannerIndicator
+        <!--<com.peng.basic.widget.banner.DefaultBannerIndicator-->
+            <!--android:id="@+id/basic_banner_indicator"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_gravity="bottom|left"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+        <com.peng.basicmodule.OtherBannerIndicator
             android:id="@+id/basic_banner_indicator"
+            android:layout_gravity="bottom|left"
             android:layout_width="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:orientation="horizontal"
             android:layout_height="wrap_content"/>
 
     </com.peng.basic.widget.banner.BannerView>
+
 
 </RelativeLayout>

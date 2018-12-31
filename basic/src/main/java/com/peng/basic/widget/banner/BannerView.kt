@@ -73,7 +73,7 @@ class BannerView @JvmOverloads constructor(
         } else {
             val layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             viewPager.layoutParams = layoutParams
-            addView(viewPager,0)
+            addView(viewPager, 0)
         }
 
         addListener()
@@ -133,11 +133,14 @@ class BannerView @JvmOverloads constructor(
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            indicator?.onOffset(position, positionOffset, positionOffsetPixels)
+            val p = position % (data?.size ?: 0)
+            indicator?.onOffset(p, positionOffset, positionOffsetPixels)
         }
 
         override fun onPageSelected(position: Int) {
-            indicator?.onSelected(position % (data?.size?: 0))
+            val p = position % (data?.size ?: 0)
+            indicator?.onSelected(p)
+            adapter?.onBindView(views[p], p)
         }
     }
 
@@ -164,6 +167,7 @@ class BannerView @JvmOverloads constructor(
 
                 indicator?.onDataChanged(data)
                 indicator?.onSelected(0)
+                adapter?.onBindView(views[0], 0)
                 pagerAdapter.notifyDataSetChanged()
                 if (views.size > 0 && loop) {
                     val currentPosition = (Int.MAX_VALUE / views.size / 2) * views.size
@@ -178,8 +182,7 @@ class BannerView @JvmOverloads constructor(
         private fun addView(data: List<Any>) {
             adapter?.let { ad ->
                 data.forEach { t ->
-                    val view = ad.onCreateView(t)
-                    ad.onBindView(view, t)
+                    val view = ad.onCreateView(this@BannerView, t)
                     views.add(view)
                 }
             }
@@ -190,9 +193,9 @@ class BannerView @JvmOverloads constructor(
         var data: List<Any>? = null
         private val onDataChangeListeners = ArrayList<OnDataChangeListener>()
 
-        abstract fun onCreateView(any: Any): View
+        abstract fun onCreateView(parent: BannerView, any: Any): View
 
-        abstract fun onBindView(view: View, any: Any)
+        abstract fun onBindView(view: View, position: Int)
 
         fun notifyDataSetChanged() {
             onDataChangeListeners.forEach {
