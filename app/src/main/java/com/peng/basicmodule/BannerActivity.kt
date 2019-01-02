@@ -1,7 +1,6 @@
 package com.peng.basicmodule
 
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -9,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.peng.basic.common.BaseActivity
-import com.peng.basic.util.LogUtils
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_banner.*
@@ -43,7 +41,7 @@ class BannerActivity : BaseActivity() {
                 } else {
                     play = MediaPlayer.create(
                         this@BannerActivity,
-                        Uri.parse("http://edge.ivideo.sina.com.cn/196362722.mp4?KID=sina,viask&Expires=1546358400&ssig=HVEQaYrf00")
+                        R.raw.test
                     )
                     prepareInit = true
                     val view = View.inflate(this@BannerActivity, R.layout.item_banner_video, null)
@@ -94,7 +92,7 @@ class BannerActivity : BaseActivity() {
         }
 
         override fun surfaceCreated(holder: SurfaceHolder?) {
-            play!!.setDisplay(holder)
+            play?.setDisplay(holder)
         }
 
     }

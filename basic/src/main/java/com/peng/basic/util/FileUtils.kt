@@ -9,6 +9,9 @@ import android.os.Environment
 import android.os.StatFs
 import android.support.v4.content.FileProvider
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 /**
@@ -59,4 +62,31 @@ object FileUtils {
             if (SDK_INT < JELLY_BEAN_MR2) statFs.blockSize.toLong() else statFs.blockSizeLong
         return blockCount * blockSize
     }
+
+    /**
+     * 保存文件
+     * @throws IOException
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Throws(IOException::class)
+    fun save(file: File, dir: String = file.parent) {
+        val target = if (dir == file.parent) file else File(dir, file.name)
+        var fos: FileOutputStream? = null
+        var fis: FileInputStream? = null
+        try {
+            fis = FileInputStream(file)
+            fos = FileOutputStream(target)
+            val buffer = ByteArray(4 * 1024)
+            var len = -1
+            while (true) {
+                len = fis.read(buffer)
+                if (len == -1) break
+                fos.write(buffer, 0, len)
+            }
+        } finally {
+            CloseUtils.close(fis, fos)
+        }
+    }
+
 }

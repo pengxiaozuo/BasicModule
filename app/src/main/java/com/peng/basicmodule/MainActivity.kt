@@ -6,7 +6,6 @@ import com.peng.basic.common.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-
 class MainActivity : BaseActivity() {
     override fun configUi(config: UiConfig) {
         config.layoutId = R.layout.activity_main

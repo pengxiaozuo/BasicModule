@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
+
 /**
  * 图片工具类
  */
@@ -161,23 +162,28 @@ object BitmapUtils {
     }
 
     /**
-     * 压缩
+     * 压缩,用于节省磁盘空间，如果加载到内存并不会减少内存
      */
     @JvmStatic
     @JvmOverloads
-    fun compress(src: Bitmap, maxSize: Long, recycle: Boolean = true): Bitmap {
+    fun compressByCompressFormat(
+        src: Bitmap,
+        reqSize: Long,
+        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+        recycle: Boolean = true
+    ): ByteArray {
         val bos = ByteArrayOutputStream()
         var quality = 100
-        src.compress(Bitmap.CompressFormat.PNG, quality, bos)
-        while (bos.toByteArray().size > maxSize && quality > 0) {
+        src.compress(format, quality, bos)
+        while (bos.toByteArray().size > reqSize && quality > 0) {
             bos.reset()
             quality -= 5
-            src.compress(Bitmap.CompressFormat.PNG, quality, bos)
+            src.compress(format, quality, bos)
         }
 
         val byteArray = bos.toByteArray()
         if (recycle) src.recycle()
-        return byteArray2Bitmap(byteArray)
+        return byteArray
     }
 
     /**
@@ -185,41 +191,60 @@ object BitmapUtils {
      */
     @JvmStatic
     @JvmOverloads
-    fun compress(src: Bitmap, sampleSize: Int, recycle: Boolean = true): Bitmap {
+    fun compressByInSampleSize(src: Bitmap, sampleSize: Int, recycle: Boolean = true): Bitmap {
         val opt = BitmapFactory.Options()
         opt.inSampleSize = sampleSize
+        opt.inJustDecodeBounds = false
         val byteArray = bitmap2ByteArray(src, Bitmap.CompressFormat.PNG)
         if (recycle) src.recycle()
-        return byteArray2Bitmap(byteArray)
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size, opt)
     }
 
     /**
-     * 计算采样大小
+     * 压缩
      */
     @JvmStatic
-    fun calculateInSampleSize(options: BitmapFactory.Options, maxWidth: Int, maxHeight: Int): Int {
-        if (maxWidth == 0 || maxHeight == 0) {
-            return 1
+    @JvmOverloads
+    fun compressByResize(src: Bitmap, reqWidth: Int, reqHeight: Int, recycle: Boolean = true): Bitmap {
+        val opt = BitmapFactory.Options()
+        opt.inSampleSize = calculateInSampleSize(reqWidth, reqHeight, src.width, src.height)
+        opt.inJustDecodeBounds = false
+        val byteArray = bitmap2ByteArray(src, Bitmap.CompressFormat.PNG)
+        if (recycle) src.recycle()
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size, opt)
+    }
+
+    /**
+     * 计算采样率
+     */
+    @JvmStatic
+    fun calculateInSampleSize(reqWidth: Int, reqHeight: Int, width: Int, height: Int): Int {
+        var sampleSize = 1
+        if (height > reqHeight || width > reqWidth) {
+            val heightRatio: Int
+            val widthRatio: Int
+            if (reqHeight == 0) {
+                sampleSize = Math.floor((width.toFloat() / reqWidth.toFloat()).toDouble()).toInt()
+            } else if (reqWidth == 0) {
+                sampleSize = Math.floor((height.toFloat() / reqHeight.toFloat()).toDouble()).toInt()
+            } else {
+                heightRatio = Math.floor((height.toFloat() / reqHeight.toFloat()).toDouble()).toInt()
+                widthRatio = Math.floor((width.toFloat() / reqWidth.toFloat()).toDouble()).toInt()
+                sampleSize = Math.max(heightRatio, widthRatio)
+            }
         }
-        var height = options.outHeight
-        var width = options.outWidth
-        var inSampleSize = 1
-        while (height.apply { height = height shr 1 } >= maxHeight
-            && width.apply { width = width shr 1 } >= maxWidth) {
-            inSampleSize = inSampleSize shl 1
-        }
-        return inSampleSize
+        return sampleSize
     }
 
     /**
      * 通过路径获取Bitmap
      */
     @JvmStatic
-    fun getBitmap(path: String, maxWidth: Int, maxHeight: Int): Bitmap {
+    fun getBitmap(path: String, reqWidth: Int, reqHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(path, options)
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+        options.inSampleSize = calculateInSampleSize(reqWidth, reqHeight, options.outWidth, options.outHeight)
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeFile(path, options)
     }
@@ -228,11 +253,11 @@ object BitmapUtils {
      * 通过资源获取bitmap
      */
     @JvmStatic
-    fun getBitmap(resources: Resources, id: Int, maxWidth: Int, maxHeight: Int): Bitmap {
+    fun getBitmap(resources: Resources, id: Int, reqWidth: Int, reqHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeResource(resources, id, options)
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+        options.inSampleSize = calculateInSampleSize(reqWidth, reqHeight, options.outWidth, options.outHeight)
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeResource(resources, id, options)
     }
@@ -241,11 +266,11 @@ object BitmapUtils {
      * 通过inputStream获取bitmap
      */
     @JvmStatic
-    fun getBitmap(inputStream: InputStream, maxWidth: Int, maxHeight: Int): Bitmap {
+    fun getBitmap(inputStream: InputStream, reqWidth: Int, reqHeight: Int): Bitmap {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeStream(inputStream, null, options)
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+        options.inSampleSize = calculateInSampleSize(reqWidth, reqHeight, options.outWidth, options.outHeight)
         options.inJustDecodeBounds = false
         return BitmapFactory.decodeStream(inputStream, null, options)
     }
