@@ -18,11 +18,23 @@
             android:layout_height="wrap_content"/>
 
         <Button
-                android:id="@+id/btn_banner"
-                android:text="Banner"
-                android:textAllCaps="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/btn_banner"
+            android:text="Banner"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <FrameLayout
+            android:id="@+id/f_content"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"/>
+
+
+        <Button
+            android:id="@+id/btn_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

@@ -1,5 +1,11 @@
 # 基础模块封装
 
+## Gradle配置
+
+```gradle
+implementation 'com.peng.basic:basic:0.2.2'
+```
+
 封装了常用的工具类，通用的RecyclerView.Adapter,BaseActivity,BaseFragment，常用的Widget等以方便使用
 默认api依赖rxjava2和recyclerview
 
