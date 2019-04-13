@@ -22,30 +22,25 @@ abstract class BaseFragment : Fragment(), IBaseUi {
         activity = context as Activity
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     open fun getLayoutId(): Int = 0
 
-    open fun getLayoutView(): View? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         initParams()
 
-        val view: View = if (getLayoutView() == null) {
-            inflater.inflate(getLayoutId(), container, false)
-        } else {
-            getLayoutView()!!
-        }
+        return inflater.inflate(getLayoutId(), container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView(view, savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         initData()
-
-        return view
     }
 
 

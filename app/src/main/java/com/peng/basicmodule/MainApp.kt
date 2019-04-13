@@ -1,4 +1,9 @@
 package com.peng.basicmodule
 
-class MainApp {
+import android.app.Application
+
+class MainApp :Application(){
+    override fun onCreate() {
+        super.onCreate()
+    }
 }

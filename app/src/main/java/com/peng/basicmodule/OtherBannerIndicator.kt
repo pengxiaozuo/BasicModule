@@ -17,6 +17,7 @@ class OtherBannerIndicator : LinearLayout, BannerIndicator {
     private val normalDoBmp = createBitmap(0xFFcccccc.toInt())
     private val selectedDoBmp = createBitmap(0xFF4A68F1.toInt())
     override fun onDataChanged(list: List<Any>?) {
+        removeAllViews()
         list?.forEach {
             addDoView()
         }

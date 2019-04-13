@@ -37,13 +37,16 @@ abstract class BaseActivity : AppCompatActivity(), IBaseUi {
             supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         }
 
-        if (config.fullScreen) {
+        if (config.fullScreen && !config.statusBarImmersiveMode && !config.statusBarTransparentMode) {
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
 
+        if (config.layoutId == 0) {
+            config.layoutId = getLayoutId()
+        }
 
         if (config.contentView == null) {
             if (config.layoutId != 0) {
@@ -58,24 +61,27 @@ abstract class BaseActivity : AppCompatActivity(), IBaseUi {
             BarUtils.setBarColor(this, config.statusColor)
         }
 
-        if (config.statusLightMode) {
+        if (config.statusLightMode && !config.statusBarImmersiveMode && !config.statusBarTransparentMode) {
             BarUtils.setLightMode(this)
         }
 
-        if (config.statusDarkMode) {
+        if (config.statusDarkMode && !config.statusBarImmersiveMode && !config.statusBarTransparentMode) {
             BarUtils.setDarkMode(this)
         }
 
         if (config.statusBarTransparentMode) {
-            BarUtils.setTransparentMode(this)
+            BarUtils.setTransparentMode(this, config.fullScreen, config.statusLightMode)
         }
 
         if (config.statusBarImmersiveMode) {
-            BarUtils.setImmersiveMode(this)
+            BarUtils.setImmersiveMode(this, config.statusLightMode)
         }
     }
 
-    abstract fun configUi(config: UiConfig)
+    open fun getLayoutId(): Int = 0
+
+
+    open fun configUi(config: UiConfig) {}
 
 
     override fun initParams() {}

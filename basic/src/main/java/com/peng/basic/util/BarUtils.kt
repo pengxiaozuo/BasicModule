@@ -21,8 +21,10 @@ object BarUtils {
      */
     @JvmStatic
     fun getStateBarHeight(context: Context): Int {
-        val resourceId = context.resources.getIdentifier("status_bar_height",
-                "dimen", "android")
+        val resourceId = context.resources.getIdentifier(
+            "status_bar_height",
+            "dimen", "android"
+        )
         return context.resources.getDimensionPixelSize(resourceId)
     }
 
@@ -32,8 +34,11 @@ object BarUtils {
     @JvmStatic
     fun getActionBarHeight(context: Context): Int {
         val tv = TypedValue()
-        return if (context.theme.resolveAttribute(android.R.attr.actionBarSize, tv,
-                        true)) {
+        return if (context.theme.resolveAttribute(
+                android.R.attr.actionBarSize, tv,
+                true
+            )
+        ) {
             TypedValue.complexToDimensionPixelSize(tv.data, context.resources.displayMetrics)
         } else 0
     }
@@ -44,8 +49,10 @@ object BarUtils {
     @JvmStatic
     fun getNavBarHeight(context: Context): Int {
         val res = context.resources
-        val resourceId = res.getIdentifier("navigation_bar_height",
-                "dimen", "android")
+        val resourceId = res.getIdentifier(
+            "navigation_bar_height",
+            "dimen", "android"
+        )
         return if (resourceId != 0) {
             res.getDimensionPixelSize(resourceId)
         } else {
@@ -70,7 +77,7 @@ object BarUtils {
     fun setLightMode(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
     }
 
@@ -113,20 +120,26 @@ object BarUtils {
      * 透明状态栏
      */
     @JvmStatic
-    fun setTransparentMode(activity: Activity) {
+    @JvmOverloads
+    fun setTransparentMode(activity: Activity, isFullScreen: Boolean = true, isLightMode: Boolean = true) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val decorView = activity.window.decorView
-            val option = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    )
+            var option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
+            if (isFullScreen) {
+                option = option or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isLightMode) {
+                option = option or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
             decorView.systemUiVisibility = option
             activity.window.statusBarColor = Color.TRANSPARENT
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             val contentView: ViewGroup = activity.window.decorView
-                    .findViewById(Window.ID_ANDROID_CONTENT)
+                .findViewById(Window.ID_ANDROID_CONTENT)
             contentView.getChildAt(0).fitsSystemWindows = false
         }
 
@@ -136,15 +149,20 @@ object BarUtils {
      * 沉侵式
      */
     @JvmStatic
-    fun setImmersiveMode(activity: Activity) {
+    fun setImmersiveMode(activity: Activity, isLightMode: Boolean = true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val decorView = activity.window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            var option = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+
+            if (isLightMode) {
+                option = option or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            }
+            decorView.systemUiVisibility = option
         }
 
     }

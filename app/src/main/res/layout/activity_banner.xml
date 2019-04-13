@@ -9,6 +9,8 @@
     <com.peng.basic.widget.banner.BannerView
         android:id="@+id/banner"
         app:period="26000"
+        app:auto_play="false"
+        app:loop="false"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 

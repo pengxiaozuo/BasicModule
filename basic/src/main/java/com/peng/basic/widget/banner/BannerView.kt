@@ -21,21 +21,25 @@ class BannerView @JvmOverloads constructor(
     /**
      * 自动播放
      */
-    var autoPlay = true
+    private var autoPlay = true
 
     /**
      * 自动播放周期 单位毫秒
      */
-    var period = 5000L
+    private var period = 5000L
 
     /**
      * 循环滑动
      */
-    var loop = true
+    private var loop = true
 
-    var indicator: BannerIndicator? = null
+    /**
+     * 指示器
+     */
+    private var indicator: BannerIndicator? = null
 
     private var data: List<*>? = null
+
     private val views = ArrayList<View>()
 
     private var viewPager: ViewPager = ViewPager(context)
@@ -147,7 +151,7 @@ class BannerView @JvmOverloads constructor(
     private val onDataChangeListener = object : OnDataChangeListener {
 
         override fun onDataChanged(data: List<Any>?) {
-            if (this@BannerView.data == data) return
+
             adapter?.let { ad ->
                 if (autoPlay) {
                     stopPlay()
@@ -166,11 +170,14 @@ class BannerView @JvmOverloads constructor(
                     }
 
                 indicator?.onDataChanged(data)
-                indicator?.onSelected(0)
-                adapter?.onBindView(views[0], 0)
+                if (views.size > 0) {
+
+                    indicator?.onSelected(0)
+                    adapter?.onBindView(views[0], 0)
+                }
                 pagerAdapter.notifyDataSetChanged()
                 if (views.size > 0 && loop) {
-                    val currentPosition = (Int.MAX_VALUE / views.size / 2) * views.size
+                    val currentPosition = (pagerAdapter.count / views.size / 2) * views.size
                     viewPager.currentItem = currentPosition
                 }
                 if (autoPlay) {

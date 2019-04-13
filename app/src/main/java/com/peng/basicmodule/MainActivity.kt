@@ -11,6 +11,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
     override fun configUi(config: UiConfig) {
         config.layoutId = R.layout.activity_main
+//        config.noTitle = true
+//        config.statusBarImmersiveMode  = true
+//        config.statusDarkMode = true
+        config.statusLightMode = true
+        config.statusBarTransparentMode = true
+//        config.statusColor = 0xFFFFFF
     }
 
     override fun initView(contentView: View, savedInstanceState: Bundle?) {

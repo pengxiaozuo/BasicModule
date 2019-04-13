@@ -235,32 +235,32 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
         fun of(vararg data: Byte): ByteString = ByteString(data.copyOf())
 
         @JvmStatic
-        fun String.encodeUtf8(): ByteString {
-            val byteString = ByteString(toByteArray(Charsets.UTF_8))
-            byteString.utf8 = this
+        fun encodeUtf8(str: String): ByteString {
+            val byteString = ByteString(str.toByteArray(Charsets.UTF_8))
+            byteString.utf8 = str
             return byteString
         }
 
         @JvmStatic
         @JvmName("encodeString")
-        fun String.encode(charset: Charset = Charsets.UTF_8) = ByteString(toByteArray(charset))
+        fun encode(str: String, charset: Charset = Charsets.UTF_8) = ByteString(str.toByteArray(charset))
 
         @JvmStatic
         @JvmOverloads
-        fun String.decodeBase64(flags: Int = Base64.NO_WRAP): ByteString? {
-            val decoded = Base64.decode(this, flags)
+        fun decodeBase64(str: String, flags: Int = Base64.NO_WRAP): ByteString? {
+            val decoded = Base64.decode(str, flags)
             return if (decoded != null) ByteString(decoded) else null
         }
 
         @JvmStatic
-        fun String.decodeHex(): ByteString {
+        fun decodeHex(str: String): ByteString {
             //检查value 如果为false则抛出IllegalArgumentException异常
-            require(length % 2 == 0) { "Unexpected hex string: $this" }
+            require(str.length % 2 == 0) { "Unexpected hex string: $this" }
 
-            val result = ByteArray(length / 2)
+            val result = ByteArray(str.length / 2)
             for (i in result.indices) {
-                val d1 = this[i * 2].decodeHexDigit() shl 4
-                val d2 = this[i * 2 + 1].decodeHexDigit()
+                val d1 = str[i * 2].decodeHexDigit() shl 4
+                val d2 = str[i * 2 + 1].decodeHexDigit()
                 result[i] = (d1 + d2).toByte()
             }
             return ByteString(result)
@@ -269,13 +269,13 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
         @Throws(IOException::class)
         @JvmStatic
         @JvmName("read")
-        fun InputStream.readByteString(byteCount: Int): ByteString {
+        fun readByteString(inputStream: InputStream, byteCount: Int): ByteString {
             require(byteCount >= 0) { "byteCount < 0: $byteCount" }
             val result = ByteArray(byteCount)
             var offset = 0
             var read: Int
             while (offset < byteCount) {
-                read = read(result, offset, byteCount - offset)
+                read = inputStream.read(result, offset, byteCount - offset)
                 if (read == -1) throw EOFException()
                 offset += read
             }
@@ -297,7 +297,5 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
                 throw ArrayIndexOutOfBoundsException("size=$size offset=$offset byteCount=$byteCount")
             }
         }
-
     }
-
 }

@@ -12,7 +12,7 @@ open class DefaultBannerPageAdapter(private var views: List<View>, private val l
     }
 
     override fun getCount(): Int {
-        return if (views.isEmpty()) 0 else if (loop) Int.MAX_VALUE else views.size
+        return if (views.isEmpty()) 0 else if (loop) views.size * 40 else views.size
 
     }
 
@@ -27,10 +27,8 @@ open class DefaultBannerPageAdapter(private var views: List<View>, private val l
 
 
     override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
-        val view = container.getChildAt(position)
-        if (view != null) {
-            container.removeView(view)
-        }
+        val view = getViewByPosition(position)
+        container.removeView(view)
     }
 
     private fun getViewByPosition(position: Int) =
