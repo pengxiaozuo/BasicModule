@@ -46,13 +46,7 @@ object KeyboardUtils {
         focusView.isFocusable = true
         focusView.isFocusableInTouchMode = true
         focusView.requestFocus()
-        val result = imm.showSoftInput(focusView, flags, object : ResultReceiver(Handler()) {
-            override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                if (resultCode == InputMethodManager.RESULT_UNCHANGED_HIDDEN || resultCode == InputMethodManager.RESULT_HIDDEN) {
-                    toggleSoftInput(activity)
-                }
-            }
-        })
+        val result = imm.showSoftInput(focusView, flags)
         if (!result && !isSoftInputVisible(activity)) {
             toggleSoftInput(activity)
         }
@@ -73,13 +67,7 @@ object KeyboardUtils {
             focusView = View(activity)
         }
         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val result = imm.hideSoftInputFromWindow(focusView.windowToken, 0, object : ResultReceiver(Handler()) {
-            override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                if (resultCode == InputMethodManager.RESULT_UNCHANGED_SHOWN || resultCode == InputMethodManager.RESULT_SHOWN) {
-                    toggleSoftInput(activity)
-                }
-            }
-        })
+        val result = imm.hideSoftInputFromWindow(focusView.windowToken, 0)
 
         if (!result && isSoftInputVisible(activity)) {
             toggleSoftInput(activity)

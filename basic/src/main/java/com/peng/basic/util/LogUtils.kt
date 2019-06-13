@@ -124,7 +124,7 @@ object LogUtils {
         val sb = StringBuilder()
         if (debug) {
             if (threadInfo) {
-                sb.append("Thread: ${Thread.currentThread().name}\n")
+                sb.append("Thread: ${Thread.currentThread().name} :")
                 sb.append(msg)
                 if (throwable != null) {
                     sb.append("\n ${Log.getStackTraceString(throwable)}")

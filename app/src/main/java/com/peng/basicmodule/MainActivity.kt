@@ -2,40 +2,37 @@ package com.peng.basicmodule
 
 import android.os.Bundle
 import android.view.View
-import com.peng.basic.common.BaseActivity
+import com.peng.basic.base.BaseActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.LogUtils
+import com.peng.basic.util.click
+import com.peng.basicmodule.mvp.MVPActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {
-    override fun configUi(config: UiConfig) {
-        config.layoutId = R.layout.activity_main
-//        config.noTitle = true
-//        config.statusBarImmersiveMode  = true
-//        config.statusDarkMode = true
-        config.statusLightMode = true
-        config.statusBarTransparentMode = true
-//        config.statusColor = 0xFFFFFF
+
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
     }
 
-    override fun initView(contentView: View, savedInstanceState: Bundle?) {
+    override fun initView(view: View,savedInstanceState: Bundle?) {
         btn_multi_type.setOnClickListener {
-            startActivity(MultiTypeActivity::class.java)
+            startActivity(MVPActivity::class.java)
         }
 
-        btn_banner.setOnClickListener {
+        btn_banner.click {
             startActivity(BannerActivity::class.java)
         }
         supportFragmentManager.beginTransaction().add(R.id.f_content, TestFragment(), "TestFragment").commit()
         KeyboardUtils.registerSoftInputChangedListener(this, object : KeyboardUtils.OnSoftInputChangedListener {
             override fun onSoftInputChanged(height: Int) {
-                LogUtils.d("Height = $height")
             }
 
         })
 
-        btn_input.setOnClickListener {
+        btn_input.click {
             if (KeyboardUtils.isSoftInputVisible(this)) {
                 KeyboardUtils.hideSoftInput(this)
             } else {

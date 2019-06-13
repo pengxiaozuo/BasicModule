@@ -31,6 +31,7 @@
             android:name=".MultiTypeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".BannerActivity"/>
+        <activity android:name=".mvp.MVPActivity"/>
     </application>
 
 </manifest>

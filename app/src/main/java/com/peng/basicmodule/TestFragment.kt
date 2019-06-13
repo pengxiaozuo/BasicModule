@@ -2,8 +2,10 @@ package com.peng.basicmodule
 
 import android.os.Bundle
 import android.view.View
-import com.peng.basic.common.BaseFragment
+import com.jakewharton.rxbinding3.view.clicks
+import com.peng.basic.base.BaseFragment
 import com.peng.basic.util.LogUtils
+import java.util.concurrent.TimeUnit
 
 class TestFragment : BaseFragment() {
 
@@ -12,7 +14,7 @@ class TestFragment : BaseFragment() {
     }
 
     override fun initView(contentView: View, savedInstanceState: Bundle?) {
-        LogUtils.d("initView-------")
+        contentView.clicks().throttleFirst(2,TimeUnit.SECONDS).subscribe()
     }
 
     override fun initData() {

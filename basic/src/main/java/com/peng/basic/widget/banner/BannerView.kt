@@ -1,27 +1,22 @@
 package com.peng.basic.widget.banner
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
-import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.peng.basic.R
-import com.peng.basic.util.LogUtils
-import com.peng.basic.widget.banner.BannerView.Adapter.OnDataChangeListener
 
 
-@SuppressLint("NewApi")
 class BannerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     /**
      * 自动播放
      */
-    private var autoPlay = true
+    private var autoPlay = false
 
     /**
      * 自动播放周期 单位毫秒
@@ -31,22 +26,17 @@ class BannerView @JvmOverloads constructor(
     /**
      * 循环滑动
      */
-    private var loop = true
+    private var loop = false
 
-    /**
-     * 指示器
-     */
     private var indicator: BannerIndicator? = null
-
-    private var data: List<*>? = null
 
     private val views = ArrayList<View>()
 
     private var viewPager: ViewPager = ViewPager(context)
 
-    lateinit var pagerAdapter: PagerAdapter
+    private lateinit var pagerAdapter: BannerPageAdapter
 
-    private var adapter: Adapter? = null
+    private var adapter: Adapter<*>? = null
 
 
     init {
@@ -75,19 +65,21 @@ class BannerView @JvmOverloads constructor(
         if (vp != null) {
             viewPager = vp
         } else {
-            val layoutParams = FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             viewPager.layoutParams = layoutParams
             addView(viewPager, 0)
         }
 
         addListener()
-        pagerAdapter = DefaultBannerPageAdapter(views, loop)
+        pagerAdapter = BannerPageAdapter(views, loop)
         viewPager.adapter = pagerAdapter
     }
 
-    fun setAdapter(adapter: Adapter) {
+    fun <T> setAdapter(adapter: Adapter<T>) {
+        if (this.adapter != null) throw IllegalArgumentException("只能设置一个adapter")
         this.adapter = adapter
-        this.adapter!!.addOnDataChangeListener(onDataChangeListener)
+        adapter.bannerView = this
+        pagerAdapter.adapter = adapter
     }
 
     private fun startPlay() {
@@ -105,7 +97,6 @@ class BannerView @JvmOverloads constructor(
         super.onDetachedFromWindow()
         stopPlay()
         viewPager.removeOnPageChangeListener(onPageChangeListener)
-        adapter?.removeOnDataChangeListener(onDataChangeListener)
         viewPager.adapter = null
     }
 
@@ -129,6 +120,7 @@ class BannerView @JvmOverloads constructor(
             when (state) {
                 1 -> {
                     if (autoPlay) stopPlay()
+
                 }
                 2 -> {
                     if (autoPlay && views.size > 0) startPlay()
@@ -137,90 +129,100 @@ class BannerView @JvmOverloads constructor(
         }
 
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            val p = position % (data?.size ?: 0)
+            val p = pagerAdapter.getRealPosition(position)
             indicator?.onOffset(p, positionOffset, positionOffsetPixels)
+            //移形换位
+            postDelayed({
+                if (loop && views.size > 0 && positionOffset == 0f) {
+                    when (position) {
+                        0 -> {
+                            //第一张展示的是最后一张，需要跳转到真正的最后一张 lastIndex - 1
+                            val index = views.lastIndex - 1
+                            viewPager.setCurrentItem(index, false)
+                        }
+                        views.lastIndex -> {
+                            //最后一张展示的是第一张，需要跳转到真正的第一张index = 1
+                            val index = 1
+                            viewPager.setCurrentItem(index, false)
+                        }
+                    }
+                }
+            }, 100)
         }
 
         override fun onPageSelected(position: Int) {
-            val p = position % (data?.size ?: 0)
+            val p = pagerAdapter.getRealPosition(position)
             indicator?.onSelected(p)
-            adapter?.onBindView(views[p], p)
+            adapter?.onPageSelected(views[p], p)
         }
     }
 
-    private val onDataChangeListener = object : OnDataChangeListener {
 
-        override fun onDataChanged(data: List<Any>?) {
+    private fun <T> onDataChange(data: List<T>?) {
+        adapter?.let { ad ->
+            ad as Adapter<T>
+            if (autoPlay) {
+                stopPlay()
+            }
+            viewPager.removeOnPageChangeListener(onPageChangeListener)
+            //清空view
+            views.clear()
 
-            adapter?.let { ad ->
-                if (autoPlay) {
-                    stopPlay()
-                }
-                views.clear()
-                this@BannerView.data = data
-
+            data?.let {
+                addView(ad, it)
+            }
+            if (views.size > 0 && loop) {
+                //如果循环多+2个View
                 data?.let {
-                    addView(it)
-                }
-                if (views.size > 0 && loop)
-                    while (views.size < 4) {
-                        data?.let {
-                            addView(it)
-                        }
-                    }
-
-                indicator?.onDataChanged(data)
-                if (views.size > 0) {
-
-                    indicator?.onSelected(0)
-                    adapter?.onBindView(views[0], 0)
-                }
-                pagerAdapter.notifyDataSetChanged()
-                if (views.size > 0 && loop) {
-                    val currentPosition = (pagerAdapter.count / views.size / 2) * views.size
-                    viewPager.currentItem = currentPosition
-                }
-                if (autoPlay) {
-                    startPlay()
+                    val firstData = data[0]
+                    val endData = data[data.lastIndex]
+                    views.add(0, ad.onCreateView(this, endData))
+                    views.add(ad.onCreateView(this, firstData))
                 }
             }
-        }
 
-        private fun addView(data: List<Any>) {
-            adapter?.let { ad ->
-                data.forEach { t ->
-                    val view = ad.onCreateView(this@BannerView, t)
-                    views.add(view)
-                }
+            indicator?.onDataChanged(data)
+            if (views.size > 0) {
+                indicator?.onSelected(0)
+                adapter?.onPageSelected(views[0], 0)
+            }
+            pagerAdapter.notifyDataSetChanged()
+            addListener()
+            if (views.size > 0 && loop) {
+                viewPager.setCurrentItem(1, false)
+            } else {
+                viewPager.setCurrentItem(0, false)
+            }
+            if (autoPlay) {
+                startPlay()
             }
         }
     }
 
-    abstract class Adapter {
-        var data: List<Any>? = null
-        private val onDataChangeListeners = ArrayList<OnDataChangeListener>()
+    private fun <T> addView(adapter: Adapter<T>, data: List<T>) {
+        adapter.let { ad ->
+            data.forEach { t ->
+                val view = ad.onCreateView(this, t)
+                views.add(view)
+            }
+        }
+    }
 
-        abstract fun onCreateView(parent: BannerView, any: Any): View
+    abstract class Adapter<T> {
+
+        var data: List<T>? = null
+        var bannerView: BannerView? = null
+
+        abstract fun onCreateView(parent: BannerView, item: T): View
 
         abstract fun onBindView(view: View, position: Int)
 
+        open fun onPageSelected(view: View, position: Int) {}
+
         fun notifyDataSetChanged() {
-            onDataChangeListeners.forEach {
-                it.onDataChanged(data)
-            }
+            bannerView?.onDataChange(data)
         }
 
-        fun addOnDataChangeListener(listener: OnDataChangeListener) {
-            onDataChangeListeners.add(listener)
-        }
-
-        fun removeOnDataChangeListener(listener: OnDataChangeListener) {
-            onDataChangeListeners.remove(listener)
-        }
-
-        interface OnDataChangeListener {
-            fun onDataChanged(data: List<Any>?)
-        }
     }
 
 }

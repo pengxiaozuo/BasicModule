@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.peng.basic.common.BaseActivity
-import com.peng.basic.common.ItemViewBinder
-import com.peng.basic.common.MultiTypeAdapter
-import com.peng.basic.common.SimpleViewHolder
+import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.ItemViewBinder
+import com.peng.basic.base.MultiTypeAdapter
+import com.peng.basic.base.SimpleViewHolder
 import kotlinx.android.synthetic.main.activity_multitype.*
 
 class MultiTypeActivity : BaseActivity() {
@@ -18,11 +18,12 @@ class MultiTypeActivity : BaseActivity() {
     private val mAdapter = MultiTypeAdapter()
     private val mListData = mutableListOf<Any>()
 
-    override fun configUi(config: UiConfig) {
-        config.layoutId = R.layout.activity_multitype
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_multitype
     }
 
-    override fun initView(contentView: View, savedInstanceState: Bundle?) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
     }

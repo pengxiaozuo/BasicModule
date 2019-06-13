@@ -255,7 +255,7 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
         @JvmStatic
         fun decodeHex(str: String): ByteString {
             //检查value 如果为false则抛出IllegalArgumentException异常
-            require(str.length % 2 == 0) { "Unexpected hex string: $this" }
+            require(str.length % 2 == 0) { "Unexpected hex string: $str" }
 
             val result = ByteArray(str.length / 2)
             for (i in result.indices) {
@@ -284,11 +284,11 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
 
         @JvmStatic
         @JvmName("of")
-        fun ByteArray.toByteString(offset: Int = 0, byteCount: Int = size): ByteString {
-            checkOffsetAndCount(size.toLong(), offset.toLong(), byteCount.toLong())
+        fun toByteString(data: ByteArray, offset: Int = 0, byteCount: Int = data.size): ByteString {
+            checkOffsetAndCount(data.size.toLong(), offset.toLong(), byteCount.toLong())
 
             val copy = ByteArray(byteCount)
-            System.arraycopy(this, offset, copy, 0, byteCount)
+            System.arraycopy(data, offset, copy, 0, byteCount)
             return ByteString(copy)
         }
 

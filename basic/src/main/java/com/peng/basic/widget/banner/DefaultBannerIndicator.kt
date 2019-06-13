@@ -29,7 +29,7 @@ class DefaultBannerIndicator : LinearLayout, BannerIndicator {
     }
 
 
-    override fun onDataChanged(list: List<Any>?) {
+    override fun onDataChanged(list: List<Any?>?) {
         removeAllViews()
         list?.forEach {
             addDoView()
