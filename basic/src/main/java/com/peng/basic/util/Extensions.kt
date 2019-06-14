@@ -22,6 +22,10 @@ fun View.click(onNext: (Unit) -> Unit): Disposable =
 fun View.click(onNext: (Unit) -> Unit, onError: (Throwable) -> Unit): Disposable =
     clicks().throttleFirst(1, TimeUnit.SECONDS).toMain().subscribe(onNext, onError)
 
+fun View.showHide(show: Boolean) {
+    visibility = if (show) View.VISIBLE else View.GONE
+}
+
 fun <T> Observable<T>.fromIoToMain(): Observable<T> = fromIo().toMain()
 fun <T> Observable<T>.fromIo(): Observable<T> = subscribeOn(Schedulers.io())
 fun <T> Observable<T>.toMain(): Observable<T> = observeOn(AndroidSchedulers.mainThread())

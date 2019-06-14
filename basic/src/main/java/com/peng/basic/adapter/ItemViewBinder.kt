@@ -30,4 +30,6 @@ abstract class ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
 
     open fun onViewDetachedFromWindow(holder: VH) {}
 
+    abstract fun onBinder(any: Any): Boolean
+
 }

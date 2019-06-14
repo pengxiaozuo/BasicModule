@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         btn_multi_type.setOnClickListener {
-            startActivity(MVPActivity::class.java)
+            startActivity(MultiTypeActivity::class.java)
         }
 
         btn_banner.click {

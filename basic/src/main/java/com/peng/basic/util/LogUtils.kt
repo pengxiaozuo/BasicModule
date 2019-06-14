@@ -315,7 +315,7 @@ object LogUtils {
     private fun getTag(): String {
 
         val thisClassName = LogUtils::class.java.name
-        val thisKTClassName = LogUtils::class.simpleName
+        val thisKTClassName = thisClassName + "Kt"
         val stack = Thread.currentThread().stackTrace
         var callName = ""
 
