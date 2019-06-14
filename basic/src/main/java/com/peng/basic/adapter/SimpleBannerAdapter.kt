@@ -1,4 +1,4 @@
-package com.peng.basic.base
+package com.peng.basic.adapter
 
 import android.view.LayoutInflater
 import android.view.View

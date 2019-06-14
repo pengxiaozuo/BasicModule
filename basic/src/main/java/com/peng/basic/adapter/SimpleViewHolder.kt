@@ -1,4 +1,4 @@
-package com.peng.basic.base
+package com.peng.basic.adapter
 
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.peng.basic.base.BaseActivity
 import com.peng.basic.util.KeyboardUtils
-import com.peng.basic.util.LogUtils
 import com.peng.basic.util.click
 import com.peng.basicmodule.mvp.MVPActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,7 +16,7 @@ class MainActivity : BaseActivity() {
         return R.layout.activity_main
     }
 
-    override fun initView(view: View,savedInstanceState: Bundle?) {
+    override fun initView(view: View, savedInstanceState: Bundle?) {
         btn_multi_type.setOnClickListener {
             startActivity(MVPActivity::class.java)
         }

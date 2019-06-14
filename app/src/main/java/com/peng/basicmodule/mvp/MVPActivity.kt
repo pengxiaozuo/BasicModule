@@ -2,7 +2,7 @@ package com.peng.basicmodule.mvp
 
 import android.os.Bundle
 import android.view.View
-import com.peng.basic.base.BaseMvpActivity
+import com.peng.basic.mvp.BaseMvpActivity
 import com.peng.basicmodule.R
 import com.peng.basicmodule.di.DaggerMVPComponent
 

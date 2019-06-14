@@ -64,11 +64,6 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by CoroutineSc
 
 
     @JvmOverloads
-    fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-        ToastUtils.showToast(this, msg, duration)
-    }
-
-    @JvmOverloads
     fun <T : Activity> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
         val intent = Intent(this, clazz)
         if (bundle != null) {

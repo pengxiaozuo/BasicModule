@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.peng.basic.base.BaseActivity
-import com.peng.basic.base.ItemViewBinder
-import com.peng.basic.base.MultiTypeAdapter
-import com.peng.basic.base.SimpleViewHolder
+import com.peng.basic.adapter.ItemViewBinder
+import com.peng.basic.adapter.MultiTypeAdapter
+import com.peng.basic.adapter.SimpleViewHolder
 import kotlinx.android.synthetic.main.activity_multitype.*
 
 class MultiTypeActivity : BaseActivity() {
@@ -55,7 +55,13 @@ class MultiTypeActivity : BaseActivity() {
 
     class StringTypeItemViewBinder : ItemViewBinder<String, SimpleViewHolder>() {
         override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): SimpleViewHolder {
-            return SimpleViewHolder(inflater.inflate(R.layout.item_multi_type_string, parent, false))
+            return SimpleViewHolder(
+                inflater.inflate(
+                    R.layout.item_multi_type_string,
+                    parent,
+                    false
+                )
+            )
         }
 
         override fun onBinderViewHolder(item: String, holder: SimpleViewHolder) {
@@ -76,7 +82,13 @@ class MultiTypeActivity : BaseActivity() {
 
     class UserMaleItemViewBinder : ItemViewBinder<User, SimpleViewHolder>() {
         override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): SimpleViewHolder {
-            return SimpleViewHolder(inflater.inflate(R.layout.item_multi_type_user_male, parent, false))
+            return SimpleViewHolder(
+                inflater.inflate(
+                    R.layout.item_multi_type_user_male,
+                    parent,
+                    false
+                )
+            )
         }
 
         override fun onBinderViewHolder(item: User, holder: SimpleViewHolder) {
@@ -89,7 +101,13 @@ class MultiTypeActivity : BaseActivity() {
 
     class UserFemaleItemViewBinder : ItemViewBinder<User, SimpleViewHolder>() {
         override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): SimpleViewHolder {
-            return SimpleViewHolder(inflater.inflate(R.layout.item_multi_type_user_female, parent, false))
+            return SimpleViewHolder(
+                inflater.inflate(
+                    R.layout.item_multi_type_user_female,
+                    parent,
+                    false
+                )
+            )
         }
 
         override fun onBinderViewHolder(item: User, holder: SimpleViewHolder) {

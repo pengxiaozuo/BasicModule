@@ -68,16 +68,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope by CoroutineScope(Dispa
     open fun initParams() {}
 
 
-    /**
-     * 显示吐司
-     */
-    @JvmOverloads
-    fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
-        activity?.let {
-            ToastUtils.showToast(it, msg, duration)
-        }
-    }
-
     @JvmOverloads
     fun <T : Activity> startActivity(clazz: Class<T>, bundle: Bundle? = null) {
         activity?.let {

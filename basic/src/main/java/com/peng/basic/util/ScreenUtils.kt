@@ -31,8 +31,10 @@ object ScreenUtils {
      */
     @JvmStatic
     fun setFullSreen(activity: Activity) {
-        activity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        activity.window.addFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
     }
 
     /**
@@ -40,8 +42,10 @@ object ScreenUtils {
      */
     @JvmStatic
     fun setNoFullSreen(activity: Activity) {
-        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-                or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        activity.window.clearFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+                    or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
     }
 
 
@@ -71,3 +75,6 @@ object ScreenUtils {
     }
 
 }
+
+fun Context.screenWidth(): Int = ScreenUtils.getScreenWidth(this)
+fun Context.screenHeight(): Int = ScreenUtils.getScreenHeight(this)

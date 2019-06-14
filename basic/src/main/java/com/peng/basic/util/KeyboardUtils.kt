@@ -165,3 +165,11 @@ object KeyboardUtils {
         fun onSoftInputChanged(height: Int)
     }
 }
+
+fun Activity.showSoftInput(view: View? = null, flags: Int = InputMethodManager.SHOW_FORCED) =
+    KeyboardUtils.showSoftInput(this, view, flags)
+
+fun Activity.hideSoftInput(view: View? = null) =
+    KeyboardUtils.hideSoftInput(this, view)
+
+fun Activity.isSoftInputVisible() = KeyboardUtils.isSoftInputVisible(this)

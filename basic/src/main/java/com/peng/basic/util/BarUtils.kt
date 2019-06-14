@@ -166,6 +166,17 @@ object BarUtils {
         }
 
     }
-
-
 }
+
+fun Context.getStateBarHeight(): Int = BarUtils.getStateBarHeight(this)
+fun Context.getActionBarHeight(): Int = BarUtils.getActionBarHeight(this)
+fun Context.getNavBarHeight(): Int = BarUtils.getNavBarHeight(this)
+
+fun Activity.setDarkMode() = BarUtils.setDarkMode(this)
+fun Activity.setLightMode() = BarUtils.setLightMode(this)
+fun Activity.setStateBarColor(color: Int) = BarUtils.setBarColor(this, color)
+fun Activity.setTransparentMode(isFullScreen: Boolean = true, isLightMode: Boolean = true) =
+    BarUtils.setTransparentMode(this, isFullScreen, isLightMode)
+
+fun Activity.setImmersiveMode(isLightMode: Boolean = true) =
+    BarUtils.setImmersiveMode(this, isLightMode)

@@ -13,22 +13,22 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * 获取文件的md5
  */
-fun File.md5() = digest("MD5", this)
+fun File.md5(): ByteString = digest("MD5", this)
 
 /**
  * 获取文件的sha1
  */
-fun File.sha1() = digest("SHA-1", this)
+fun File.sha1(): ByteString = digest("SHA-1", this)
 
 /**
  * 获取文件的sha256
  */
-fun File.sha256() = digest("SHA-256", this)
+fun File.sha256(): ByteString = digest("SHA-256", this)
 
 /**
  * 获取文件的sha512
  */
-fun File.sha512() = digest("SHA-512", this)
+fun File.sha512(): ByteString = digest("SHA-512", this)
 
 /**
  * 摘要算法
@@ -52,29 +52,29 @@ fun digest(algorithm: String, file: File): ByteString {
 /**
  * 获取数组的md5
  */
-fun ByteArray.md5() = digest("MD5", this)
+fun ByteArray.md5(): ByteString = digest("MD5", this)
 
 /**
  * 获取数组的sha1
  */
-fun ByteArray.sha1() = digest("SHA-1", this)
+fun ByteArray.sha1(): ByteString = digest("SHA-1", this)
 
 /**
  * 获取数组的sha256
  */
-fun ByteArray.sha256() = digest("SHA-256", this)
+fun ByteArray.sha256(): ByteString = digest("SHA-256", this)
 
 /**
  * 获取数组的sha512
  */
-fun ByteArray.sha512() = digest("SHA-512", this)
+fun ByteArray.sha512(): ByteString = digest("SHA-512", this)
 
 /**
  * 摘要算法
  *
  * @param algorithm 算法：MD5 SHA-1 SHA-256 SHA-512 等
  */
-fun digest(algorithm: String, data: ByteArray) =
+fun digest(algorithm: String, data: ByteArray): ByteString =
     ByteString(MessageDigest.getInstance(algorithm).digest(data))
 
 /**

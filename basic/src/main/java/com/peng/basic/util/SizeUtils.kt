@@ -43,3 +43,8 @@ object SizeUtils {
         return value / scale + 0.5F
     }
 }
+
+fun Context.dp2px(value: Float): Float = SizeUtils.dp2px(this, value)
+fun Context.sp2px(value: Float): Float = SizeUtils.sp2px(this, value)
+fun Context.px2dp(value: Float): Float = SizeUtils.px2dp(this, value)
+fun Context.px2sp(value: Float): Float = SizeUtils.px2sp(this, value)

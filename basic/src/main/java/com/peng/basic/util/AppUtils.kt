@@ -6,6 +6,10 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
+import android.text.TextUtils
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
 
 /**
  * 应用工具类
@@ -114,6 +118,56 @@ object AppUtils {
             }
         }
         return false
+    }
+
+
+    @JvmStatic
+    fun getVersionCode(context: Context): Int {
+        try {
+            val info = context.packageManager.getPackageInfo(context.packageName, 0)
+            return info.versionCode
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+        return 1
+    }
+
+    @JvmStatic
+    fun getVersionName(context: Context): String {
+        try {
+            val info = context.packageManager.getPackageInfo(context.packageName, 0)
+            return info.versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+        return ""
+    }
+
+
+    @JvmStatic
+    fun getProcessName(pid: Int? = null): String {
+        val _pid = pid ?: android.os.Process.myPid()
+        var reader: BufferedReader? = null
+        try {
+            reader = BufferedReader(FileReader("/proc/$_pid/cmdline"))
+            var processName = reader.readLine()
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim { it <= ' ' }
+            }
+            return processName
+        } catch (throwable: Throwable) {
+            throwable.printStackTrace()
+        } finally {
+            try {
+                reader?.close()
+            } catch (exception: IOException) {
+                exception.printStackTrace()
+            }
+
+        }
+        return ""
     }
 
 }

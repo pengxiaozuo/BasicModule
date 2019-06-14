@@ -299,3 +299,14 @@ class ByteString(val data: ByteArray) : Serializable, Comparable<ByteString> {
         }
     }
 }
+
+fun String.encodeToByteString(charset: Charset = Charsets.UTF_8): ByteString = ByteString.encode(this, charset)
+
+fun String.decodeBase64ToByteString(flags: Int = Base64.NO_WRAP): ByteString? = ByteString.decodeBase64(this, flags)
+
+fun String.decodeHexToByteString(): ByteString? = ByteString.decodeHex(this)
+
+fun ByteArray.toByteString(offset: Int = 0, byteCount: Int = size): ByteString =
+    ByteString.toByteString(this, offset, byteCount)
+
+fun InputStream.readByteString(byteCount: Int): ByteString = ByteString.readByteString(this, byteCount)

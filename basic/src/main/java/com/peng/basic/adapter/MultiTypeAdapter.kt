@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peng.basic.base
+package com.peng.basic.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
 /**
- * 多类型适配器
+ * 复杂类型适配器
  */
 class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -48,7 +48,7 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         return if (data == null)
             super.getItemViewType(position)
-        else{
+        else {
             getItemViewTypeByItem(data!![position])
         }
     }
@@ -133,14 +133,16 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inline fun <reified T, VH : RecyclerView.ViewHolder> registerType(
-            vararg itemViewBinders: ItemViewBinder<T, VH>,
-            noinline typeBinder: (Any) -> Int) {
+        vararg itemViewBinders: ItemViewBinder<T, VH>,
+        noinline typeBinder: (Any) -> Int
+    ) {
         registerType(T::class.java, *itemViewBinders, typeBinder = typeBinder)
     }
 
     fun <T, VH : RecyclerView.ViewHolder> registerType(
-            clazz: Class<T>, vararg itemViewBinders: ItemViewBinder<T, VH>,
-            typeBinder: (Any) -> Int) {
+        clazz: Class<T>, vararg itemViewBinders: ItemViewBinder<T, VH>,
+        typeBinder: (Any) -> Int
+    ) {
         removeClassAndHolder(clazz)
         for (itemViewBinder in itemViewBinders) {
             this.clazzs.add(clazz)

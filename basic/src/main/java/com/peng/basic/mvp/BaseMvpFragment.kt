@@ -1,8 +1,7 @@
-package com.peng.basic.base
+package com.peng.basic.mvp
 
 import android.content.Context
-import com.peng.basic.mvp.IPresenter
-import com.peng.basic.mvp.IView
+import com.peng.basic.base.BaseFragment
 import javax.inject.Inject
 
 abstract class BaseMvpFragment<P : IPresenter> : BaseFragment(), IView {

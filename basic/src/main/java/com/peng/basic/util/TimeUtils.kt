@@ -12,8 +12,10 @@ object TimeUtils {
     /**
      * 默认格式化格式
      */
-    @JvmStatic
-    val defaultFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val defaultFormat: SimpleDateFormat
+        get() {
+            return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        }
 
     /**
      * 毫秒格式化为字符串
@@ -114,3 +116,27 @@ object TimeUtils {
         return year % 4 == 0 && year % 100 != 0 || year % 400 == 0
     }
 }
+
+fun Date.format(pattern: String? = null): String =
+    TimeUtils.date2String(
+        this,
+        if (pattern.isNullOrEmpty()) TimeUtils.defaultFormat else SimpleDateFormat(pattern, Locale.getDefault())
+    )
+
+fun Date.format(format: DateFormat?): String =
+    TimeUtils.date2String(
+        this,
+        format ?: TimeUtils.defaultFormat
+    )
+
+fun Long.millisFormat(pattern: String? = null): String =
+    TimeUtils.date2String(
+        Date(this),
+        if (pattern.isNullOrEmpty()) TimeUtils.defaultFormat else SimpleDateFormat(pattern, Locale.getDefault())
+    )
+
+fun Long.millisFormat(format: DateFormat?): String =
+    TimeUtils.date2String(
+        Date(this),
+        format ?: TimeUtils.defaultFormat
+    )

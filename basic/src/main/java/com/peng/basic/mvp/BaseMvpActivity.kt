@@ -1,8 +1,7 @@
-package com.peng.basic.base
+package com.peng.basic.mvp
 
 import android.os.Bundle
-import com.peng.basic.mvp.IPresenter
-import com.peng.basic.mvp.IView
+import com.peng.basic.base.BaseActivity
 import javax.inject.Inject
 
 abstract class BaseMvpActivity<P : IPresenter> : BaseActivity(), IView {

@@ -6,6 +6,7 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
@@ -27,12 +28,12 @@ object LogUtils {
      * 是否缓存到本地
      */
     @JvmField
-    var diskToCache = false
+    var cacheToDisk = false
     /**
      * 是否打印线程信息
      */
     @JvmField
-    var threadInfo = true
+    var showThreadName = true
     /**
      * 缓存到本地时每条日志加入的时间格式
      */
@@ -74,57 +75,114 @@ object LogUtils {
 
     @JvmStatic
     @JvmOverloads
-    fun i(tag: String, msg: String, throwable: Throwable? = null) {
-        println(Log.INFO, tag, msg, throwable)
+    fun i(
+        tag: String, msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        println(Log.INFO, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun i(msg: String, throwable: Throwable? = null) {
-        println(Log.INFO, getTag(), msg, throwable)
+    fun i(
+        msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        i(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun d(tag: String, msg: String, throwable: Throwable? = null) {
-        println(Log.DEBUG, tag, msg, throwable)
+    fun d(
+        tag: String, msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        println(Log.DEBUG, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun d(msg: String, throwable: Throwable? = null) {
-        println(Log.DEBUG, getTag(), msg, throwable)
+    fun d(
+        msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        d(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun w(tag: String, msg: String, throwable: Throwable? = null) {
-        println(Log.WARN, tag, msg, throwable)
+    fun w(
+        tag: String, msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        println(Log.WARN, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun w(msg: String, throwable: Throwable? = null) {
-        println(Log.WARN, getTag(), msg, throwable)
+    fun w(
+        msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        w(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun e(tag: String, msg: String, throwable: Throwable? = null) {
-        println(Log.ERROR, tag, msg, throwable)
+    fun e(
+        tag: String, msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        println(Log.ERROR, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
     @JvmStatic
     @JvmOverloads
-    fun e(msg: String, throwable: Throwable? = null) {
-        println(Log.ERROR, getTag(), msg, throwable)
+    fun e(
+        msg: Any?, throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
+        e(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
     }
 
-    private fun println(level: Int, tag: String, msg: String, throwable: Throwable? = null) {
+    private fun println(
+        level: Int,
+        tag: String,
+        msg: Any?,
+        throwable: Throwable? = null,
+        showThreadName: Boolean = this.showThreadName,
+        cacheToDisk: Boolean = this.cacheToDisk,
+        cacheLevel: Int = this.cacheLevel,
+        dateFormat: DateFormat = this.logDateFormat
+    ) {
         val sb = StringBuilder()
         if (debug) {
-            if (threadInfo) {
-                sb.append("Thread: ${Thread.currentThread().name} :")
+            if (showThreadName) {
+                sb.append("Thread:[${Thread.currentThread().name}] ")
                 sb.append(msg)
                 if (throwable != null) {
                     sb.append("\n ${Log.getStackTraceString(throwable)}")
@@ -133,11 +191,11 @@ object LogUtils {
             formatPrint(level, tag, sb.toString())
         }
 
-        if (diskToCache && level >= cacheLevel) {
+        if (cacheToDisk && level >= cacheLevel) {
             sb.delete(0, sb.length)
             val date = Date()
-            sb.append(logDateFormat.format(date) + " ")
-            if (threadInfo) {
+            sb.append(dateFormat.format(date) + " ")
+            if (showThreadName) {
                 sb.append("Thread: ${Thread.currentThread().name} ")
             }
             sb.append(
@@ -257,6 +315,7 @@ object LogUtils {
     private fun getTag(): String {
 
         val thisClassName = LogUtils::class.java.name
+        val thisKTClassName = LogUtils::class.simpleName
         val stack = Thread.currentThread().stackTrace
         var callName = ""
 
@@ -264,7 +323,7 @@ object LogUtils {
         while (ix < stack.size) {
             val frame = stack[ix]
             val cName = frame.className
-            if (cName == thisClassName) {
+            if (cName == thisClassName || cName == thisKTClassName) {
                 break
             }
             ix++
@@ -272,7 +331,7 @@ object LogUtils {
         while (ix < stack.size) {
             val frame = stack[ix]
             val cName = frame.className
-            if (cName != thisClassName) {
+            if (cName != thisClassName && cName != thisKTClassName) {
                 try {
                     callName = Class.forName(cName).simpleName
                     if (TextUtils.isEmpty(callName)) {
@@ -300,5 +359,108 @@ object LogUtils {
         }
         return callName
     }
+}
 
+fun logi(
+    msg: Any?, tag: String? = null, throwable: Throwable? = null,
+    showThreadName: Boolean? = null,
+    cacheToDisk: Boolean? = null,
+    cacheLevel: Int? = null,
+    dateFormat: DateFormat? = null
+) {
+    if (tag != null) {
+        LogUtils.i(
+            tag, msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    } else {
+        LogUtils.i(
+            msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    }
+}
+
+fun logd(
+    msg: Any?, tag: String? = null, throwable: Throwable? = null,
+    showThreadName: Boolean? = null,
+    cacheToDisk: Boolean? = null,
+    cacheLevel: Int? = null,
+    dateFormat: DateFormat? = null
+) {
+    if (tag != null) {
+        LogUtils.d(
+            tag, msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    } else {
+        LogUtils.d(
+            msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    }
+}
+
+fun logw(
+    msg: Any?, tag: String? = null, throwable: Throwable? = null,
+    showThreadName: Boolean? = null,
+    cacheToDisk: Boolean? = null,
+    cacheLevel: Int? = null,
+    dateFormat: DateFormat? = null
+) {
+    if (tag != null) {
+        LogUtils.w(
+            tag, msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    } else {
+        LogUtils.w(
+            msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    }
+}
+
+fun loge(
+    msg: Any?, tag: String? = null, throwable: Throwable? = null,
+    showThreadName: Boolean? = null,
+    cacheToDisk: Boolean? = null,
+    cacheLevel: Int? = null,
+    dateFormat: DateFormat? = null
+) {
+    if (tag != null) {
+        LogUtils.e(
+            tag, msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    } else {
+        LogUtils.e(
+            msg, throwable,
+            showThreadName ?: LogUtils.showThreadName,
+            cacheToDisk ?: LogUtils.cacheToDisk,
+            cacheLevel ?: LogUtils.cacheLevel,
+            dateFormat ?: LogUtils.logDateFormat
+        )
+    }
 }
