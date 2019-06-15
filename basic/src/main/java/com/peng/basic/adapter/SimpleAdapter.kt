@@ -1,45 +1,44 @@
 package com.peng.basic.adapter
 
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
+import com.peng.basic.base.BaseAdapter
 import com.peng.basic.util.click
 
 /**
  * 简单适配器
  */
-abstract class SimpleAdapter<T>(var data: List<T>, val layout: Int) :
-    RecyclerView.Adapter<SimpleViewHolder>() {
-
-    protected val TAG = this.javaClass.simpleName
+abstract class SimpleAdapter<T> :
+    BaseAdapter<T, SimpleViewHolder>() {
 
     var onItemClickListener: ((SimpleViewHolder, Int) -> Unit)? = null
     var onItemLongClickListener: ((SimpleViewHolder, Int) -> Boolean)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        val holder = SimpleViewHolder(view)
-        if (view.isClickable)
-            view.click {
+    override fun onCreateViewHolder(itemView: View, viewType: Int): SimpleViewHolder {
+        val holder = SimpleViewHolder(itemView)
+        if (itemView.isClickable)
+            itemView.click {
                 itemClick(holder, holder.adapterPosition)
             }
-        if (view.isLongClickable)
-            view.setOnLongClickListener {
+        if (itemView.isLongClickable)
+            itemView.setOnLongClickListener {
                 return@setOnLongClickListener itemLongClick(
                     holder, holder.adapterPosition
                 )
             }
 
-        onCreatedViewHolder(holder)
+        onViewHolderCreated(holder)
         return holder
     }
 
-    open fun onCreatedViewHolder(viewHolder: SimpleViewHolder) {}
+    open fun onViewHolderCreated(holder: SimpleViewHolder) {}
 
     private fun itemClick(holder: SimpleViewHolder, position: Int) {
-        onItemClickListener(holder, position)
-        onItemClickListener?.let {
-            it(holder, position)
+        if (onItemClickListener == null) {
+            onItemClickListener(holder, position)
+        } else {
+            onItemClickListener?.let {
+                it(holder, position)
+            }
         }
     }
 
@@ -57,10 +56,6 @@ abstract class SimpleAdapter<T>(var data: List<T>, val layout: Int) :
 
     open fun onItemLongClickListener(holder: SimpleViewHolder, position: Int): Boolean {
         return false
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
     }
 
 }

@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.peng.basic.lifecycle.DefaultLifecycle
+import com.peng.basic.lifecycle.ILifecycle
 import com.peng.basic.util.ActivityCacheUtils
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.ToastUtils
@@ -20,11 +22,10 @@ import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 
-abstract class BaseActivity : AppCompatActivity(), CoroutineScope by CoroutineScope(Dispatchers.Default) {
+abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycle() {
 
     protected val TAG = this.javaClass.simpleName
     private var contextWR: WeakReference<Activity>? = null
-    protected var compositeDisposable: CompositeDisposable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,33 +77,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by CoroutineSc
         contextWR?.let {
             ActivityCacheUtils.removeTask(it)
         }
-        clearDisposable()
-        cancel()
+        clear()
         super.onDestroy()
     }
 
-
-    fun Disposable.add() {
-        addDisposable(this)
-    }
-
-    fun Disposable.remove() {
-        unDisposable(this)
-    }
-
-
-    fun addDisposable(d: Disposable) {
-        if (compositeDisposable == null) {
-            compositeDisposable = CompositeDisposable()
-        }
-        compositeDisposable?.addAll(d)
-    }
-
-    fun unDisposable(d: Disposable) {
-        compositeDisposable?.remove(d)
-    }
-
-    fun clearDisposable() {
-        compositeDisposable?.clear()
-    }
 }

@@ -1,16 +1,16 @@
 package com.peng.basic.mvp
 
+import com.peng.basic.lifecycle.DefaultLifecycle
+import com.peng.basic.lifecycle.ILifecycle
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 
-open class BasePresenter<V : IView> : IPresenter, CoroutineScope by CoroutineScope(Dispatchers.Default) {
+open class BasePresenter<V : IView> : IPresenter, ILifecycle by DefaultLifecycle() {
 
     protected val TAG = this.javaClass.simpleName
-
-    protected var compositeDisposable: CompositeDisposable? = null
 
     protected var view: V? = null
 
@@ -20,30 +20,6 @@ open class BasePresenter<V : IView> : IPresenter, CoroutineScope by CoroutineSco
 
     override fun dropView() {
         this.view = null
-        clearDisposable()
-        cancel()
-    }
-
-    fun Disposable.add() {
-        addDisposable(this)
-    }
-
-    fun Disposable.remove() {
-        unDisposable(this)
-    }
-
-    fun addDisposable(d: Disposable) {
-        if (compositeDisposable == null) {
-            compositeDisposable = CompositeDisposable()
-        }
-        compositeDisposable?.addAll(d)
-    }
-
-    fun unDisposable(d: Disposable) {
-        compositeDisposable?.remove(d)
-    }
-
-    fun clearDisposable() {
-        compositeDisposable?.clear()
+        clear()
     }
 }

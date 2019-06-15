@@ -4,12 +4,12 @@ import com.peng.basic.mvp.BasePresenter
 import com.peng.basic.mvp.IPresenter
 import com.peng.basic.mvp.IView
 
-interface MVPConceract {
+interface MVPContract {
 
     interface View : IView {
-        fun getUserSuccess()
+        fun getUserSuccess(user: String)
 
-        fun getUserError()
+        fun getUserError(msg: String?)
     }
 
     abstract class Presenter : BasePresenter<View>() {

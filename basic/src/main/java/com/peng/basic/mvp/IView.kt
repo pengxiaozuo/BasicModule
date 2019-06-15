@@ -9,7 +9,7 @@ interface IView {
     /**
      * 显示加载提示
      */
-    fun showLoading()
+    fun showLoading(msg: String? = null)
 
     /**
      * 显示数据为空时的提示

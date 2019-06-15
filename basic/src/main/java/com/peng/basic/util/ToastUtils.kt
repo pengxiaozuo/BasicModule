@@ -3,6 +3,7 @@ package com.peng.basic.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.StringRes
+import android.support.v4.app.Fragment
 import android.widget.Toast
 
 /**
@@ -31,18 +32,51 @@ object ToastUtils {
     }
 }
 
-fun Context.toast(text: String) {
-    ToastUtils.showToast(this, text)
+fun Context.toast(text: String?) {
+    text?.let {
+        ToastUtils.showToast(this, text)
+    }
 }
 
 fun Context.toast(@StringRes resId: Int, vararg args: Any?) {
     ToastUtils.showToast(this, getString(resId, args))
 }
 
-fun Context.toastLong(text: String) {
-    ToastUtils.showToast(this, text, Toast.LENGTH_LONG)
+fun Context.toastLong(text: String?) {
+    text?.let {
+        ToastUtils.showToast(this, text, Toast.LENGTH_LONG)
+    }
 }
 
 fun Context.toastLong(@StringRes resId: Int, vararg args: Any?) {
     ToastUtils.showToast(this, getString(resId, args), Toast.LENGTH_LONG)
+}
+
+
+fun Fragment.toast(text: String?) {
+    text?.let {
+        activity?.let {
+            ToastUtils.showToast(it, text)
+        }
+    }
+}
+
+fun Fragment.toast(@StringRes resId: Int, vararg args: Any?) {
+    activity?.let {
+        ToastUtils.showToast(it, getString(resId, args))
+    }
+}
+
+fun Fragment.toastLong(text: String?) {
+    text?.let {
+        activity?.let {
+            ToastUtils.showToast(it, text, Toast.LENGTH_LONG)
+        }
+    }
+}
+
+fun Fragment.toastLong(@StringRes resId: Int, vararg args: Any?) {
+    activity?.let {
+        ToastUtils.showToast(it, getString(resId, args), Toast.LENGTH_LONG)
+    }
 }

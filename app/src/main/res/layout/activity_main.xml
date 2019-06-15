@@ -24,6 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/btn_mvp"
+            android:text="MVP"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
         <FrameLayout
             android:id="@+id/f_content"

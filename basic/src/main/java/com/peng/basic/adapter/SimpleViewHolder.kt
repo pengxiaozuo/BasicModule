@@ -1,5 +1,6 @@
 package com.peng.basic.adapter
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
@@ -11,6 +12,7 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
 
     private val views: SparseArray<View> = SparseArray()
 
+    val context: Context = contentView.context
     var any: Any? = null
 
     @Suppress("UNCHECKED_CAST")

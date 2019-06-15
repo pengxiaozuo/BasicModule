@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-abstract class ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
+interface ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
 
-    lateinit var adapter: MultiTypeAdapter
+    var adapter: MultiTypeAdapter?
 
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH
 

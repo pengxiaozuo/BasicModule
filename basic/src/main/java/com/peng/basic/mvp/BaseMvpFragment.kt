@@ -23,4 +23,26 @@ abstract class BaseMvpFragment<P : IPresenter> : BaseFragment(), IView {
     }
 
     abstract fun inject()
+
+    override fun hideLoading() {
+
+    }
+
+    override fun showLoading(msg: String?) {
+
+    }
+    override fun showEmptyLayout() {
+    }
+
+    override fun showErrorLayout() {
+    }
+
+    override fun onEmptyRetry() {
+    }
+
+    override fun onErrorRetry() {
+    }
+
+    override fun hideEmptyAndErrorLayout() {
+    }
 }
