@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.peng.basic.widget.banner.BannerView
         android:id="@+id/banner"
@@ -13,20 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-        <!--<com.peng.basic.widget.banner.DefaultBannerIndicator-->
-            <!--android:id="@+id/basic_banner_indicator"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_gravity="bottom|left"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_height="wrap_content"/>-->
-
-        <com.peng.basicmodule.OtherBannerIndicator
+        <com.peng.basic.widget.banner.DefaultBannerIndicator
             android:id="@+id/basic_banner_indicator"
-            android:layout_gravity="bottom|left"
             android:layout_width="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"/>
-
     </com.peng.basic.widget.banner.BannerView>
 
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

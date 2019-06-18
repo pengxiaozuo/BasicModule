@@ -3,15 +3,11 @@ package com.peng.basic.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.peng.basic.util.LogUtils
-import com.peng.basic.util.logd
 
 /**
  * 复杂类型适配器
  */
-class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    protected val TAG = this.javaClass.simpleName
+class MultiTypeAdapter(val dataFrom: DataFrom = DataFrom.Data) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data: List<Any>? = null
     private val itemBinders: ArrayList<ItemViewBinder<*, *>> = ArrayList()
@@ -22,19 +18,43 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        getItemViewBinderByViewHolder(holder).onBinderViewHolder(holder, data!!, position)
+        if (dataFrom == DataFrom.Data) {
+            getItemViewBinderByViewHolder(holder).onBinderViewHolder(holder, data!!, position)
+        } else {
+            val itemViewBinder = getItemViewBinderByViewHolder(holder)
+            itemViewBinder.onBinderViewHolder(
+                holder,
+                itemViewBinder.getDataFromItemViewBinder()!!,
+                getItemViewBinderPosition(position)
+            )
+        }
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return when (dataFrom) {
+            DataFrom.Data -> data?.size ?: 0
+            DataFrom.ItemViewBinder -> {
+                var size = 0
+                itemBinders.forEach {
+                    size += it.getDataFromItemViewBinderItemCount()
+                }
+                size
+            }
+        }
     }
+
 
     override fun getItemViewType(position: Int): Int {
 
-        return if (data == null)
-            super.getItemViewType(position)
-        else {
-            getItemViewTypeByItem(data!![position])
+        if (dataFrom == DataFrom.Data) {
+
+            return if (data == null)
+                super.getItemViewType(position)
+            else {
+                getItemViewTypeByItem(data!![position])
+            }
+        } else {
+            return getItemViewTypeByPosition(position)
         }
     }
 
@@ -71,6 +91,53 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         getItemViewBinderByViewHolder(holder).onViewDetachedFromWindow(holder)
     }
 
+    private fun getItemViewTypeByPosition(position: Int): Int {
+        val itemViewBinder = getItemViewBinderByPosition(position)
+        val index = itemBinders.indexOf(itemViewBinder)
+
+        if (index < 0) {
+            throw RuntimeException("no found $position on register list")
+        }
+        return index
+    }
+
+    private fun getItemViewBinderPosition(position: Int): Int {
+        var preEndPosition = -1
+        var itemViewBinderPosition = -1
+        for (itemBinder in itemBinders) {
+            val size = itemBinder.getDataFromItemViewBinderItemCount()
+            if (position in (preEndPosition + 1)..(preEndPosition + size)) {
+                itemViewBinderPosition = position - preEndPosition - 1
+                break
+            }
+            preEndPosition += size
+        }
+
+        return itemViewBinderPosition
+    }
+
+    private fun getItemViewBinderByPosition(position: Int): ItemViewBinder<*, *> {
+        var preEndPosition = -1
+        var itemViewBinder: ItemViewBinder<*, *>? = null
+        for (itemBinder in itemBinders) {
+            val size = itemBinder.getDataFromItemViewBinderItemCount()
+            if (position in (preEndPosition + 1)..(preEndPosition + size)) {
+                itemViewBinder = itemBinder
+                break
+            }
+            preEndPosition += size
+        }
+
+        if (itemViewBinder == null) {
+            throw RuntimeException("get itemViewBinder by position is null")
+        }
+        return itemViewBinder!!
+    }
+
+    fun getItem(position: Int): Any? {
+        if (dataFrom == DataFrom.Data) return data?.get(position)
+        else return getItemViewBinderByPosition(position).getDataFromItemViewBinder()?.get(getItemViewBinderPosition(position))
+    }
 
     private fun getItemViewTypeByItem(any: Any): Int {
 
@@ -103,4 +170,7 @@ class MultiTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         itemBinders.remove(itemViewBinder)
     }
 
+    enum class DataFrom {
+        Data, ItemViewBinder
+    }
 }

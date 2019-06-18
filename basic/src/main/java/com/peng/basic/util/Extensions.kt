@@ -14,13 +14,15 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 fun View.click(onNext: (Unit) -> Unit): Disposable =
-    clicks().throttleFirst(1, TimeUnit.SECONDS).toMain().subscribe(onNext)
+    clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext)
 
 
 fun View.click(onNext: (Unit) -> Unit, onError: (Throwable) -> Unit): Disposable =
-    clicks().throttleFirst(1, TimeUnit.SECONDS).toMain().subscribe(onNext, onError)
+    clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext, onError)
 
 fun View.showHide(show: Boolean) {
     visibility = if (show) View.VISIBLE else View.GONE
@@ -43,21 +45,28 @@ fun <T> Single<T>.fromIo(): Single<T> = subscribeOn(Schedulers.io())
 fun <T> Single<T>.toMain(): Single<T> = observeOn(AndroidSchedulers.mainThread())
 
 fun <T> CoroutineScope.asyncUi(
+    context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> T
-): Deferred<T> = async(Dispatchers.Main, start, block)
+): Deferred<T> = async(context + Dispatchers.Main, start, block)
 
 fun <T> CoroutineScope.asyncIo(
+    context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> T
-): Deferred<T> = async(Dispatchers.IO, start, block)
+): Deferred<T> = async(context + Dispatchers.IO, start, block)
 
 fun CoroutineScope.launchUi(
+    context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> Unit
-): Job = launch(Dispatchers.Main, start, block)
+): Job = launch(context + Dispatchers.Main, start, block)
 
 fun CoroutineScope.launchIo(
+    context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> Unit
-): Job = launch(Dispatchers.IO, start, block)
+): Job = launch(context + Dispatchers.IO, start, block)
+
+fun CoroutineScope.job() = coroutineContext[Job]
+fun CoroutineScope.coroutineName() = coroutineContext[CoroutineName]

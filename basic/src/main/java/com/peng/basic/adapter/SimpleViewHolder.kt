@@ -14,6 +14,7 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
 
     val context: Context = contentView.context
     var any: Any? = null
+    private val map by lazy { mutableMapOf<Any, Any>() }
 
     @Suppress("UNCHECKED_CAST")
     fun <T : View> getView(id: Int): T? {

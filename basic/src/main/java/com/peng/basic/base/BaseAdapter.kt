@@ -13,7 +13,7 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * [RecyclerView.Adapter]适配器封装，或多类型[ItemViewBinder]封装
- * 当[BaseAdapter]当做[RecyclerView.Adapter]使用时data生效
+ * 当[BaseAdapter]当做[RecyclerView.Adapter]使用时[data]生效
  * 如果[BaseAdapter]做[ItemViewBinder]时data为[MultiTypeAdapter]中的数据
  */
 abstract class BaseAdapter<T, VM : RecyclerView.ViewHolder>(var data: List<T> = listOf<T>()) :
@@ -70,6 +70,17 @@ abstract class BaseAdapter<T, VM : RecyclerView.ViewHolder>(var data: List<T> = 
     @LayoutRes
     abstract fun getLayoutId(): Int
 
+    override fun getDataFromItemViewBinder(): List<T>? {
+        return data
+    }
+
+    fun getItem(position: Int): T {
+        if (adapter == null) {
+            return data[position]
+        } else {
+            return adapter!!.getItem(position) as T
+        }
+    }
 
     override fun onBinder(any: Any): Boolean {
         return try {

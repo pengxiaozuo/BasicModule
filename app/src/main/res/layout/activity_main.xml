@@ -18,6 +18,13 @@
             android:layout_height="wrap_content"/>
 
         <Button
+            android:id="@+id/btn_data_from_multi_type"
+            android:text="DataFromMultiType"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
             android:id="@+id/btn_banner"
             android:text="Banner"
             android:textAllCaps="false"

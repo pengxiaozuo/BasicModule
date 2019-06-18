@@ -37,6 +37,7 @@ class MVPActivity : BaseMvpActivity<MVPPresenter>(), MVPContract.View {
     }
 
     override fun getUserError(msg: String?) {
+        tv_get.text = msg?:"net error"
         toast(msg)
     }
 

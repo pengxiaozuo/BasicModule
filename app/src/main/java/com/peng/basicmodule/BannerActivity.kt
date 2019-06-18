@@ -45,20 +45,13 @@ class BannerActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        data.add(
-            "http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg"
-        )
-        data.add(
-            "http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg"
-        )
-        adapter.notifyDataSetChanged()
-        data.add(
-            "http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg"
-        )
-        data.add(
-            "http://up.enterdesk.com/edpic_source/60/e8/be/60e8bee2be7ee1cb65c44d68bcb693e0.jpg"
-        )
-        adapter.notifyDataSetChanged()
+        if (data.isEmpty()) {
+            data.add("http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg")
+            data.add("http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg")
+            data.add("https://p.ssl.qhimg.com/dmfd/400_300_/t010f807b18d13c16a9.jpg")
+            data.add("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg")
+            adapter.notifyDataSetChanged()
+        }
 
     }
 

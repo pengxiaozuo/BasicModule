@@ -7,10 +7,11 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.peng.basic.R
+import com.peng.basic.util.logd
 
 
 class BannerView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     /**
@@ -52,6 +53,7 @@ class BannerView @JvmOverloads constructor(
     }
 
     private fun addListener() {
+        viewPager.removeOnPageChangeListener(onPageChangeListener)
         viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
@@ -83,41 +85,51 @@ class BannerView @JvmOverloads constructor(
     }
 
     private fun startPlay() {
-        if (views.size > 0) {
-            mHandler.sendEmptyMessageDelayed(1, period)
+        if (views.isNotEmpty() && autoPlay) {
+            stopPlay()
+            postDelayed(autoPlayTask, period)
         }
     }
 
     private fun stopPlay() {
-        mHandler.removeCallbacksAndMessages(null)
+        removeCallbacks(autoPlayTask)
     }
 
+    private fun switchToNextPage() {
+        var nextItem = viewPager.currentItem + 1
+        if (nextItem >= pagerAdapter.count) {
+            nextItem = 0
+            viewPager.setCurrentItem(nextItem, false)
+            startPlay()
+        } else {
+            viewPager.setCurrentItem(nextItem, true)
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        startPlay()
+    }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         stopPlay()
-        viewPager.removeOnPageChangeListener(onPageChangeListener)
-        viewPager.adapter = null
     }
 
-    private val mHandler = Handler(Handler.Callback {
-        if (autoPlay) {
-            var nextItem = viewPager.currentItem + 1
-            if (nextItem >= pagerAdapter.count) {
-                nextItem = 0
-                viewPager.setCurrentItem(nextItem, false)
-                startPlay()
-            } else {
-                viewPager.setCurrentItem(nextItem, true)
-            }
-        }
-        true
-    })
 
+    private val autoPlayTask = Runnable {
+        if (autoPlay) {
+            switchToNextPage()
+            startPlay()
+        }
+    }
 
     private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) {
             when (state) {
+                0 -> {
+                    changeLoopPage()
+                }
                 1 -> {
                     if (autoPlay) stopPlay()
 
@@ -131,23 +143,6 @@ class BannerView @JvmOverloads constructor(
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             val p = pagerAdapter.getRealPosition(position)
             indicator?.onOffset(p, positionOffset, positionOffsetPixels)
-            //移形换位
-            postDelayed({
-                if (loop && views.size > 0 && positionOffset == 0f) {
-                    when (position) {
-                        0 -> {
-                            //第一张展示的是最后一张，需要跳转到真正的最后一张 lastIndex - 1
-                            val index = views.lastIndex - 1
-                            viewPager.setCurrentItem(index, false)
-                        }
-                        views.lastIndex -> {
-                            //最后一张展示的是第一张，需要跳转到真正的第一张index = 1
-                            val index = 1
-                            viewPager.setCurrentItem(index, false)
-                        }
-                    }
-                }
-            }, 100)
         }
 
         override fun onPageSelected(position: Int) {
@@ -157,13 +152,45 @@ class BannerView @JvmOverloads constructor(
         }
     }
 
+    fun getCurrentItem() = pagerAdapter.getRealPosition(viewPager.currentItem)
+
+    fun setCurrentItem(item: Int, smoothScroll: Boolean) {
+        if (views.size > 0) {
+            if (autoPlay) {
+                startPlay()
+            }
+            if (loop) {
+                viewPager.setCurrentItem(item + 1, smoothScroll)
+            } else {
+                viewPager.setCurrentItem(item, smoothScroll)
+            }
+
+        }
+    }
+
+    private fun changeLoopPage() {
+        val position = viewPager.currentItem
+        if (loop && views.size > 0) {
+            when (position) {
+                0 -> {
+                    //第一张展示的是最后一张，需要跳转到真正的最后一张 lastIndex - 1
+                    val index = views.lastIndex - 1
+                    viewPager.setCurrentItem(index, false)
+                }
+                views.lastIndex -> {
+                    //最后一张展示的是第一张，需要跳转到真正的第一张index = 1
+                    val index = 1
+                    viewPager.setCurrentItem(index, false)
+                }
+            }
+        }
+    }
+
 
     private fun <T> onDataChange(data: List<T>?) {
         adapter?.let { ad ->
             ad as Adapter<T>
-            if (autoPlay) {
-                stopPlay()
-            }
+            stopPlay()
             viewPager.removeOnPageChangeListener(onPageChangeListener)
             //清空view
             views.clear()
@@ -178,6 +205,7 @@ class BannerView @JvmOverloads constructor(
                     val endData = data[data.lastIndex]
                     views.add(0, ad.onCreateView(this, endData))
                     views.add(ad.onCreateView(this, firstData))
+
                 }
             }
 

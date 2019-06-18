@@ -11,12 +11,9 @@ class MVPPresenter
     var controlGetUserResultSuccess = true
 
     override fun getUser() {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            exception.printStackTrace()
-        }
-        launch(handler + Dispatchers.Main) {
+        launch {
             try {
-                val deferred = asyncIo(start = CoroutineStart.LAZY) {
+                val deferred = asyncIo(SupervisorJob(job())) {
                     logd("获取数据中....")
                     delay(2000)
                     if (!controlGetUserResultSuccess) throw IOException()

@@ -76,8 +76,6 @@ class DefaultBannerIndicator : LinearLayout, BannerIndicator {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        normalDoBmp.recycle()
-        selectedDoBmp.recycle()
     }
 
 }

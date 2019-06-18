@@ -1,9 +1,13 @@
 package com.peng.basic.lifecycle
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
 interface ILifecycle : CoroutineScope {
@@ -23,7 +27,7 @@ interface ILifecycle : CoroutineScope {
     fun clear()
 }
 
-class DefaultLifecycle : ILifecycle, CoroutineScope by CoroutineScope(Dispatchers.Default) {
+class DefaultLifecycle : ILifecycle, CoroutineScope by MainScope(), LifecycleObserver {
     private var compositeDisposable: CompositeDisposable? = null
 
     override fun addDisposable(d: Disposable) {
@@ -37,10 +41,19 @@ class DefaultLifecycle : ILifecycle, CoroutineScope by CoroutineScope(Dispatcher
         compositeDisposable?.remove(d)
     }
 
+
     override fun clear() {
-        compositeDisposable?.clear()
-        cancel()
+        try {
+            compositeDisposable?.clear()
+            cancel()
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onLifecycleOwnerDestroy() {
+        clear()
+    }
 }

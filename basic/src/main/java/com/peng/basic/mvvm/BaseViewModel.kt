@@ -8,7 +8,7 @@ abstract class BaseViewModel : ViewModel(), ILifecycle by DefaultLifecycle() {
 
 
     override fun onCleared() {
-        clear()
         super.onCleared()
+        clear()
     }
 }

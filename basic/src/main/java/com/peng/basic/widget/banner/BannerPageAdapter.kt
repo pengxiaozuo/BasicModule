@@ -3,6 +3,7 @@ package com.peng.basic.widget.banner
 import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import com.peng.basic.util.logd
 
 class BannerPageAdapter(private var views: List<View>, val loop: Boolean) : PagerAdapter() {
 
@@ -29,8 +30,10 @@ class BannerPageAdapter(private var views: List<View>, val loop: Boolean) : Page
 
 
     override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
-        val view = views[position]
-        container.removeView(view)
+        if (loop && position != 0) {
+            val view = views[position]
+            container.removeView(view)
+        }
     }
 
 

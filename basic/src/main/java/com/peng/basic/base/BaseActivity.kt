@@ -43,9 +43,9 @@ abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycl
     }
 
     /**
-     * 初始化数据
+     * 初始化Intent中存储的数据
      */
-    abstract fun initData()
+    open fun initParams() {}
 
     /**
      * 初始化视图
@@ -53,15 +53,15 @@ abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycl
     abstract fun initView(view: View, savedInstanceState: Bundle?)
 
     /**
+     * 初始化数据
+     */
+    abstract fun initData()
+
+    /**
      * 布局layout id
      */
     @LayoutRes
     abstract fun getLayoutId(): Int
-
-    /**
-     * 初始化Intent中存储的数据
-     */
-    open fun initParams() {}
 
 
     @JvmOverloads

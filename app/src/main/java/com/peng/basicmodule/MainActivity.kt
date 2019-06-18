@@ -35,6 +35,10 @@ class MainActivity : BaseActivity() {
             startActivity(MVPActivity::class.java)
         }
 
+        btn_data_from_multi_type.click {
+            startActivity(DataFromMultiTypeActivity::class.java)
+        }
+
         btn_input.click {
             if (KeyboardUtils.isSoftInputVisible(this)) {
                 KeyboardUtils.hideSoftInput(this)
