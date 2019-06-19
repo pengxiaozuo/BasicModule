@@ -37,7 +37,7 @@ interface ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
 
     open fun getDataFromItemViewBinder(): List<T>? = null
 
-    open fun getDataFromItemViewBinderItemCount() = getDataFromItemViewBinder()?.size?:0
+    open fun getDataFromItemViewBinderItemCount() = getDataFromItemViewBinder()?.size ?: 0
 
     abstract fun onBinder(any: Any): Boolean
 

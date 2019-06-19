@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.peng.basicmodule.data.User"/>
+
+        <variable
+            name="viewModel"
+            type="com.peng.basicmodule.mvvm.UserViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/et_username"
+            android:text="@={viewModel.input}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            app:layout_constraintTop_toBottomOf="@+id/et_username"
+            android:id="@+id/btn_get"
+            android:text="get user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/btn_get"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:url="@{user.avatarUrl}"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@+id/iv_avatar"
+            android:text="@{user.name}"
+            android:padding="16dp"
+            android:gravity="center"
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

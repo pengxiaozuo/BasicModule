@@ -7,26 +7,16 @@ import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
 import com.peng.basic.util.ActivityCacheUtils
-import com.peng.basic.util.KeyboardUtils
-import com.peng.basic.util.ToastUtils
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import java.lang.ref.WeakReference
-import kotlin.coroutines.CoroutineContext
 
 
 abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycle() {
 
     protected val TAG = this.javaClass.simpleName
     private var contextWR: WeakReference<Activity>? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

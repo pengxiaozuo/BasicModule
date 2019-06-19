@@ -10,19 +10,19 @@ import com.peng.basic.util.click
 abstract class SimpleAdapter<T> :
     BaseAdapter<T, SimpleViewHolder>() {
 
-    var onItemClickListener: ((SimpleViewHolder, Int) -> Unit)? = null
-    var onItemLongClickListener: ((SimpleViewHolder, Int) -> Boolean)? = null
+    var onItemClickListener: ((SimpleViewHolder, T) -> Unit)? = null
+    var onItemLongClickListener: ((SimpleViewHolder, T) -> Boolean)? = null
 
     override fun onCreateViewHolder(itemView: View, viewType: Int): SimpleViewHolder {
         val holder = SimpleViewHolder(itemView)
         if (itemView.isClickable)
             itemView.click {
-                itemClick(holder, holder.adapterPosition)
+                itemClick(holder, getItem(holder.adapterPosition))
             }
         if (itemView.isLongClickable)
             itemView.setOnLongClickListener {
                 return@setOnLongClickListener itemLongClick(
-                    holder, holder.adapterPosition
+                    holder, getItem(holder.adapterPosition)
                 )
             }
 
@@ -32,29 +32,29 @@ abstract class SimpleAdapter<T> :
 
     open fun onViewHolderCreated(holder: SimpleViewHolder) {}
 
-    private fun itemClick(holder: SimpleViewHolder, position: Int) {
+    private fun itemClick(holder: SimpleViewHolder, item: T) {
         if (onItemClickListener == null) {
-            onItemClickListener(holder, position)
+            onItemClickListener(holder, item)
         } else {
             onItemClickListener?.let {
-                it(holder, position)
+                it(holder, item)
             }
         }
     }
 
-    open fun onItemClickListener(holder: SimpleViewHolder, position: Int) {}
+    open fun onItemClickListener(holder: SimpleViewHolder, item: T) {}
 
-    private fun itemLongClick(holder: SimpleViewHolder, position: Int): Boolean {
+    private fun itemLongClick(holder: SimpleViewHolder, item: T): Boolean {
         var result = false
         onItemLongClickListener?.let {
-            result = it(holder, position)
+            result = it(holder, item)
         }
         if (result) return result
-        result = onItemLongClickListener(holder, position)
+        result = onItemLongClickListener(holder, item)
         return result
     }
 
-    open fun onItemLongClickListener(holder: SimpleViewHolder, position: Int): Boolean {
+    open fun onItemLongClickListener(holder: SimpleViewHolder, item: T): Boolean {
         return false
     }
 

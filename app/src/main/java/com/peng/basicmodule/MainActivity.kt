@@ -6,6 +6,7 @@ import com.peng.basic.base.BaseActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basicmodule.mvp.MVPActivity
+import com.peng.basicmodule.mvvm.MvvmActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -37,6 +38,9 @@ class MainActivity : BaseActivity() {
 
         btn_data_from_multi_type.click {
             startActivity(DataFromMultiTypeActivity::class.java)
+        }
+        btn_mvvm.click {
+            startActivity(MvvmActivity::class.java)
         }
 
         btn_input.click {

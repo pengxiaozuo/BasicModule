@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.peng.basic.adapter.ItemViewBinder
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.util.TypeUtils
-import java.lang.Exception
 import java.lang.reflect.ParameterizedType
 
 /**

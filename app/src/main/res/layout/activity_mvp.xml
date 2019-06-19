@@ -5,11 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <EditText
+        android:id="@+id/et_username"
+        android:hint="username"
         android:padding="16dp"
-        android:id="@+id/tv_get"
-        android:text="hello"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <Button
+        android:padding="16dp"
+        android:id="@+id/btn_get"
+        android:text="get user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/tv_result"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

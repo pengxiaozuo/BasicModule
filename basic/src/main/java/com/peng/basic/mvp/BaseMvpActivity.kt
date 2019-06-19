@@ -29,6 +29,7 @@ abstract class BaseMvpActivity<P : IPresenter> : BaseActivity(), IView {
     override fun showLoading(msg: String?) {
 
     }
+
     override fun showEmptyLayout() {
     }
 

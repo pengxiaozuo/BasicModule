@@ -33,6 +33,7 @@
         <activity android:name=".BannerActivity"/>
         <activity android:name=".mvp.MVPActivity"/>
         <activity android:name=".DataFromMultiTypeActivity"/>
+        <activity android:name=".mvvm.MvvmActivity"/>
     </application>
 
 </manifest>

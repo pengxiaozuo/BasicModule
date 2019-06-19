@@ -131,12 +131,14 @@ class MultiTypeAdapter(val dataFrom: DataFrom = DataFrom.Data) : RecyclerView.Ad
         if (itemViewBinder == null) {
             throw RuntimeException("get itemViewBinder by position is null")
         }
-        return itemViewBinder!!
+        return itemViewBinder
     }
 
     fun getItem(position: Int): Any? {
-        if (dataFrom == DataFrom.Data) return data?.get(position)
-        else return getItemViewBinderByPosition(position).getDataFromItemViewBinder()?.get(getItemViewBinderPosition(position))
+        return if (dataFrom == DataFrom.Data) data?.get(position)
+        else getItemViewBinderByPosition(position)
+            .getDataFromItemViewBinder()
+            ?.get(getItemViewBinderPosition(position))
     }
 
     private fun getItemViewTypeByItem(any: Any): Int {
@@ -144,7 +146,7 @@ class MultiTypeAdapter(val dataFrom: DataFrom = DataFrom.Data) : RecyclerView.Ad
         val itemViewBinder = itemBinders.firstOrNull {
             it.onBinder(any)
         }
-        var index = itemBinders.indexOf(itemViewBinder)
+        val index = itemBinders.indexOf(itemViewBinder)
 
         if (index < 0) {
             throw RuntimeException("no found ${any::class.java.simpleName} on register list")

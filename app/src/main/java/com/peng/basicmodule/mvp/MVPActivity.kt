@@ -4,40 +4,44 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import com.peng.basic.mvp.BaseMvpActivity
+import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basic.util.toast
+import com.peng.basicmodule.MainApp
 import com.peng.basicmodule.R
-import com.peng.basicmodule.di.DaggerMVPComponent
+import com.peng.basicmodule.data.User
+import com.peng.basicmodule.di.DaggerActivityComponent
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_mvp.*
 
-class MVPActivity : BaseMvpActivity<MVPPresenter>(), MVPContract.View {
+class MVPActivity : BaseMvpActivity<MVPContract.Presenter>(), MVPContract.View {
 
     private var dialog: ProgressDialog? = null
     override fun inject() {
-        DaggerMVPComponent.create().inject(this)
+        DaggerActivityComponent.builder().appComponent((application as MainApp).appComponent).build().inject(this)
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_mvp
     }
 
-    override fun initParams() {
-        super.initParams()
-    }
-
     override fun initView(view: View, savedInstanceState: Bundle?) {
         dialog = ProgressDialog(this)
-        tv_get.click {
-            presenter?.getUser()
+        btn_get.click {
+            KeyboardUtils.hideSoftInput(this, btn_get)
+            btn_get.clearFocus()
+            presenter?.getUser(et_username.text.toString())
         }
     }
 
-    override fun getUserSuccess(user: String) {
-        tv_get.text = user
+    override fun getUserSuccess(user: User) {
+        tv_result.text = user.name
+        Picasso.get().load(user.avatarUrl).into(iv_avatar)
     }
 
     override fun getUserError(msg: String?) {
-        tv_get.text = msg?:"net error"
+        tv_result.text = msg ?: "net error"
+        iv_avatar.setImageDrawable(null)
         toast(msg)
     }
 
@@ -48,17 +52,17 @@ class MVPActivity : BaseMvpActivity<MVPPresenter>(), MVPContract.View {
         super.showLoading(msg)
         if (!isFinishing) {
 
-            if (dialog?.isShowing == true){
+            if (dialog?.isShowing == true) {
                 dialog?.dismiss()
             }
-            dialog = ProgressDialog.show(this,"",msg?:"")
+            dialog = ProgressDialog.show(this, "", msg ?: "")
 
         }
     }
 
     override fun hideLoading() {
         super.hideLoading()
-        if (dialog?.isShowing == true){
+        if (dialog?.isShowing == true) {
             dialog?.dismiss()
         }
     }

@@ -29,6 +29,10 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -39,13 +43,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.peng.httputils:httputils:0.2.4'
-    implementation ('com.squareup.picasso:picasso:2.71828'){
-        exclude group:'com.android.support'
+    implementation("com.peng.httputils:httputils:0.3.0")
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation('com.squareup.picasso:picasso:2.71828') {
+        exclude group: 'com.android.support'
     }
 
-    implementation 'com.google.dagger:dagger:2.23.1'
-    kapt 'com.google.dagger:dagger-compiler:2.23.1'
+    def dagger_version = "2.23.1"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(':basic')
 }

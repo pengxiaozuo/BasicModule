@@ -83,9 +83,9 @@ class MultiTypeActivity : BaseActivity() {
             holder.setText(R.id.tv_name, item)
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: String) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item)
         }
     }
 
@@ -122,9 +122,9 @@ class MultiTypeActivity : BaseActivity() {
             holder.setText(R.id.tv_sex, item.sex.toString())
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: User) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
     }
 
@@ -144,9 +144,9 @@ class MultiTypeActivity : BaseActivity() {
             holder.setText(R.id.tv_sex, item.sex.toString())
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: User) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
 
     }
@@ -174,9 +174,9 @@ class MultiTypeActivity : BaseActivity() {
 
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: StringList) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
     }
 
@@ -206,9 +206,9 @@ class MultiTypeActivity : BaseActivity() {
             }
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: UserList) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
     }
 
@@ -223,9 +223,9 @@ class MultiTypeActivity : BaseActivity() {
             }
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: Image) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
 
 
@@ -273,9 +273,9 @@ class MultiTypeActivity : BaseActivity() {
             super.onViewRecycled(holder)
         }
 
-        override fun onItemClickListener(holder: SimpleViewHolder, position: Int) {
-            super.onItemClickListener(holder, position)
-            holder.context.toast(position.toString())
+        override fun onItemClickListener(holder: SimpleViewHolder, item: ImageList) {
+            super.onItemClickListener(holder, item)
+            holder.context.toast(item.toString())
         }
     }
 

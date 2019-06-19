@@ -1,13 +1,12 @@
 package com.peng.basic.widget.banner
 
 import android.content.Context
-import android.os.Handler
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.peng.basic.R
-import com.peng.basic.util.logd
+import com.peng.basic.util.logw
 
 
 class BannerView @JvmOverloads constructor(
@@ -98,9 +97,13 @@ class BannerView @JvmOverloads constructor(
     private fun switchToNextPage() {
         var nextItem = viewPager.currentItem + 1
         if (nextItem >= pagerAdapter.count) {
-            nextItem = 0
-            viewPager.setCurrentItem(nextItem, false)
-            startPlay()
+            if (loop) {
+                logw("switchToNextPage fix position ${viewPager.currentItem} to 1")
+                viewPager.setCurrentItem(1, false)
+                nextItem = viewPager.currentItem + 1
+                viewPager.setCurrentItem(nextItem, true)
+                startPlay()
+            }
         } else {
             viewPager.setCurrentItem(nextItem, true)
         }

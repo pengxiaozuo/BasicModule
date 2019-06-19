@@ -9,15 +9,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
-import com.peng.basic.util.ToastUtils
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 
 abstract class BaseFragment : Fragment(), ILifecycle by DefaultLifecycle() {
     protected val TAG = this.javaClass.simpleName

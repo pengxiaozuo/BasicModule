@@ -31,6 +31,7 @@ abstract class BaseMvpFragment<P : IPresenter> : BaseFragment(), IView {
     override fun showLoading(msg: String?) {
 
     }
+
     override fun showEmptyLayout() {
     }
 
