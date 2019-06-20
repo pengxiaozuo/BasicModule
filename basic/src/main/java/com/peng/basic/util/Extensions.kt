@@ -10,6 +10,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
@@ -19,7 +20,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 fun View.click(onNext: (Unit) -> Unit): Disposable =
     clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext)
-
 
 fun View.click(onNext: (Unit) -> Unit, onError: (Throwable) -> Unit): Disposable =
     clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext, onError)

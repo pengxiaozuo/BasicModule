@@ -21,7 +21,7 @@ abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initParams()
-        setContentView(getLayoutId())
+        initContentView(getLayoutId())
 
         contextWR = WeakReference(this)
         ActivityCacheUtils.pushTask(contextWR!!)
@@ -30,6 +30,10 @@ abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycl
         initView(view, savedInstanceState)
 
         initData()
+    }
+
+    open fun initContentView(@LayoutRes layout: Int) {
+        setContentView(layout)
     }
 
     /**

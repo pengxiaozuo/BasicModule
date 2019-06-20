@@ -9,6 +9,8 @@
         android:id="@+id/et_username"
         android:hint="username"
         android:padding="16dp"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

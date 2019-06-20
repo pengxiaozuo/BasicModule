@@ -2,12 +2,11 @@ package com.peng.basicmodule.di
 
 import com.peng.basicmodule.api.GithubApiService
 import com.peng.httputils.HttpUtils
-import com.peng.httputils.create
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ViewModelModule::class])
 class AppModule {
 
     @Singleton

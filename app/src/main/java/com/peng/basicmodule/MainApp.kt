@@ -4,6 +4,7 @@ import android.app.Application
 import com.peng.basicmodule.api.GithubApiService
 import com.peng.basicmodule.di.AppComponent
 import com.peng.basicmodule.di.DaggerAppComponent
+import com.peng.basic.mvvm.ViewModelFactory
 import com.peng.httputils.HttpUtils
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -18,6 +19,9 @@ class MainApp : Application(), HasAndroidInjector {
     internal lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     lateinit var appComponent: AppComponent
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
 

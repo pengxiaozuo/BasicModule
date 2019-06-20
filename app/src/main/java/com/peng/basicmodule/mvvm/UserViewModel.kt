@@ -3,14 +3,16 @@ package com.peng.basicmodule.mvvm
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import com.peng.basic.mvvm.BaseAndroidViewModel
-import com.peng.basicmodule.api.GithubApiService
 import com.peng.basicmodule.data.DataResult
 import com.peng.basicmodule.data.User
-import com.peng.httputils.HttpUtils
-import com.peng.httputils.create
+import com.peng.basicmodule.data.UserModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel constructor(application: Application) : BaseAndroidViewModel(application) {
+class UserViewModel @Inject constructor(
+    private val userModel: UserModel,
+    application: Application
+) : BaseAndroidViewModel(application) {
 
     val userLiveData = MutableLiveData<DataResult<User>>()
     val input = MutableLiveData<String>()
@@ -19,13 +21,7 @@ class UserViewModel constructor(application: Application) : BaseAndroidViewModel
 
         launch {
             try {
-                userLiveData.postValue(
-                    DataResult.success(
-                        HttpUtils.create<GithubApiService>().getUser(
-                            input.value ?: ""
-                        )
-                    )
-                )
+                userLiveData.postValue(userModel.getUser(input.value ?: ""))
             } catch (t: Throwable) {
                 userLiveData.postValue(DataResult.error(t))
             }

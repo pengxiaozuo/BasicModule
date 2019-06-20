@@ -25,7 +25,6 @@ class MainActivity : BaseActivity() {
         btn_banner.click {
             startActivity(BannerActivity::class.java)
         }
-        supportFragmentManager.beginTransaction().add(R.id.f_content, TestFragment(), "TestFragment").commit()
         KeyboardUtils.registerSoftInputChangedListener(this, object : KeyboardUtils.OnSoftInputChangedListener {
             override fun onSoftInputChanged(height: Int) {
             }

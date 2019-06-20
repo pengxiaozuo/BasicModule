@@ -1,5 +1,6 @@
 package com.peng.basicmodule.di
 
+import com.peng.basic.di.ActivityScope
 import com.peng.basicmodule.mvp.MVPContract
 import com.peng.basicmodule.mvp.MVPPresenter
 import dagger.Binds

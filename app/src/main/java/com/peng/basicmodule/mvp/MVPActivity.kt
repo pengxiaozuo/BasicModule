@@ -3,6 +3,7 @@ package com.peng.basicmodule.mvp
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
+import com.jakewharton.rxbinding3.widget.editorActions
 import com.peng.basic.mvp.BaseMvpActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
@@ -13,6 +14,10 @@ import com.peng.basicmodule.data.User
 import com.peng.basicmodule.di.DaggerActivityComponent
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_mvp.*
+import kotlinx.android.synthetic.main.activity_mvp.btn_get
+import kotlinx.android.synthetic.main.activity_mvp.et_username
+import kotlinx.android.synthetic.main.activity_mvp.iv_avatar
+import kotlinx.android.synthetic.main.activity_mvvm.*
 
 class MVPActivity : BaseMvpActivity<MVPContract.Presenter>(), MVPContract.View {
 
@@ -28,10 +33,15 @@ class MVPActivity : BaseMvpActivity<MVPContract.Presenter>(), MVPContract.View {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         dialog = ProgressDialog(this)
         btn_get.click {
-            KeyboardUtils.hideSoftInput(this, btn_get)
-            btn_get.clearFocus()
-            presenter?.getUser(et_username.text.toString())
+            getUser()
         }
+        et_username.editorActions().subscribe { getUser() }.add()
+    }
+
+    private fun getUser() {
+        KeyboardUtils.hideSoftInput(this, btn_get)
+        btn_get.clearFocus()
+        presenter?.getUser(et_username.text.toString())
     }
 
     override fun getUserSuccess(user: User) {

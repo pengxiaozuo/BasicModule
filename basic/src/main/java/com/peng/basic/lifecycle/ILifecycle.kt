@@ -3,13 +3,14 @@ package com.peng.basic.lifecycle
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
-interface ILifecycle : CoroutineScope {
+interface ILifecycle : CoroutineScope, LifecycleObserver {
 
     fun Disposable.add() {
         addDisposable(this)
@@ -26,7 +27,7 @@ interface ILifecycle : CoroutineScope {
     fun clear()
 }
 
-class DefaultLifecycle : ILifecycle, CoroutineScope by MainScope(), LifecycleObserver {
+class DefaultLifecycle : ILifecycle, CoroutineScope by MainScope() {
     private var compositeDisposable: CompositeDisposable? = null
 
     override fun addDisposable(d: Disposable) {
