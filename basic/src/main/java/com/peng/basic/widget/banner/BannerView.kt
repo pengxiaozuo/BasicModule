@@ -123,36 +123,6 @@ class BannerView @JvmOverloads constructor(
         } else {
             viewPager.setCurrentItem(nextPosition, true)
         }
-
-//        var nextItem = viewPager.currentItem + 1
-//        if (nextItem >= pagerAdapter.count) {
-//            if (loop) {
-//                logw("switchToNextPage fix position ${viewPager.currentItem} to 1")
-//                viewPager.setCurrentItem(1, false)
-//                nextItem = viewPager.currentItem + 1
-//                viewPager.setCurrentItem(nextItem, true)
-//                startPlay()
-//            } else {
-//                pre = true
-//                nextItem = viewPager.currentItem - 1
-//                viewPager.setCurrentItem(nextItem, true)
-//            }
-//        } else if (nextItem <= 0) {
-//            pre = false
-//            nextItem = viewPager.currentItem + 1
-//            viewPager.setCurrentItem(nextItem, true)
-//        } else {
-//            if (loop) {
-//                viewPager.setCurrentItem(nextItem, true)
-//            } else {
-//                if (pre) {
-//                    nextItem = viewPager.currentItem - 1
-//                    viewPager.setCurrentItem(nextItem, true)
-//                } else {
-//                    viewPager.setCurrentItem(nextItem, true)
-//                }
-//            }
-//        }
     }
 
     override fun onAttachedToWindow() {
