@@ -15,27 +15,22 @@ class BannerPageAdapter(private var views: List<View>, val loop: Boolean) : Page
 
     override fun getCount(): Int {
         return if (views.isEmpty()) 0 else views.size
-
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = views[position]
-        if (view.parent != null) {
-            container.removeView(view)
+        if (view.parent == null) {
+            container.addView(view)
         }
-        container.addView(view)
         adapter?.onBindView(view, getRealPosition(position))
         return view
     }
 
 
     override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
-        if (loop && position != 0) {
-            val view = views[position]
-            container.removeView(view)
-        }
+        val view = views[position]
+        container.removeView(view)
     }
-
 
     fun getRealPosition(position: Int): Int {
         if (!loop) return position

@@ -2,6 +2,7 @@ package com.peng.basic.widget.banner
 
 import android.content.Context
 import android.support.v4.view.ViewPager
+import android.support.v4.view.ViewPager.PageTransformer
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -32,7 +33,8 @@ class BannerView @JvmOverloads constructor(
 
     private val views = ArrayList<View>()
 
-    private var viewPager: ViewPager = ViewPager(context)
+    var viewPager: ViewPager = ViewPager(context)
+        private set
 
     private lateinit var pagerAdapter: BannerPageAdapter
 
@@ -43,9 +45,9 @@ class BannerView @JvmOverloads constructor(
         if (attrs != null) {
 
             val ta = getContext().obtainStyledAttributes(attrs, R.styleable.BannerView)
-            autoPlay = ta.getBoolean(R.styleable.BannerView_auto_play, autoPlay)
-            loop = ta.getBoolean(R.styleable.BannerView_loop, loop)
-            period = ta.getInt(R.styleable.BannerView_period, 5000).toLong()
+            autoPlay = ta.getBoolean(R.styleable.BannerView_banner_auto_play, autoPlay)
+            loop = ta.getBoolean(R.styleable.BannerView_banner_loop, loop)
+            period = ta.getInt(R.styleable.BannerView_banner_period, 5000).toLong()
 
             ta.recycle()
         }
@@ -77,11 +79,15 @@ class BannerView @JvmOverloads constructor(
     }
 
     fun <T> setAdapter(adapter: Adapter<T>) {
-        if (this.adapter != null) throw IllegalArgumentException("只能设置一个adapter")
         this.adapter = adapter
         adapter.bannerView = this
         pagerAdapter.adapter = adapter
     }
+
+    fun setPageTransformer(transformer: PageTransformer) {
+        viewPager.setPageTransformer(true, transformer)
+    }
+
 
     private fun startPlay() {
         if (views.isNotEmpty() && autoPlay) {
@@ -94,19 +100,59 @@ class BannerView @JvmOverloads constructor(
         removeCallbacks(autoPlayTask)
     }
 
+    private var pre = false
     private fun switchToNextPage() {
-        var nextItem = viewPager.currentItem + 1
-        if (nextItem >= pagerAdapter.count) {
+        var nextPosition = if (pre) viewPager.currentItem - 1 else  viewPager.currentItem + 1
+
+        if (nextPosition >= pagerAdapter.count) {
             if (loop) {
                 logw("switchToNextPage fix position ${viewPager.currentItem} to 1")
                 viewPager.setCurrentItem(1, false)
-                nextItem = viewPager.currentItem + 1
-                viewPager.setCurrentItem(nextItem, true)
+                nextPosition = viewPager.currentItem + 1
+                viewPager.setCurrentItem(nextPosition, true)
                 startPlay()
+            } else if (views.size > 1) {
+                pre = true
+                nextPosition = viewPager.currentItem - 1
+                viewPager.setCurrentItem(nextPosition, true)
             }
+        } else if (nextPosition < 0) {
+            pre = false
+            nextPosition = viewPager.currentItem + 1
+            viewPager.setCurrentItem(nextPosition, true)
         } else {
-            viewPager.setCurrentItem(nextItem, true)
+            viewPager.setCurrentItem(nextPosition, true)
         }
+
+//        var nextItem = viewPager.currentItem + 1
+//        if (nextItem >= pagerAdapter.count) {
+//            if (loop) {
+//                logw("switchToNextPage fix position ${viewPager.currentItem} to 1")
+//                viewPager.setCurrentItem(1, false)
+//                nextItem = viewPager.currentItem + 1
+//                viewPager.setCurrentItem(nextItem, true)
+//                startPlay()
+//            } else {
+//                pre = true
+//                nextItem = viewPager.currentItem - 1
+//                viewPager.setCurrentItem(nextItem, true)
+//            }
+//        } else if (nextItem <= 0) {
+//            pre = false
+//            nextItem = viewPager.currentItem + 1
+//            viewPager.setCurrentItem(nextItem, true)
+//        } else {
+//            if (loop) {
+//                viewPager.setCurrentItem(nextItem, true)
+//            } else {
+//                if (pre) {
+//                    nextItem = viewPager.currentItem - 1
+//                    viewPager.setCurrentItem(nextItem, true)
+//                } else {
+//                    viewPager.setCurrentItem(nextItem, true)
+//                }
+//            }
+//        }
     }
 
     override fun onAttachedToWindow() {
@@ -167,7 +213,6 @@ class BannerView @JvmOverloads constructor(
             } else {
                 viewPager.setCurrentItem(item, smoothScroll)
             }
-
         }
     }
 
@@ -183,6 +228,7 @@ class BannerView @JvmOverloads constructor(
                 views.lastIndex -> {
                     //最后一张展示的是第一张，需要跳转到真正的第一张index = 1
                     val index = 1
+                    viewPager.setCurrentItem(index + 1, false)
                     viewPager.setCurrentItem(index, false)
                 }
             }

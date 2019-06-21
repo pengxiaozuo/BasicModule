@@ -44,8 +44,8 @@ class DataFromMultiTypeActivity : BaseActivity() {
 
         val itemBannerData = listOf(
             Banner("http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg"),
-//            Banner("http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg"),
-//            Banner("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg"),
+            Banner("http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg"),
+            Banner("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg"),
             Banner("https://p.ssl.qhimg.com/dmfd/400_300_/t010f807b18d13c16a9.jpg")
         )
         bannerItemViewBinder.data = listOf(BannerList(itemBannerData))

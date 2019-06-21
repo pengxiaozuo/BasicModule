@@ -8,22 +8,27 @@
 
     <com.peng.basic.widget.banner.BannerView
         android:id="@+id/banner"
-        app:loop="true"
-        app:auto_play="true"
+        app:banner_auto_play="true"
+        app:banner_period="2000"
+        app:banner_loop="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-        <!--<com.peng.basic.widget.banner.DefaultBannerIndicator-->
-            <!--android:id="@+id/basic_banner_indicator"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_gravity="bottom|left"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_height="wrap_content"/>-->
-
-        <com.peng.basicmodule.OtherBannerIndicator
+        <com.peng.basic.widget.banner.DefaultBannerIndicator
             android:id="@+id/basic_banner_indicator"
-            android:layout_gravity="bottom|left"
             android:layout_width="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:shape="rectangle"
+            app:banner_indicator_width="20dp"
+            app:banner_indicator_height="6dp"
+            app:banner_indicator_margin="10dp"
+            app:banner_indicator_corner_radius="4dp"
+            app:banner_indicator_color="@color/colorPrimary"
+            app:banner_indicator_select_color="@color/colorAccent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"/>
 
     </com.peng.basic.widget.banner.BannerView>

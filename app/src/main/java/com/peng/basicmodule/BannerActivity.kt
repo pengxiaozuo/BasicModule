@@ -1,10 +1,15 @@
 package com.peng.basicmodule
 
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.peng.basic.base.BaseActivity
 import com.peng.basic.util.BarUtils
+import com.peng.basic.util.dp2px
+import com.peng.basic.util.logd
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_banner.*
@@ -18,13 +23,16 @@ class BannerActivity : BaseActivity() {
 
     private val adapter = object : BannerView.Adapter<String>() {
 
-        override fun onCreateView(parent: BannerView, any: String): View {
-            return View.inflate(this@BannerActivity, R.layout.item_banner_image, null)
+        override fun onCreateView(parent: BannerView, item: String): View {
+            return View.inflate(this@BannerActivity, R.layout.item_banner_card, null)
         }
 
         override fun onBindView(view: View, position: Int) {
-            val any = data!![position]
-            Picasso.get().load(any as String).into(view as ImageView)
+            val url = data!![position]
+            val iv = view.findViewById<ImageView>(R.id.iv)
+            logd("url = $url")
+            Picasso.get().load(url).into(iv)
+            Glide.with(this@BannerActivity).load(url).into(iv)
         }
 
         override fun onPageSelected(view: View, position: Int) {
@@ -32,27 +40,43 @@ class BannerActivity : BaseActivity() {
         }
     }
 
-
     override fun initView(view: View, savedInstanceState: Bundle?) {
         BarUtils.setTransparentMode(this, true)
+        banner.viewPager.apply {
+            pageMargin = dp2px(5f).toInt()
+            offscreenPageLimit = 3
+            val pd = dp2px(20f).toInt()
+            setPadding(pd, 0, pd, 0)
+            clipToPadding = false
+        }
+        banner.setPageTransformer(ScalePageTransformer(0.6f))
     }
 
     override fun initData() {
         adapter.data = data
         banner.setAdapter(adapter)
         adapter.notifyDataSetChanged()
+
+        data.add("https://n.sinaimg.cn/news/transform/700/w1000h500/20190619/1cf2-hyrtarw1088593.jpg")
+        data.add("https://n.sinaimg.cn/photo/700/w1000h500/20190618/0503-hyrtarv6539136.jpg")
+        data.add("https://p.ssl.qhimg.com/dmfd/400_300_/t010f807b18d13c16a9.jpg")
+
+        adapter.notifyDataSetChanged()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (data.isEmpty()) {
-            data.add("http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg")
-            data.add("http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg")
-            data.add("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg")
-            data.add("https://p.ssl.qhimg.com/dmfd/400_300_/t010f807b18d13c16a9.jpg")
-            adapter.notifyDataSetChanged()
+    class ScalePageTransformer(
+        private var minScale: Float
+    ) : ViewPager.PageTransformer {
+
+        override fun transformPage(page: View, position: Float) {
+            val size = when {
+                position < -1 -> minScale
+                position >= -1 && position < 0 -> minScale + (1 - minScale) * (1 + position)
+                position < 1 -> minScale + (1 - minScale) * (1 - position)
+                else -> minScale
+            }
+            page.scaleY = size
         }
 
     }
-
 }

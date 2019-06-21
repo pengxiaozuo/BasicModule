@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BannerView">
-        <attr name="auto_play" format="boolean"/>
-        <attr name="loop" format="boolean"/>
-        <attr name="period" format="integer"/>
+        <attr name="banner_auto_play" format="boolean"/>
+        <attr name="banner_loop" format="boolean"/>
+        <attr name="banner_period" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="DefaultBannerIndicator">
+        <attr name="banner_indicator_margin" format="dimension"/>
+        <attr name="banner_indicator_width" format="dimension"/>
+        <attr name="banner_indicator_height" format="dimension"/>
+        <attr name="banner_indicator_corner_radius" format="dimension"/>
+        <attr name="banner_indicator_ring_width" format="dimension"/>
+        <attr name="banner_indicator_color" format="color"/>
+        <attr name="banner_indicator_select_color" format="color"/>
+        <attr name="android:shape"/>
     </declare-styleable>
 </resources>
