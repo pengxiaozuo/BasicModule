@@ -10,7 +10,6 @@ import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.adapter.SimpleAdapter
 import com.peng.basic.adapter.SimpleViewHolder
 import com.peng.basic.base.BaseActivity
-import com.peng.basic.util.logd
 import com.peng.basic.util.toast
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
@@ -102,18 +101,18 @@ class DataFromMultiTypeActivity : BaseActivity() {
     }
 
 
-    data class BannerList(val data: List<Banner>){
+    data class BannerList(val data: List<Banner>) {
         var lastItem = 0
     }
+
     class BannerAdapter : BannerView.Adapter<Banner>() {
 
         override fun onCreateView(parent: BannerView, any: Banner): View {
             return View.inflate(parent.context, R.layout.item_banner_image, null)
         }
 
-        override fun onBindView(view: View, position: Int) {
-            val any = data!![position]
-            Picasso.get().load(any.url).into(view as ImageView)
+        override fun onBindView(view: View, item: Banner) {
+            Picasso.get().load(item.url).into(view as ImageView)
         }
 
         override fun onPageSelected(view: View, position: Int) {

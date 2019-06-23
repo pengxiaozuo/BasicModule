@@ -5,11 +5,9 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.peng.basic.base.BaseActivity
 import com.peng.basic.util.BarUtils
 import com.peng.basic.util.dp2px
-import com.peng.basic.util.logd
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_banner.*
@@ -27,12 +25,9 @@ class BannerActivity : BaseActivity() {
             return View.inflate(this@BannerActivity, R.layout.item_banner_card, null)
         }
 
-        override fun onBindView(view: View, position: Int) {
-            val url = data!![position]
+        override fun onBindView(view: View, item: String) {
             val iv = view.findViewById<ImageView>(R.id.iv)
-            logd("url = $url")
-            Picasso.get().load(url).into(iv)
-            Glide.with(this@BannerActivity).load(url).into(iv)
+            Picasso.get().load(item).into(iv)
         }
 
         override fun onPageSelected(view: View, position: Int) {
@@ -42,13 +37,10 @@ class BannerActivity : BaseActivity() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         BarUtils.setTransparentMode(this, true)
-        banner.viewPager.apply {
-            pageMargin = dp2px(5f).toInt()
-            offscreenPageLimit = 3
-            val pd = dp2px(20f).toInt()
-            setPadding(pd, 0, pd, 0)
-            clipToPadding = false
-        }
+        val pageMargin = dp2px(5f).toInt()
+        val pd = dp2px(30f).toInt()
+        banner.setPageMargin(pd, 0, pd, 0, pageMargin)
+        banner.setInterpolator(LinearInterpolator(), 1000)
         banner.setPageTransformer(ScalePageTransformer(0.6f))
     }
 
@@ -60,6 +52,8 @@ class BannerActivity : BaseActivity() {
         data.add("https://n.sinaimg.cn/news/transform/700/w1000h500/20190619/1cf2-hyrtarw1088593.jpg")
         data.add("https://n.sinaimg.cn/photo/700/w1000h500/20190618/0503-hyrtarv6539136.jpg")
         data.add("https://p.ssl.qhimg.com/dmfd/400_300_/t010f807b18d13c16a9.jpg")
+        data.add("http://pic33.photophoto.cn/20141028/0038038006886895_b.jpg")
+        data.add("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg")
 
         adapter.notifyDataSetChanged()
     }

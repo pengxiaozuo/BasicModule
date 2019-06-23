@@ -5,9 +5,12 @@ import android.support.v4.view.ViewPager
 import android.support.v4.view.ViewPager.PageTransformer
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Interpolator
 import android.widget.FrameLayout
+import android.widget.Scroller
 import com.peng.basic.R
 import com.peng.basic.util.logw
+import kotlin.math.abs
 
 
 class BannerView @JvmOverloads constructor(
@@ -33,8 +36,7 @@ class BannerView @JvmOverloads constructor(
 
     private val views = ArrayList<View>()
 
-    var viewPager: ViewPager = ViewPager(context)
-        private set
+    private var viewPager: ViewPager = ViewPager(context)
 
     private lateinit var pagerAdapter: BannerPageAdapter
 
@@ -84,6 +86,36 @@ class BannerView @JvmOverloads constructor(
         pagerAdapter.adapter = adapter
     }
 
+    fun setPageMargin(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0, pageMargin: Int = 0) {
+        viewPager.pageMargin = pageMargin
+        viewPager.offscreenPageLimit = 3
+        viewPager.setPadding(left, top, right, bottom)
+        viewPager.clipToPadding = false
+    }
+
+    fun setInterpolator(interpolator: Interpolator, animDuration: Int) {
+        val _duration = if (animDuration > period) period.toInt() else animDuration
+        try {
+            val scrollerField = ViewPager::class.java.getDeclaredField("mScroller")
+            scrollerField.isAccessible = true
+            val interpolatorField = ViewPager::class.java.getDeclaredField("sInterpolator")
+            interpolatorField.isAccessible = true
+
+            val scroller = object : Scroller(context, interpolator) {
+                override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int, duration: Int) {
+                    val time = abs(_duration * dx / (views.firstOrNull()?.width ?: 0).toFloat())
+                    super.startScroll(startX, startY, dx, dy, time.toInt())
+                }
+
+            }
+            interpolatorField.set(viewPager, interpolator)
+            scrollerField.set(viewPager, scroller)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
     fun setPageTransformer(transformer: PageTransformer) {
         viewPager.setPageTransformer(true, transformer)
     }
@@ -100,9 +132,9 @@ class BannerView @JvmOverloads constructor(
         removeCallbacks(autoPlayTask)
     }
 
-    private var pre = false
+    private var back = false
     private fun switchToNextPage() {
-        var nextPosition = if (pre) viewPager.currentItem - 1 else  viewPager.currentItem + 1
+        var nextPosition = if (back) viewPager.currentItem - 1 else viewPager.currentItem + 1
 
         if (nextPosition >= pagerAdapter.count) {
             if (loop) {
@@ -112,12 +144,12 @@ class BannerView @JvmOverloads constructor(
                 viewPager.setCurrentItem(nextPosition, true)
                 startPlay()
             } else if (views.size > 1) {
-                pre = true
+                back = true
                 nextPosition = viewPager.currentItem - 1
                 viewPager.setCurrentItem(nextPosition, true)
             }
         } else if (nextPosition < 0) {
-            pre = false
+            back = false
             nextPosition = viewPager.currentItem + 1
             viewPager.setCurrentItem(nextPosition, true)
         } else {
@@ -137,7 +169,7 @@ class BannerView @JvmOverloads constructor(
 
 
     private val autoPlayTask = Runnable {
-        if (autoPlay) {
+        if (autoPlay && views.size > 1) {
             switchToNextPage()
             startPlay()
         }
@@ -151,7 +183,6 @@ class BannerView @JvmOverloads constructor(
                 }
                 1 -> {
                     if (autoPlay) stopPlay()
-
                 }
                 2 -> {
                     if (autoPlay && views.size > 0) startPlay()
@@ -198,7 +229,6 @@ class BannerView @JvmOverloads constructor(
                 views.lastIndex -> {
                     //最后一张展示的是第一张，需要跳转到真正的第一张index = 1
                     val index = 1
-                    viewPager.setCurrentItem(index + 1, false)
                     viewPager.setCurrentItem(index, false)
                 }
             }
@@ -224,7 +254,6 @@ class BannerView @JvmOverloads constructor(
                     val endData = data[data.lastIndex]
                     views.add(0, ad.onCreateView(this, endData))
                     views.add(ad.onCreateView(this, firstData))
-
                 }
             }
 
@@ -262,7 +291,11 @@ class BannerView @JvmOverloads constructor(
 
         abstract fun onCreateView(parent: BannerView, item: T): View
 
-        abstract fun onBindView(view: View, position: Int)
+        open fun onBindView(view: View, position: Int) {
+            onBindView(view, data!![position])
+        }
+
+        abstract fun onBindView(view: View, item: T)
 
         open fun onPageSelected(view: View, position: Int) {}
 
