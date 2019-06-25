@@ -15,6 +15,13 @@ abstract class SimpleAdapter<T> :
 
     override fun onCreateViewHolder(itemView: View, viewType: Int): SimpleViewHolder {
         val holder = SimpleViewHolder(itemView)
+        initListener(holder)
+        onViewHolderCreated(holder)
+        return holder
+    }
+
+    protected fun initListener(holder: SimpleViewHolder) {
+        val itemView = holder.itemView
         if (itemView.isClickable)
             itemView.click {
                 itemClick(holder, getItem(holder.adapterPosition))
@@ -25,9 +32,6 @@ abstract class SimpleAdapter<T> :
                     holder, getItem(holder.adapterPosition)
                 )
             }
-
-        onViewHolderCreated(holder)
-        return holder
     }
 
     open fun onViewHolderCreated(holder: SimpleViewHolder) {}

@@ -2,7 +2,6 @@ package com.peng.basicmodule.data
 
 import com.google.gson.annotations.SerializedName
 import com.peng.basicmodule.api.GithubApiService
-import retrofit2.await
 import javax.inject.Inject
 
 class UserModel

@@ -236,6 +236,7 @@ class BannerView @JvmOverloads constructor(
     }
 
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> onDataChange(data: List<T>?) {
         adapter?.let { ad ->
             ad as Adapter<T>

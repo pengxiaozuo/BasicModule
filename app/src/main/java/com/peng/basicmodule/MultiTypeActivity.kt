@@ -7,12 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.peng.basic.adapter.BindingAdapter
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.adapter.SimpleAdapter
 import com.peng.basic.adapter.SimpleViewHolder
 import com.peng.basic.base.BaseActivity
-import com.peng.basic.util.logd
 import com.peng.basic.util.toast
+import com.peng.basicmodule.databinding.ItemMultiTypeUserMaleBindingBinding
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_multitype.*
 
@@ -107,19 +108,22 @@ class MultiTypeActivity : BaseActivity() {
         }
     }
 
-    class UserMaleItemViewBinder : SimpleAdapter<User>() {
+    class UserMaleItemViewBinder : BindingAdapter<User, ItemMultiTypeUserMaleBindingBinding>() {
         override fun getLayoutId(): Int {
-            return R.layout.item_multi_type_user_male
+            return R.layout.item_multi_type_user_male_binding
         }
 
         override fun onBinder(any: Any): Boolean {
             return any is User && any.sex == Sex.MALE
         }
 
-        override fun onBinderViewHolder(item: User, holder: SimpleViewHolder) {
-            holder.setText(R.id.tv_name, item.name)
-            holder.setText(R.id.tv_age, item.age.toString())
-            holder.setText(R.id.tv_sex, item.sex.toString())
+        override fun onBinderViewHolder(
+            item: User,
+            holder: SimpleViewHolder,
+            binding: ItemMultiTypeUserMaleBindingBinding
+        ) {
+            binding.user = item
+            binding.executePendingBindings()
         }
 
         override fun onItemClickListener(holder: SimpleViewHolder, item: User) {
@@ -262,7 +266,7 @@ class MultiTypeActivity : BaseActivity() {
 
         override fun onViewRecycled(holder: SimpleViewHolder) {
             adapter?.data?.getOrNull(holder.adapterPosition)?.let { item ->
-                holder.getView<RecyclerView>(R.id.recycler_view)?.let {recyclerView->
+                holder.getView<RecyclerView>(R.id.recycler_view)?.let { recyclerView ->
                     if (recyclerView.layoutManager is LinearLayoutManager && item is ImageList) {
                         item.firstVisiblePosition = (recyclerView.layoutManager as LinearLayoutManager)
                             .findFirstVisibleItemPosition()

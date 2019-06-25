@@ -1,2 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.peng.basic" />
+<manifest
+    package="com.peng.basic"/>

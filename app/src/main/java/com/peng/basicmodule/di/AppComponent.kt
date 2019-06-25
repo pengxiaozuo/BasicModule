@@ -1,7 +1,6 @@
 package com.peng.basicmodule.di
 
 import android.app.Application
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.peng.basicmodule.MainApp
 import com.peng.basicmodule.api.GithubApiService
@@ -9,9 +8,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
-import javax.inject.Provider
 import javax.inject.Singleton
-import kotlin.reflect.KClass
 
 @Singleton
 @Component(modules = [AndroidInjectionModule::class, AndroidSupportInjectionModule::class, AppModule::class])

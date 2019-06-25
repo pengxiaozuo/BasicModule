@@ -67,12 +67,15 @@ class DataFromMultiTypeActivity : BaseActivity() {
             }
         }
 
+        @Suppress("UNCHECKED_CAST")
         override fun onBinderViewHolder(item: BannerList, holder: SimpleViewHolder) {
             holder.getView<BannerView>(R.id.banner)?.let { banner ->
                 holder.any?.let {
-                    it as BannerView.Adapter<Banner>
-                    it.data = item.data
-                    it.notifyDataSetChanged()
+                    if (it is BannerView.Adapter<*>) {
+                        val ad = it as BannerView.Adapter<Banner>
+                        ad.data = item.data
+                        ad.notifyDataSetChanged()
+                    }
                 }
                 banner.setCurrentItem(item.lastItem, false)
             }
@@ -107,7 +110,7 @@ class DataFromMultiTypeActivity : BaseActivity() {
 
     class BannerAdapter : BannerView.Adapter<Banner>() {
 
-        override fun onCreateView(parent: BannerView, any: Banner): View {
+        override fun onCreateView(parent: BannerView, item: Banner): View {
             return View.inflate(parent.context, R.layout.item_banner_image, null)
         }
 

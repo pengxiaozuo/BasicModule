@@ -3,7 +3,6 @@ package com.peng.basic.widget.banner
 import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
-import com.peng.basic.util.logd
 
 class BannerPageAdapter(private var views: List<View>, val loop: Boolean) : PagerAdapter() {
 

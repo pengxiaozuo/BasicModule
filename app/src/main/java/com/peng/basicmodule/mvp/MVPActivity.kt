@@ -14,10 +14,6 @@ import com.peng.basicmodule.data.User
 import com.peng.basicmodule.di.DaggerActivityComponent
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_mvp.*
-import kotlinx.android.synthetic.main.activity_mvp.btn_get
-import kotlinx.android.synthetic.main.activity_mvp.et_username
-import kotlinx.android.synthetic.main.activity_mvp.iv_avatar
-import kotlinx.android.synthetic.main.activity_mvvm.*
 
 class MVPActivity : BaseMvpActivity<MVPContract.Presenter>(), MVPContract.View {
 

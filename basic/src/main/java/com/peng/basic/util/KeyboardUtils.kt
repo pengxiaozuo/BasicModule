@@ -6,9 +6,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager

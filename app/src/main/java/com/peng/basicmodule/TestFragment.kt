@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.view.clicks
 import com.peng.basic.base.BaseFragment
-import com.peng.basic.util.LogUtils
 import java.util.concurrent.TimeUnit
 
 class TestFragment : BaseFragment() {

@@ -1,10 +1,10 @@
 package com.peng.basicmodule
 
 import android.app.Application
+import com.peng.basic.mvvm.ViewModelFactory
 import com.peng.basicmodule.api.GithubApiService
 import com.peng.basicmodule.di.AppComponent
 import com.peng.basicmodule.di.DaggerAppComponent
-import com.peng.basic.mvvm.ViewModelFactory
 import com.peng.httputils.HttpUtils
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
