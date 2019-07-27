@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
 
-abstract class BaseFragment : Fragment(), ILifecycle by DefaultLifecycle() {
+abstract class BasicFragment : Fragment(), ILifecycle by DefaultLifecycle() {
     protected val TAG = this.javaClass.simpleName
     protected var activity: Activity? = null
 

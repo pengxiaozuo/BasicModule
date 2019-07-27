@@ -2,7 +2,7 @@ package com.peng.basicmodule
 
 import android.os.Bundle
 import android.view.View
-import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basicmodule.mvp.MVPActivity
@@ -10,7 +10,7 @@ import com.peng.basicmodule.mvvm.MvvmActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BasicActivity() {
 
 
     override fun getLayoutId(): Int {

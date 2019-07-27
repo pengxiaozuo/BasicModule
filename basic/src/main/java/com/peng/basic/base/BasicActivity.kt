@@ -13,7 +13,7 @@ import com.peng.basic.util.ActivityCacheUtils
 import java.lang.ref.WeakReference
 
 
-abstract class BaseActivity : AppCompatActivity(), ILifecycle by DefaultLifecycle() {
+abstract class BasicActivity : AppCompatActivity(), ILifecycle by DefaultLifecycle() {
 
     protected val TAG = this.javaClass.simpleName
     private var contextWR: WeakReference<Activity>? = null

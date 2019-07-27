@@ -3,10 +3,10 @@ package com.peng.basic.mvvm
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.BasicActivity
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseMVVMActivity<VM : ViewModel> : BaseActivity() {
+abstract class BasicMVVMActivity<VM : ViewModel> : BasicActivity() {
 
     val viewModel: VM by lazy {
         initViewModel()

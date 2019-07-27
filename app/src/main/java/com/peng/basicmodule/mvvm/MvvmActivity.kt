@@ -7,7 +7,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.widget.editorActions
-import com.peng.basic.mvvm.BaseMVVMActivity
+import com.peng.basic.mvvm.BasicMVVMActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basic.util.toast
@@ -18,7 +18,7 @@ import com.peng.basicmodule.data.User
 import com.peng.basicmodule.databinding.ActivityMvvmBinding
 import kotlinx.android.synthetic.main.activity_mvvm.*
 
-class MvvmActivity : BaseMVVMActivity<UserViewModel>() {
+class MvvmActivity : BasicMVVMActivity<UserViewModel>() {
 
     private lateinit var binding: ActivityMvvmBinding
     private var dialog: ProgressDialog? = null

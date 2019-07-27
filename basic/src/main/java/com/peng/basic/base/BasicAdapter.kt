@@ -12,10 +12,10 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * [RecyclerView.Adapter]适配器封装，或多类型[ItemViewBinder]封装
- * 当[BaseAdapter]当做[RecyclerView.Adapter]使用时[data]生效
- * 如果[BaseAdapter]做[ItemViewBinder]时data为[MultiTypeAdapter]中的数据
+ * 当[BasicAdapter]当做[RecyclerView.Adapter]使用时[data]生效
+ * 如果[BasicAdapter]做[ItemViewBinder]时data为[MultiTypeAdapter]中的数据
  */
-abstract class BaseAdapter<T, VM : RecyclerView.ViewHolder>(var data: List<T> = listOf<T>()) :
+abstract class BasicAdapter<T, VM : RecyclerView.ViewHolder>(var data: List<T> = listOf<T>()) :
     RecyclerView.Adapter<VM>(),
     ItemViewBinder<T, VM> {
 

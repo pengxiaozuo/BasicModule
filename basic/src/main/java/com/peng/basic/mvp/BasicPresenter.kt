@@ -3,7 +3,7 @@ package com.peng.basic.mvp
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
 
-open class BasePresenter<V : IView> : IPresenter, ILifecycle by DefaultLifecycle() {
+open class BasicPresenter<V : IView> : IPresenter, ILifecycle by DefaultLifecycle() {
 
     protected val TAG = this.javaClass.simpleName
 

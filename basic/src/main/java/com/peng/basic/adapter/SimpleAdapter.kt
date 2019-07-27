@@ -1,14 +1,14 @@
 package com.peng.basic.adapter
 
 import android.view.View
-import com.peng.basic.base.BaseAdapter
+import com.peng.basic.base.BasicAdapter
 import com.peng.basic.util.click
 
 /**
  * 简单适配器
  */
 abstract class SimpleAdapter<T> :
-    BaseAdapter<T, SimpleViewHolder>() {
+    BasicAdapter<T, SimpleViewHolder>() {
 
     var onItemClickListener: ((SimpleViewHolder, T) -> Unit)? = null
     var onItemLongClickListener: ((SimpleViewHolder, T) -> Boolean)? = null

@@ -3,7 +3,7 @@
 ## Gradle配置
 
 ```gradle
-implementation 'com.peng.basic:basic:0.2.3'
+implementation 'com.peng.basic:basic:0.3.0'
 ```
 
 封装了常用的工具类，通用的RecyclerView.Adapter,BaseActivity,BaseFragment，常用的Widget等以方便使用

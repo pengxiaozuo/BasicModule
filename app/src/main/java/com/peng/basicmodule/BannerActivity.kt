@@ -5,14 +5,14 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.BarUtils
 import com.peng.basic.util.dp2px
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_banner.*
 
-class BannerActivity : BaseActivity() {
+class BannerActivity : BasicActivity() {
     override fun getLayoutId(): Int {
         return R.layout.activity_banner
     }

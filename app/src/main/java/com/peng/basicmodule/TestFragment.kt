@@ -3,10 +3,10 @@ package com.peng.basicmodule
 import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.view.clicks
-import com.peng.basic.base.BaseFragment
+import com.peng.basic.base.BasicFragment
 import java.util.concurrent.TimeUnit
 
-class TestFragment : BaseFragment() {
+class TestFragment : BasicFragment() {
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_test

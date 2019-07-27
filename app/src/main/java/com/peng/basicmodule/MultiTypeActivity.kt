@@ -11,14 +11,14 @@ import com.peng.basic.adapter.BindingAdapter
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.adapter.SimpleAdapter
 import com.peng.basic.adapter.SimpleViewHolder
-import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.toast
 import com.peng.basicmodule.databinding.ItemMultiTypeUserMaleBindingBinding
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_multitype.*
 
 
-class MultiTypeActivity : BaseActivity() {
+class MultiTypeActivity : BasicActivity() {
 
     private val mAdapter = MultiTypeAdapter()
     private val mListData = mutableListOf<Any>()

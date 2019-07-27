@@ -1,25 +1,23 @@
 package com.peng.basic.mvp
 
-import android.content.Context
-import com.peng.basic.base.BaseFragment
+import android.os.Bundle
+import com.peng.basic.base.BasicActivity
 import javax.inject.Inject
 
-abstract class BaseMvpFragment<P : IPresenter> : BaseFragment(), IView {
+abstract class BasicMvpActivity<P : IPresenter> : BasicActivity(), IView {
 
     var presenter: P? = null
         @Inject set
 
-    override fun onAttach(context: Context?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         inject()
         presenter?.takeView(this)
-        super.onAttach(context)
+        super.onCreate(savedInstanceState)
     }
 
-
-    override fun onDetach() {
-
+    override fun onDestroy() {
         presenter?.dropView()
-        super.onDetach()
+        super.onDestroy()
     }
 
     abstract fun inject()

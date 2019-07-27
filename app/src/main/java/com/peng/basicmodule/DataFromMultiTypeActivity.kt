@@ -9,13 +9,13 @@ import android.widget.LinearLayout
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.adapter.SimpleAdapter
 import com.peng.basic.adapter.SimpleViewHolder
-import com.peng.basic.base.BaseActivity
+import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.toast
 import com.peng.basic.widget.banner.BannerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_multitype.*
 
-class DataFromMultiTypeActivity : BaseActivity() {
+class DataFromMultiTypeActivity : BasicActivity() {
     private val mAdapter = MultiTypeAdapter(MultiTypeAdapter.DataFrom.ItemViewBinder)
     override fun initView(view: View, savedInstanceState: Bundle?) {
         recycler_view.layoutManager = LinearLayoutManager(this)

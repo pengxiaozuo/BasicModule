@@ -4,7 +4,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.widget.editorActions
-import com.peng.basic.mvp.BaseMvpActivity
+import com.peng.basic.mvp.BasicMvpActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basic.util.toast
@@ -15,7 +15,7 @@ import com.peng.basicmodule.di.DaggerActivityComponent
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_mvp.*
 
-class MVPActivity : BaseMvpActivity<MVPContract.Presenter>(), MVPContract.View {
+class MVPActivity : BasicMvpActivity<MVPContract.Presenter>(), MVPContract.View {
 
     private var dialog: ProgressDialog? = null
     override fun inject() {
