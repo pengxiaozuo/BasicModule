@@ -146,11 +146,19 @@ class MultiTypeActivity : BasicActivity() {
             holder.setText(R.id.tv_name, item.name)
             holder.setText(R.id.tv_age, item.age.toString())
             holder.setText(R.id.tv_sex, item.sex.toString())
+            if (item.age == 11) {
+                holder.setOnChildClickListener(R.id.iv_header)
+            }
         }
 
         override fun onItemClickListener(holder: SimpleViewHolder, item: User) {
             super.onItemClickListener(holder, item)
             holder.context.toast(item.toString())
+        }
+
+        override fun onItemChildClickListener(holder: SimpleViewHolder, view: View, item: User) {
+            super.onItemChildClickListener(holder, view, item)
+            holder.context.toast("重写方法Header click:" + item.name)
         }
 
     }

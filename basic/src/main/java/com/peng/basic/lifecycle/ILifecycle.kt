@@ -1,8 +1,6 @@
 package com.peng.basic.lifecycle
 
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
@@ -50,9 +48,4 @@ class DefaultLifecycle : ILifecycle, CoroutineScope by MainScope() {
         }
     }
 
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onLifecycleOwnerDestroy() {
-        clear()
-    }
 }

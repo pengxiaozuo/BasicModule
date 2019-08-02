@@ -8,10 +8,17 @@ import android.util.SparseArray
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.peng.basic.lifecycle.DefaultLifecycle
+import com.peng.basic.lifecycle.ILifecycle
+import com.peng.basic.util.click
+import com.peng.basic.util.longClick
 
-open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(contentView) {
+open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(contentView),
+    ILifecycle by DefaultLifecycle() {
 
     private val views: SparseArray<View> = SparseArray()
+    private val clickables: SparseArray<Boolean> = SparseArray()
+    private val longClickables: SparseArray<Boolean> = SparseArray()
     var binding: ViewDataBinding? = null
 
     constructor(binding: ViewDataBinding) : this(binding.root) {
@@ -20,7 +27,23 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
 
     val context: Context = contentView.context
     var any: Any? = null
-    val map by lazy { mutableMapOf<Any, Any>() }
+    var any2: Any? = null
+    internal var onChildClickListener: ((SimpleViewHolder, View) -> Unit)? = null
+    internal var onChildLongClickListener: ((SimpleViewHolder, View) -> Boolean)? = null
+
+    fun setOnChildClickListener(id: Int) {
+        getView<View>(id)!!.let { v ->
+            clickables.put(id, v.isClickable)
+            v.click { onChildClickListener?.invoke(this, v) }.add()
+        }
+    }
+
+    fun setOnChildLongClickListener(id: Int) {
+        getView<View>(id)!!.let { v ->
+            longClickables.put(id, v.isLongClickable)
+            v.longClick { onChildLongClickListener?.invoke(this, v) ?: false }.add()
+        }
+    }
 
     @Suppress("UNCHECKED_CAST")
     fun <T : View> getView(id: Int): T? {
@@ -56,4 +79,20 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
         return this
     }
 
+    fun clearHolder() {
+        clear()
+        for (i in 0 until clickables.size()) {
+            val id = clickables.keyAt(i)
+            val value = clickables.valueAt(i)
+            getView<View>(id)?.isClickable = value
+        }
+        clickables.clear()
+
+        for (i in 0 until longClickables.size()) {
+            val id = longClickables.keyAt(i)
+            val value = longClickables.valueAt(i)
+            getView<View>(id)?.isLongClickable = value
+        }
+        longClickables.clear()
+    }
 }

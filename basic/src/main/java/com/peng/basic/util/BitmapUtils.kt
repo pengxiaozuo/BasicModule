@@ -266,12 +266,13 @@ object BitmapUtils {
      * 通过inputStream获取bitmap
      */
     @JvmStatic
-    fun getBitmap(inputStream: InputStream, reqWidth: Int, reqHeight: Int): Bitmap {
+    fun getBitmap(inputStream: InputStream, reqWidth: Int, reqHeight: Int): Bitmap? {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeStream(inputStream, null, options)
         options.inSampleSize = calculateInSampleSize(reqWidth, reqHeight, options.outWidth, options.outHeight)
         options.inJustDecodeBounds = false
+        inputStream.reset()
         return BitmapFactory.decodeStream(inputStream, null, options)
     }
 

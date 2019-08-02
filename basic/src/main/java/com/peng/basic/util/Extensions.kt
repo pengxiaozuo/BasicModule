@@ -4,7 +4,9 @@
 package com.peng.basic.util
 
 import android.view.View
+import com.jakewharton.rxbinding3.internal.AlwaysTrue
 import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.view.longClicks
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -26,6 +28,19 @@ fun View.click(onNext: (Unit) -> Unit, onError: (Throwable) -> Unit): Disposable
 fun View.showHide(show: Boolean) {
     visibility = if (show) View.VISIBLE else View.GONE
 }
+
+fun View.longClick(handled: () -> Boolean = AlwaysTrue): Disposable =
+    longClicks(handled).subscribe()
+
+fun View.longClick(onNext: (Unit) -> Unit,handled: () -> Boolean = AlwaysTrue): Disposable =
+    longClicks(handled).subscribe(onNext)
+
+fun View.longClick(
+    onNext: (Unit) -> Unit,
+    onError: (Throwable) -> Unit,
+    handled: () -> Boolean = AlwaysTrue
+): Disposable =
+    longClicks(handled).subscribe(onNext, onError)
 
 fun <T> Observable<T>.fromIoToMain(): Observable<T> = fromIo().toMain()
 fun <T> Observable<T>.fromIo(): Observable<T> = subscribeOn(Schedulers.io())
