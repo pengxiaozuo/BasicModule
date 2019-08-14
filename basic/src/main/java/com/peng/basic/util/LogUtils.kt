@@ -78,11 +78,10 @@ object LogUtils {
     fun i(
         tag: String, msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        println(Log.INFO, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        println(Log.INFO, tag, msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -90,11 +89,10 @@ object LogUtils {
     fun i(
         msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        i(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        i(getTag(), msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -102,11 +100,10 @@ object LogUtils {
     fun d(
         tag: String, msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        println(Log.DEBUG, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        println(Log.DEBUG, tag, msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -114,11 +111,10 @@ object LogUtils {
     fun d(
         msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        d(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        d(getTag(), msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -126,11 +122,10 @@ object LogUtils {
     fun w(
         tag: String, msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        println(Log.WARN, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        println(Log.WARN, tag, msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -138,11 +133,10 @@ object LogUtils {
     fun w(
         msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        w(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        w(getTag(), msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -150,11 +144,10 @@ object LogUtils {
     fun e(
         tag: String, msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        println(Log.ERROR, tag, msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        println(Log.ERROR, tag, msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     @JvmStatic
@@ -162,11 +155,10 @@ object LogUtils {
     fun e(
         msg: Any?, throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
-        e(getTag(), msg, throwable, showThreadName, cacheToDisk, cacheLevel, dateFormat)
+        e(getTag(), msg, throwable, showThreadName, cacheToDisk, dateFormat)
     }
 
     private fun println(
@@ -175,8 +167,7 @@ object LogUtils {
         msg: Any?,
         throwable: Throwable? = null,
         showThreadName: Boolean = this.showThreadName,
-        cacheToDisk: Boolean = this.cacheToDisk,
-        cacheLevel: Int = this.cacheLevel,
+        cacheToDisk: Boolean? = null,
         dateFormat: DateFormat = this.logDateFormat
     ) {
         val sb = StringBuilder()
@@ -191,32 +182,17 @@ object LogUtils {
             formatPrint(level, tag, sb.toString())
         }
 
-        if (cacheToDisk && level >= cacheLevel) {
-            sb.delete(0, sb.length)
-            val date = Date()
-            sb.append(dateFormat.format(date) + " ")
-            if (showThreadName) {
-                sb.append("Thread: ${Thread.currentThread().name} ")
-            }
-            sb.append(
-                when (level) {
-                    Log.INFO -> "I/"
-                    Log.DEBUG -> "D/"
-                    Log.WARN -> "W/"
-                    Log.ERROR -> "E/"
-                    else -> "UNKNOWN/"
+        if (cacheToDisk == null) {
+            if (this.cacheToDisk && this.cacheLevel >= level) {
+                executorService.submit {
+                    formatWrite(level, tag, msg, throwable, dateFormat)
                 }
-            )
-            sb.append("$tag: ")
-
-            sb.append(msg)
-
-            if (throwable != null) {
-                sb.append("\n ${Log.getStackTraceString(throwable)}")
             }
-
-            executorService.submit {
-                writeToDisk(date, sb.toString())
+        } else {
+            if (cacheToDisk) {
+                executorService.submit {
+                    formatWrite(level, tag, msg, throwable, dateFormat)
+                }
             }
         }
     }
@@ -237,6 +213,38 @@ object LogUtils {
         } else {
             Log.println(level, tag, msg)
         }
+    }
+
+    private fun formatWrite(
+        level: Int,
+        tag: String,
+        msg: Any?,
+        throwable: Throwable? = null,
+        dateFormat: DateFormat
+    ) {
+        val sb = StringBuilder()
+        val date = Date()
+        sb.append(dateFormat.format(date) + " ")
+        if (showThreadName) {
+            sb.append("Thread: ${Thread.currentThread().name} ")
+        }
+        sb.append(
+            when (level) {
+                Log.INFO -> "I/"
+                Log.DEBUG -> "D/"
+                Log.WARN -> "W/"
+                Log.ERROR -> "E/"
+                else -> "UNKNOWN/"
+            }
+        )
+        sb.append("$tag: ")
+
+        sb.append(msg)
+
+        if (throwable != null) {
+            sb.append("\n ${Log.getStackTraceString(throwable)}")
+        }
+        writeToDisk(date, sb.toString())
     }
 
     private fun writeToDisk(date: Date, msg: String) {
@@ -365,7 +373,6 @@ fun logi(
     msg: Any?, tag: String? = null, throwable: Throwable? = null,
     showThreadName: Boolean? = null,
     cacheToDisk: Boolean? = null,
-    cacheLevel: Int? = null,
     dateFormat: DateFormat? = null
 ) {
     if (tag != null) {
@@ -373,7 +380,6 @@ fun logi(
             tag, msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     } else {
@@ -381,7 +387,6 @@ fun logi(
             msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     }
@@ -391,7 +396,6 @@ fun logd(
     msg: Any?, tag: String? = null, throwable: Throwable? = null,
     showThreadName: Boolean? = null,
     cacheToDisk: Boolean? = null,
-    cacheLevel: Int? = null,
     dateFormat: DateFormat? = null
 ) {
     if (tag != null) {
@@ -399,7 +403,6 @@ fun logd(
             tag, msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     } else {
@@ -407,7 +410,6 @@ fun logd(
             msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     }
@@ -417,7 +419,6 @@ fun logw(
     msg: Any?, tag: String? = null, throwable: Throwable? = null,
     showThreadName: Boolean? = null,
     cacheToDisk: Boolean? = null,
-    cacheLevel: Int? = null,
     dateFormat: DateFormat? = null
 ) {
     if (tag != null) {
@@ -425,7 +426,6 @@ fun logw(
             tag, msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     } else {
@@ -433,7 +433,6 @@ fun logw(
             msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     }
@@ -443,7 +442,6 @@ fun loge(
     msg: Any?, tag: String? = null, throwable: Throwable? = null,
     showThreadName: Boolean? = null,
     cacheToDisk: Boolean? = null,
-    cacheLevel: Int? = null,
     dateFormat: DateFormat? = null
 ) {
     if (tag != null) {
@@ -451,7 +449,6 @@ fun loge(
             tag, msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     } else {
@@ -459,7 +456,6 @@ fun loge(
             msg, throwable,
             showThreadName ?: LogUtils.showThreadName,
             cacheToDisk ?: LogUtils.cacheToDisk,
-            cacheLevel ?: LogUtils.cacheLevel,
             dateFormat ?: LogUtils.logDateFormat
         )
     }

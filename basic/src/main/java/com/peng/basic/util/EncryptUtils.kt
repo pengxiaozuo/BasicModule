@@ -154,22 +154,22 @@ object EncryptUtils {
      * RSA解密
      */
     @JvmStatic
-    fun decryptRSA(data: ByteArray, key: Key): ByteString {
-        return rsaTemplate(data, key, false)
+    fun decryptRSA(data: ByteArray, key: Key, transformation: String = "RSA"): ByteString {
+        return rsaTemplate(data, key, false, transformation)
     }
 
     /**
      * RSA 加密
      */
     @JvmStatic
-    fun encryptRSA(data: ByteArray, key: Key): ByteString {
-        return rsaTemplate(data, key, true)
+    fun encryptRSA(data: ByteArray, key: Key, transformation: String = "RSA"): ByteString {
+        return rsaTemplate(data, key, true, transformation)
     }
 
     @JvmStatic
-    fun rsaTemplate(data: ByteArray, key: Key, isEncrypt: Boolean): ByteString {
+    fun rsaTemplate(data: ByteArray, key: Key, isEncrypt: Boolean, transformation: String = "RSA"): ByteString {
 
-        val cipher = Cipher.getInstance("RSA")
+        val cipher = Cipher.getInstance(transformation)
         cipher.init(if (isEncrypt) Cipher.ENCRYPT_MODE else Cipher.DECRYPT_MODE, key)
         return ByteString(cipher.doFinal(data))
 
