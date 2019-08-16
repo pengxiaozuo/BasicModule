@@ -22,9 +22,12 @@ class DefaultBannerIndicator @JvmOverloads constructor(
     private var normalColor = 0xFFcccccc.toInt()
     private var selectedColor = 0xFF4A68F1.toInt()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var count = 0
     private var selected = 0
-    private var strokeWidth = 1f
+    private var borderWidth = 0f
+    private var borderColor = normalColor
+    private var borderSelectColor = selectedColor
     private var list = mutableListOf<RectF>()
     /**
      * Shape is a rectangle, possibly with rounded corners
@@ -35,12 +38,6 @@ class DefaultBannerIndicator @JvmOverloads constructor(
      * Shape is an ellipse
      */
     val OVAL = 1
-
-    /**
-     * Shape is a ring.
-     */
-    val RING = 3
-
 
     private var shape = OVAL
 
@@ -71,14 +68,20 @@ class DefaultBannerIndicator @JvmOverloads constructor(
                     R.styleable.DefaultBannerIndicator_banner_indicator_height -> {
                         doViewHeight = ta.getDimensionPixelSize(attr, doViewHeight.toInt()).toFloat()
                     }
-                    R.styleable.DefaultBannerIndicator_android_shape -> {
-                        shape = ta.getInt(attr, OVAL)
-                    }
                     R.styleable.DefaultBannerIndicator_banner_indicator_corner_radius -> {
                         cornerRadius = ta.getDimensionPixelSize(attr, cornerRadius.toInt()).toFloat()
                     }
-                    R.styleable.DefaultBannerIndicator_banner_indicator_ring_width -> {
-                        strokeWidth = ta.getDimensionPixelSize(attr, strokeWidth.toInt()).toFloat()
+                    R.styleable.DefaultBannerIndicator_banner_indicator_shape -> {
+                        shape = ta.getInt(attr, OVAL)
+                    }
+                    R.styleable.DefaultBannerIndicator_banner_indicator_border_width -> {
+                        borderWidth = ta.getDimensionPixelSize(attr, 0).toFloat()
+                    }
+                    R.styleable.DefaultBannerIndicator_banner_indicator_border_color -> {
+                        borderColor = ta.getColor(attr, borderColor)
+                    }
+                    R.styleable.DefaultBannerIndicator_banner_indicator_border_select_color -> {
+                        borderSelectColor = ta.getColor(attr, borderSelectColor)
                     }
                 }
             }
@@ -134,25 +137,27 @@ class DefaultBannerIndicator @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         repeat(count) {
+            paint.style = Paint.Style.FILL
+            borderPaint.style = Paint.Style.STROKE
+            borderPaint.strokeWidth = borderWidth
             if (it == selected) {
                 paint.color = selectedColor
+                borderPaint.color = borderColor
             } else {
                 paint.color = normalColor
+                borderPaint.color = borderSelectColor
             }
             val cf = list[it]
             when (shape) {
                 OVAL -> {
-                    paint.style = Paint.Style.FILL
                     canvas?.drawOval(cf, paint)
+                    if (borderWidth > 0)
+                        canvas?.drawOval(cf, borderPaint)
                 }
                 RECTANGLE -> {
-                    paint.style = Paint.Style.FILL
                     canvas?.drawRoundRect(cf, cornerRadius, cornerRadius, paint)
-                }
-                RING -> {
-                    paint.style = Paint.Style.STROKE
-                    paint.strokeWidth = strokeWidth
-                    canvas?.drawOval(cf, paint)
+                    if (borderWidth > 0)
+                        canvas?.drawRoundRect(cf, cornerRadius, cornerRadius, borderPaint)
                 }
             }
         }
