@@ -73,6 +73,7 @@ abstract class BasicAdapter<T, VM : RecyclerView.ViewHolder>(var data: List<T> =
         return data
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getItem(position: Int): T {
         if (adapter == null) {
             return data[position]

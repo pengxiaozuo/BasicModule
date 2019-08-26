@@ -15,7 +15,6 @@ import javax.inject.Inject
 class MainApp : Application(), HasAndroidInjector {
 
     @Inject
-    @Volatile
     internal lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     lateinit var appComponent: AppComponent

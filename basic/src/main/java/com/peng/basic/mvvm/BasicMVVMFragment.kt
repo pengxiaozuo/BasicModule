@@ -3,10 +3,10 @@ package com.peng.basic.mvvm
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import com.peng.basic.base.BasicActivity
+import com.peng.basic.base.BasicFragment
 import java.lang.reflect.ParameterizedType
 
-abstract class BasicMVVMActivity<VM : ViewModel> : BasicActivity() {
+abstract class BasicMVVMFragment<VM : ViewModel> : BasicFragment() {
 
     val viewModel: VM by lazy {
         initViewModel()
@@ -14,7 +14,8 @@ abstract class BasicMVVMActivity<VM : ViewModel> : BasicActivity() {
 
     abstract fun getViewModelFactory(): ViewModelProvider.Factory
 
-    open fun initViewModel() = ViewModelProviders.of(this, getViewModelFactory()).get(getViewModelClass())
+    open fun initViewModel() =
+        ViewModelProviders.of(this, getViewModelFactory()).get(getViewModelClass())
 
     @Suppress("UNCHECKED_CAST")
     private fun getViewModelClass(): Class<VM> {

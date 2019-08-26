@@ -77,7 +77,7 @@ object TimeUtils {
     @JvmStatic
     fun format2Format(time: String, scr: DateFormat, desc: DateFormat): String {
         val date = scr.parse(time)
-        return desc.format(time)
+        return desc.format(date)
     }
 
     /**

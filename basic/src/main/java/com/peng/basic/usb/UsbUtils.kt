@@ -1,7 +1,6 @@
 package com.peng.basic.usb
 
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.hardware.usb.*
@@ -54,7 +53,11 @@ object UsbUtils {
     /**
      * 获取Usb连接
      */
-    fun getUsbDeviceConnection(usbManager: UsbManager?, usbDevice: UsbDevice?, usbInterface: UsbInterface?): UsbDeviceConnection? {
+    fun getUsbDeviceConnection(
+        usbManager: UsbManager?,
+        usbDevice: UsbDevice?,
+        usbInterface: UsbInterface?
+    ): UsbDeviceConnection? {
         if (usbInterface != null && usbDevice != null && usbManager != null) {
             var conn: UsbDeviceConnection? = null
             try {
@@ -104,12 +107,19 @@ object UsbUtils {
     /**
      * 请求USB权限
      */
-    fun requestUsbPermission(usbManager: UsbManager, usbDevice: UsbDevice,
-                             context: Context, requestCode: Int,
-                             receiver: BroadcastReceiver, action: String) {
-        usbManager.requestPermission(usbDevice, PendingIntent
-                .getBroadcast(context, requestCode, Intent(
-                        action), 0))
+    fun requestUsbPermission(
+        usbManager: UsbManager, usbDevice: UsbDevice,
+        context: Context, requestCode: Int,
+        action: String
+    ) {
+        usbManager.requestPermission(
+            usbDevice, PendingIntent
+                .getBroadcast(
+                    context, requestCode, Intent(
+                        action
+                    ), 0
+                )
+        )
     }
 
 }

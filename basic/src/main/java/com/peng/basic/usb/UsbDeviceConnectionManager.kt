@@ -89,8 +89,10 @@ object UsbDeviceConnectionManager {
         val usbDevice = UsbUtils.getUsbDevice(mUsbManager!!, vendorId, productId)
 
         if (usbDevice == null) {
-            LogUtils.d("not found (productId = $productId , " +
-                    "vendorId = $vendorId) usb device,wait attach usb device")
+            LogUtils.d(
+                "not found (productId = $productId , " +
+                        "vendorId = $vendorId) usb device,wait attach usb device"
+            )
         } else {
             usbDeviceInfo.usbDevice = usbDevice
             initUsbDeviceInfo(usbDeviceInfo)
@@ -104,12 +106,13 @@ object UsbDeviceConnectionManager {
             initUsbConnectionInfo(usbDeviceInfo)
         } else {
             LogUtils.d("request permission")
-            UsbUtils.requestUsbPermission(mUsbManager!!,
-                    usbDeviceInfo.usbDevice!!,
-                    mContext,
-                    0,
-                    mUsbReceiver,
-                    ACTION_USB_PERMISSION)
+            UsbUtils.requestUsbPermission(
+                mUsbManager!!,
+                usbDeviceInfo.usbDevice!!,
+                mContext,
+                0,
+                ACTION_USB_PERMISSION
+            )
         }
     }
 
@@ -124,31 +127,45 @@ object UsbDeviceConnectionManager {
             usbConnection.usbInterface = usbInterface
             LogUtils.d("get usb interface index : $i, usbInterface : $usbInterface")
 
-            val deviceConnection = UsbUtils.getUsbDeviceConnection(mUsbManager,
-                    usbDeviceInfo.usbDevice!!,
-                    usbInterface)
+            val deviceConnection = UsbUtils.getUsbDeviceConnection(
+                mUsbManager,
+                usbDeviceInfo.usbDevice!!,
+                usbInterface
+            )
 
             usbConnection.deviceConnection = deviceConnection
             LogUtils.d("get usb device connection deviceConnection: $deviceConnection")
 
             if (deviceConnection != null) {
-                val tempEndpoints = UsbUtils.assignEndpoint(usbInterface,
-                        UsbConstants.USB_ENDPOINT_XFER_INT)
+                val tempEndpoints = UsbUtils.assignEndpoint(
+                    usbInterface,
+                    UsbConstants.USB_ENDPOINT_XFER_INT
+                )
                 usbConnection.usbEndpointIn = tempEndpoints[0]
                 usbConnection.usbEndpointOut = tempEndpoints[1]
-                LogUtils.d("usbEndpointIn:${usbConnection.usbEndpointIn} ," +
-                        " usbEndpointOut : ${usbConnection.usbEndpointOut}")
+                LogUtils.d(
+                    "usbEndpointIn:${usbConnection.usbEndpointIn} ," +
+                            " usbEndpointOut : ${usbConnection.usbEndpointOut}"
+                )
             }
 
             usbDeviceInfo.usbConnectionList.add(usbConnection)
         }
 
-        mCallback.onConnect(usbDeviceInfo.productId,
-                usbDeviceInfo.vendorId,
-                usbDeviceInfo.usbConnectionList.size)
+        mCallback.onConnect(
+            usbDeviceInfo.productId,
+            usbDeviceInfo.vendorId,
+            usbDeviceInfo.usbConnectionList.size
+        )
     }
 
-    fun bulkTransferOut(productId: Int, vendorId: Int, data: ByteArray, index: Int, timeout: Int): Int {
+    fun bulkTransferOut(
+        productId: Int,
+        vendorId: Int,
+        data: ByteArray,
+        index: Int,
+        timeout: Int
+    ): Int {
         if (index < 0) {
             return 0
         }
@@ -170,7 +187,13 @@ object UsbDeviceConnectionManager {
     }
 
 
-    fun bulkTransferIn(productId: Int, vendorId: Int, length: Int, index: Int, timeout: Int): ByteArray? {
+    fun bulkTransferIn(
+        productId: Int,
+        vendorId: Int,
+        length: Int,
+        index: Int,
+        timeout: Int
+    ): ByteArray? {
 
         for (usbDeviceInfo in mUsbDeviceList) {
             if (usbDeviceInfo.productId == productId && usbDeviceInfo.vendorId == vendorId) {
@@ -194,10 +217,7 @@ object UsbDeviceConnectionManager {
      */
     fun remove(productId: Int, vendorId: Int) {
         val usbDeviceInfo = mUsbDeviceList.find {
-            if (it.productId == productId && it.vendorId == vendorId) {
-                true
-            }
-            false
+            it.productId == productId && it.vendorId == vendorId
         }
         if (usbDeviceInfo != null) {
             disconnect(usbDeviceInfo)
@@ -211,10 +231,7 @@ object UsbDeviceConnectionManager {
      */
     private fun disconnect(productId: Int, vendorId: Int) {
         val usbDeviceInfo = mUsbDeviceList.find {
-            if (it.productId == productId && it.vendorId == vendorId) {
-                true
-            }
-            false
+            it.productId == productId && it.vendorId == vendorId
         }
         if (usbDeviceInfo != null) {
             disconnect(usbDeviceInfo)
@@ -279,7 +296,8 @@ object UsbDeviceConnectionManager {
 
                 for (usbDeviceInfo in mUsbDeviceList) {
                     if (device.vendorId == usbDeviceInfo.vendorId
-                            && device.productId == usbDeviceInfo.productId) {
+                        && device.productId == usbDeviceInfo.productId
+                    ) {
                         usbDeviceInfo.usbDevice = device
                         initUsbDeviceInfo(usbDeviceInfo)
                         break
@@ -291,7 +309,8 @@ object UsbDeviceConnectionManager {
                 if (UsbUtils.hasUsbPermission(mUsbManager, device)) {
                     for (usbDeviceInfo in mUsbDeviceList) {
                         if (device.vendorId == usbDeviceInfo.vendorId
-                                && device.productId == usbDeviceInfo.productId) {
+                            && device.productId == usbDeviceInfo.productId
+                        ) {
                             usbDeviceInfo.usbDevice = device
                             initUsbConnectionInfo(usbDeviceInfo)
                             break

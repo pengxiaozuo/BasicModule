@@ -15,6 +15,7 @@ abstract class BindingAdapter<T, V : ViewDataBinding> : SimpleAdapter<T>() {
         return holder
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onBinderViewHolder(item: T, holder: SimpleViewHolder) {
         onBinderViewHolder(item, holder, holder.binding as V)
     }

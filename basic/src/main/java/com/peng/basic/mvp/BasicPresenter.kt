@@ -9,6 +9,7 @@ open class BasicPresenter<V : IView> : IPresenter, ILifecycle by DefaultLifecycl
 
     protected var view: V? = null
 
+    @Suppress("UNCHECKED_CAST")
     override fun takeView(view: IView) {
         this.view = view as V
     }

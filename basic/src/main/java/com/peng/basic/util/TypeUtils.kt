@@ -48,8 +48,8 @@ object TypeUtils {
 
         } else if (a is ParameterizedType) {
             if (b !is ParameterizedType) return false
-            val pa = a as ParameterizedType
-            val pb = b as ParameterizedType
+            val pa = a
+            val pb = b
             val ownerA = pa.ownerType
             val ownerB = pb.ownerType
             return ((ownerA === ownerB || (ownerA != null && ownerA == ownerB))
@@ -58,14 +58,14 @@ object TypeUtils {
 
         } else if (a is GenericArrayType) {
             if (b !is GenericArrayType) return false
-            val ga = a as GenericArrayType
-            val gb = b as GenericArrayType
+            val ga = a
+            val gb = b
             return equals(ga.genericComponentType, gb.genericComponentType)
 
         } else if (a is WildcardType) {
             if (b !is WildcardType) return false
-            val wa = a as WildcardType
-            val wb = b as WildcardType
+            val wa = a
+            val wb = b
             return (Arrays.equals(wa.upperBounds, wb.upperBounds) && Arrays.equals(
                 wa.lowerBounds,
                 wb.lowerBounds
@@ -73,8 +73,8 @@ object TypeUtils {
 
         } else if (a is TypeVariable<*>) {
             if (b !is TypeVariable<*>) return false
-            val va = a as TypeVariable<*>
-            val vb = b as TypeVariable<*>
+            val va = a
+            val vb = b
             return (va.genericDeclaration === vb.genericDeclaration && va.name == vb.name)
 
         } else {
