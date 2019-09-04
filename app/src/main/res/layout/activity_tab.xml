@@ -11,6 +11,7 @@
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.peng.basic.widget.tab.TabView
             android:id="@+id/tab6"
             android:layout_width="wrap_content"
@@ -26,6 +27,18 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <com.peng.basic.widget.tab.TabView
+            android:id="@+id/tab7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:basic_tab_active_color="@color/colorAccent"
+            app:basic_tab_active_icon="@drawable/nav_browse_selected"
+            app:basic_tab_icon="@drawable/nav_browse"
+            app:basic_tab_icon_size="35dp"
+            app:basic_tab_badge_max_count="9"
+            app:basic_tab_title="Home"
+            app:basic_tab_title_text_size="10dp"
+            app:basic_tab_type="icon_and_title" />
 
         <com.peng.basic.widget.tab.TabView
             android:id="@+id/tab5"

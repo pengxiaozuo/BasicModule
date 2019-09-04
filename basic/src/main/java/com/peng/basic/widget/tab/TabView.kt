@@ -350,13 +350,12 @@ class TabView @JvmOverloads constructor(
     var badgeCount: Int
         get() = _badge?.count ?: -1
         set(value) {
-            if (value <= 0) {
+            if (value < 0) {
                 if (_badge != null) {
                     _badge!!.removeFromTab(this)
                     _badge = null
-                    if (value < 0)
-                        return
                 }
+                return
             }
 
             if (_badge == null) {
@@ -481,7 +480,6 @@ class TabView @JvmOverloads constructor(
     }
 
     private fun setTopPaddingAnimated(start: Int, end: Int, duration: Long) {
-
         iconView?.let { iv ->
             ValueAnimator.ofInt(start, end)
                 .apply {
@@ -501,7 +499,6 @@ class TabView @JvmOverloads constructor(
 
 
     private fun setTopPadding(topPadding: Int) {
-
         _iconView?.setPadding(
             _iconView!!.paddingLeft,
             topPadding,

@@ -77,21 +77,19 @@ class BadgeView : TextView {
         get() = _count
         set(value) {
             _count = value
-            if (tabView != null) {
-                if (_count > 0) {
-                    text = if (count <= _maxCount) count.toString() else "$_maxCount+"
-                    setColoredBackground(_bgColor)
-                    if (adjust) {
-                        adjustSize()
-                        adjustPadding()
-                    }
-                } else if (_count == 0) {
-                    text = ""
-                    setColoredBackground(_bgColor)
-                    if (adjust) {
-                        adjustSize()
-                        adjustPadding()
-                    }
+            if (_count > 0) {
+                text = if (count <= _maxCount) count.toString() else "$_maxCount+"
+                setColoredBackground(_bgColor)
+                if (adjust) {
+                    adjustSize()
+                    adjustPadding()
+                }
+            } else if (_count == 0) {
+                text = ""
+                setColoredBackground(_bgColor)
+                if (adjust) {
+                    adjustSize()
+                    adjustPadding()
                 }
             }
         }
@@ -192,11 +190,12 @@ class BadgeView : TextView {
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutParams = params
                 if (text.length == 1) {
-                    tabView?.viewTreeObserver
+                    val badgeContainer = parent as ViewGroup
+                    badgeContainer.viewTreeObserver
                         ?.addOnGlobalLayoutListener(object :
                             ViewTreeObserver.OnGlobalLayoutListener {
                             override fun onGlobalLayout() {
-                                tabView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
+                                badgeContainer.viewTreeObserver?.removeGlobalOnLayoutListener(this)
                                 if (width != height) {
                                     val ps = layoutParams
                                     ps.width = height

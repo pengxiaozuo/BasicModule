@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.View
 import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.click
+import com.peng.basic.util.logd
+import com.peng.basic.util.toMain
 import com.peng.basic.widget.tab.TabView
+import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.activity_tab.*
+import java.util.concurrent.TimeUnit
 
 class TabActivity : BasicActivity() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +41,25 @@ class TabActivity : BasicActivity() {
         tab5.badgeCount = 20
 
         tab6.badgeCount = 5000000
+        var count = -1
+        var add = true
+        Flowable.interval(1, TimeUnit.SECONDS)
+            .toMain()
+            .subscribe({
+                if (count >= 10) {
+                    add = false
+                } else if (count < -2) {
+                    add = true
+                }
+                if (add) {
+                    count++
+                } else {
+                    count--
+                }
+                tab7.badgeCount = count
+            }, {
+                it.printStackTrace()
+            }).add()
     }
 
     override fun getLayoutId() = R.layout.activity_tab
