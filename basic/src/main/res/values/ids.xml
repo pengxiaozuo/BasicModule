@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="basic_banner_vp" type="id"/>
-    <item name="basic_banner_indicator" type="id"/>
+    <item name="basic_banner_vp" type="id" />
+    <item name="basic_banner_indicator" type="id" />
 
+    <item name="basic_tab_icon" type="id" />
+    <item name="basic_tab_title" type="id" />
+    <item name="basic_tab_badge" type="id" />
 </resources>

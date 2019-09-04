@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
         <Button
             android:id="@+id/btn_multi_type"
-            android:text="MultiType"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="MultiType"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_data_from_multi_type"
-            android:text="DataFromMultiType"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="DataFromMultiType"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_banner"
-            android:text="Banner"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Banner"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_mvp"
-            android:text="MVP"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="MVP"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_mvvm"
-            android:text="MVVM"
-            android:textAllCaps="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="MVVM"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btn_input"
-            android:text="toggle keyboard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="toggle keyboard" />
+
+        <Button
+            android:id="@+id/btn_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tab view" />
+
 
     </LinearLayout>
 

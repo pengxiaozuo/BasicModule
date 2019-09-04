@@ -35,6 +35,7 @@
         <activity android:name=".mvp.MVPActivity"/>
         <activity android:name=".DataFromMultiTypeActivity"/>
         <activity android:name=".mvvm.MvvmActivity"/>
+        <activity android:name=".TabActivity" />
     </application>
 
 </manifest>

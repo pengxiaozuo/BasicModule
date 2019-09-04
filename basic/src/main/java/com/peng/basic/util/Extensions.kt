@@ -19,11 +19,12 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+
 fun View.click(onNext: (Unit) -> Unit): Disposable =
-    clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext)
+    clicks().throttleFirst(500, TimeUnit.MILLISECONDS).toMain().subscribe(onNext)
 
 fun View.click(onNext: (Unit) -> Unit, onError: (Throwable) -> Unit): Disposable =
-    clicks().throttleLatest(1, TimeUnit.SECONDS).toMain().subscribe(onNext, onError)
+    clicks().throttleFirst(500, TimeUnit.MILLISECONDS).toMain().subscribe(onNext, onError)
 
 fun View.showHide(show: Boolean) {
     visibility = if (show) View.VISIBLE else View.GONE

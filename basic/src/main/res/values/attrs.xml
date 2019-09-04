@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BannerView">
-        <attr name="banner_auto_play" format="boolean"/>
-        <attr name="banner_loop" format="boolean"/>
-        <attr name="banner_period" format="integer"/>
+        <attr name="banner_auto_play" format="boolean" />
+        <attr name="banner_loop" format="boolean" />
+        <attr name="banner_period" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="DefaultBannerIndicator">
-        <attr name="banner_indicator_margin" format="dimension"/>
-        <attr name="banner_indicator_width" format="dimension"/>
-        <attr name="banner_indicator_height" format="dimension"/>
-        <attr name="banner_indicator_corner_radius" format="dimension"/>
-        <attr name="banner_indicator_border_width" format="dimension"/>
-        <attr name="banner_indicator_border_color" format="color"/>
-        <attr name="banner_indicator_border_select_color" format="color"/>
-        <attr name="banner_indicator_color" format="color"/>
-        <attr name="banner_indicator_select_color" format="color"/>
+        <attr name="banner_indicator_margin" format="dimension" />
+        <attr name="banner_indicator_width" format="dimension" />
+        <attr name="banner_indicator_height" format="dimension" />
+        <attr name="banner_indicator_corner_radius" format="dimension" />
+        <attr name="banner_indicator_border_width" format="dimension" />
+        <attr name="banner_indicator_border_color" format="color" />
+        <attr name="banner_indicator_border_select_color" format="color" />
+        <attr name="banner_indicator_color" format="color" />
+        <attr name="banner_indicator_select_color" format="color" />
         <attr name="banner_indicator_shape" format="enum">
-            <enum name="rectangle" value="0"/>
-            <enum name="oval" value="1"/>
+            <enum name="rectangle" value="0" />
+            <enum name="oval" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TabView">
+        <attr name="basic_tab_icon" format="reference" />
+        <attr name="basic_tab_active" format="boolean" />
+        <attr name="basic_tab_active_icon" format="reference" />
+        <attr name="basic_tab_title" format="string" />
+        <attr name="basic_tab_inactive_alpha" format="float" />
+        <attr name="basic_tab_title_scale" format="float" />
+        <attr name="basic_tab_icon_scale" format="float" />
+        <attr name="basic_tab_active_alpha" format="float" />
+        <attr name="basic_tab_inactive_color" format="color" />
+        <attr name="basic_tab_active_color" format="color" />
+        <attr name="basic_tab_active_bg_color" format="color" />
+        <attr name="basic_tab_active_badge_bg_color" format="color" />
+        <attr name="basic_tab_active_badge_text_color" format="color" />
+        <attr name="basic_tab_badge_text_size" format="dimension" />
+        <attr name="basic_tab_badge_max_count" format="integer" />
+        <attr name="basic_tab_badge_hide_when_active" format="boolean" />
+        <attr name="basic_tab_type" format="enum">
+            <enum name="icon_only" value="0" />
+            <enum name="title_only" value="1" />
+            <enum name="icon_and_title" value="2" />
+        </attr>
+        <attr name="basic_tab_icon_size" format="dimension" />
+        <attr name="basic_tab_title_text_size" format="dimension" />
+        <attr name="basic_tab_text_appearance" format="reference" />
+        <attr name="basic_tab_layout" format="reference" />
     </declare-styleable>
 </resources>

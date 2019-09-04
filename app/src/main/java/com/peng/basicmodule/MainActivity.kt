@@ -25,11 +25,13 @@ class MainActivity : BasicActivity() {
         btn_banner.click {
             startActivity(BannerActivity::class.java)
         }
-        KeyboardUtils.registerSoftInputChangedListener(this, object : KeyboardUtils.OnSoftInputChangedListener {
-            override fun onSoftInputChanged(height: Int) {
-            }
+        KeyboardUtils.registerSoftInputChangedListener(
+            this,
+            object : KeyboardUtils.OnSoftInputChangedListener {
+                override fun onSoftInputChanged(height: Int) {
+                }
 
-        })
+            })
 
         btn_mvp.click {
             startActivity(MVPActivity::class.java)
@@ -49,6 +51,10 @@ class MainActivity : BasicActivity() {
                 KeyboardUtils.showSoftInput(this)
             }
 //            KeyboardUtils.toggleSoftInput(this)
+        }
+
+        btn_tab.click {
+            startActivity(TabActivity::class.java)
         }
     }
 
