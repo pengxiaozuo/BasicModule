@@ -29,7 +29,8 @@
 
         <com.peng.basic.widget.tab.TabView
             android:id="@+id/tab7"
-            android:layout_width="wrap_content"
+            android:padding="8dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:basic_tab_active_color="@color/colorAccent"
             app:basic_tab_active_icon="@drawable/nav_browse_selected"
@@ -81,6 +82,7 @@
             android:id="@+id/tab2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
             android:layout_weight="1"
             app:basic_tab_active_color="@color/colorAccent"
             app:basic_tab_active_icon="@drawable/nav_browse_selected"

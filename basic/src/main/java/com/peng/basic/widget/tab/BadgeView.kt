@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import com.peng.basic.util.dp2px
+import com.peng.basic.util.logd
 
 class BadgeView : TextView {
     private var _count: Int = -1
@@ -157,8 +158,8 @@ class BadgeView : TextView {
             var xOffset = 0f
             var yOffset = height / 2f
             v?.let {
-                startX = it.x
-                startY = it.y
+                startX = it.x + tab.paddingLeft
+                startY = it.y + tab.paddingTop
                 xOffset = (it.width - (width / 2)).toFloat()
             }
             if ((xOffset + width) > tab.width) {
@@ -190,29 +191,37 @@ class BadgeView : TextView {
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutParams = params
                 if (text.length == 1) {
-                    val badgeContainer = parent as ViewGroup
-                    badgeContainer.viewTreeObserver
-                        ?.addOnGlobalLayoutListener(object :
-                            ViewTreeObserver.OnGlobalLayoutListener {
-                            override fun onGlobalLayout() {
-                                badgeContainer.viewTreeObserver?.removeGlobalOnLayoutListener(this)
-                                if (width != height) {
-                                    val ps = layoutParams
-                                    ps.width = height
-                                    layoutParams = ps
-                                }
-                            }
-                        })
+                    delayAdjustSize()
                 }
-            } else if (text.length == 1 && width != height) {
-                params.width = height
-                layoutParams = params
+            } else if (text.length == 1) {
+                if (width == 0 || height == 0) {
+                    delayAdjustSize()
+                } else if (width != height) {
+                    params.width = height
+                    layoutParams = params
+                }
             } else if (text.length > 1 && params.width != ViewGroup.LayoutParams.WRAP_CONTENT) {
                 params.width = ViewGroup.LayoutParams.WRAP_CONTENT
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutParams = params
             }
         }
+    }
+
+    private fun delayAdjustSize(){
+        val badgeContainer = parent as ViewGroup
+        badgeContainer.viewTreeObserver
+            ?.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    badgeContainer.viewTreeObserver?.removeGlobalOnLayoutListener(this)
+                    if (width != height) {
+                        val ps = layoutParams
+                        ps.width = height
+                        layoutParams = ps
+                    }
+                }
+            })
     }
 
 

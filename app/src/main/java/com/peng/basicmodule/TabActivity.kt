@@ -31,7 +31,7 @@ class TabActivity : BasicActivity() {
     }
 
     override fun initData() {
-        tab2.badgeCount = 10
+        tab2.badgeCount = 2
         tab2.badgeHidesWhenActive = true
         tab1.select(false)
 
@@ -40,7 +40,7 @@ class TabActivity : BasicActivity() {
         tab5.badgeHidesWhenActive = true
         tab5.badgeCount = 20
 
-        tab6.badgeCount = 5000000
+        tab6.badgeCount = 99
         var count = -1
         var add = true
         Flowable.interval(1, TimeUnit.SECONDS)
