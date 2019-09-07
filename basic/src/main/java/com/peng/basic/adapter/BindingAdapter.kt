@@ -4,10 +4,10 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.view.View
 
-abstract class BindingAdapter<T, V : ViewDataBinding> : SimpleAdapter<T>() {
+abstract class BindingAdapter<T> : SimpleAdapter<T>() {
 
     override fun onCreateViewHolder(itemView: View, viewType: Int): SimpleViewHolder {
-        val binding = DataBindingUtil.bind<V>(itemView)
+        val binding:ViewDataBinding? = DataBindingUtil.bind(itemView)
         assert(binding != null) { "ViewDataBinding is null" }
         val holder = SimpleViewHolder(binding!!)
         initListener(holder)
@@ -17,9 +17,9 @@ abstract class BindingAdapter<T, V : ViewDataBinding> : SimpleAdapter<T>() {
 
     @Suppress("UNCHECKED_CAST")
     override fun onBinderViewHolder(item: T, holder: SimpleViewHolder) {
-        onBinderViewHolder(item, holder, holder.binding as V)
+        onBinderViewHolder(item, holder, holder.binding!!)
     }
 
-    abstract fun onBinderViewHolder(item: T, holder: SimpleViewHolder, binding: V)
+    abstract fun onBinderViewHolder(item: T, holder: SimpleViewHolder, binding: ViewDataBinding)
 
 }

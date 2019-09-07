@@ -361,12 +361,14 @@ object LogUtils {
                         }
                     }
                 }
+                callName += ":" + frame.methodName + ":" + frame.lineNumber
                 break
             }
             ix++
         }
         return callName
     }
+
 }
 
 fun logi(

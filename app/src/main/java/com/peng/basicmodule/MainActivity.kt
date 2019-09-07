@@ -5,6 +5,7 @@ import android.view.View
 import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
+import com.peng.basic.util.logd
 import com.peng.basicmodule.mvp.MVPActivity
 import com.peng.basicmodule.mvvm.MvvmActivity
 import kotlinx.android.synthetic.main.activity_main.*

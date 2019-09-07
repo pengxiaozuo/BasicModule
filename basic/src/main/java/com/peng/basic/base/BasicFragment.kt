@@ -36,13 +36,16 @@ abstract class BasicFragment : Fragment(), ILifecycle by DefaultLifecycle() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initData()
+        initData(savedInstanceState)
     }
 
 
+    @Deprecated("")
+    open fun initData(){}
     /**
      * 初始化数据
      */
-    abstract fun initData()
+    open fun initData(savedInstanceState: Bundle?){}
 
     /**
      * 初始化view
@@ -75,8 +78,12 @@ abstract class BasicFragment : Fragment(), ILifecycle by DefaultLifecycle() {
 
 
     override fun onDetach() {
-        clear()
         activity = null
         super.onDetach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        clear()
     }
 }

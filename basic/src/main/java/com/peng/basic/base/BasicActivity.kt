@@ -30,6 +30,7 @@ abstract class BasicActivity : AppCompatActivity(), ILifecycle by DefaultLifecyc
         initView(view, savedInstanceState)
 
         initData()
+        initData(savedInstanceState)
     }
 
     open fun initContentView(@LayoutRes layout: Int) {
@@ -49,7 +50,10 @@ abstract class BasicActivity : AppCompatActivity(), ILifecycle by DefaultLifecyc
     /**
      * 初始化数据
      */
-    abstract fun initData()
+    @Deprecated("")
+    fun initData() {}
+
+    fun initData(savedInstanceState: Bundle?) {}
 
     /**
      * 布局layout id

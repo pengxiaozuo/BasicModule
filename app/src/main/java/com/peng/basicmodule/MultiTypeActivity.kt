@@ -1,5 +1,6 @@
 package com.peng.basicmodule
 
+import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -108,7 +109,7 @@ class MultiTypeActivity : BasicActivity() {
         }
     }
 
-    class UserMaleItemViewBinder : BindingAdapter<User, ItemMultiTypeUserMaleBindingBinding>() {
+    class UserMaleItemViewBinder : BindingAdapter<User>() {
         override fun getLayoutId(): Int {
             return R.layout.item_multi_type_user_male_binding
         }
@@ -120,10 +121,12 @@ class MultiTypeActivity : BasicActivity() {
         override fun onBinderViewHolder(
             item: User,
             holder: SimpleViewHolder,
-            binding: ItemMultiTypeUserMaleBindingBinding
+            binding: ViewDataBinding
         ) {
-            binding.user = item
-            binding.executePendingBindings()
+            if(binding is ItemMultiTypeUserMaleBindingBinding) {
+                binding.user = item
+                binding.executePendingBindings()
+            }
         }
 
         override fun onItemClickListener(holder: SimpleViewHolder, item: User) {

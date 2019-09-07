@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.peng.basic.lifecycle.DefaultLifecycle
@@ -27,31 +29,30 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
 
     val context: Context = contentView.context
     var any: Any? = null
-    var any2: Any? = null
     internal var onChildClickListener: ((SimpleViewHolder, View) -> Unit)? = null
     internal var onChildLongClickListener: ((SimpleViewHolder, View) -> Boolean)? = null
 
     fun setOnChildClickListener(id: Int) {
-        getView<View>(id)!!.let { v ->
+        getView<View>(id).let { v ->
             clickables.put(id, v.isClickable)
             v.click { onChildClickListener?.invoke(this, v) }.add()
         }
     }
 
     fun setOnChildLongClickListener(id: Int) {
-        getView<View>(id)!!.let { v ->
+        getView<View>(id).let { v ->
             longClickables.put(id, v.isLongClickable)
             v.longClick { onChildLongClickListener?.invoke(this, v) ?: false }.add()
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : View> getView(id: Int): T? {
+    fun <T : View> getView(id: Int): T {
         var view = views[id]
         if (view == null) {
             view = itemView.findViewById(id)
             if (view == null) {
-                return null
+                throw IllegalArgumentException("not found view")
             } else {
                 views.put(id, view)
             }
@@ -59,23 +60,39 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
         return view as T
     }
 
+    fun getTextView(id: Int): TextView {
+        return getView(id)
+    }
+
+    fun getImageView(id: Int): ImageView {
+        return getView(id)
+    }
+
+    fun getEditText(id: Int): EditText {
+        return getView(id)
+    }
+
+    fun getButton(id: Int): Button {
+        return getView(id)
+    }
+
     fun setText(id: Int, value: CharSequence): SimpleViewHolder {
-        getView<TextView>(id)?.text = value
+        getView<TextView>(id).text = value
         return this
     }
 
     fun setImageResource(viewId: Int, resId: Int): SimpleViewHolder {
-        getView<ImageView>(viewId)?.setImageResource(resId)
+        getView<ImageView>(viewId).setImageResource(resId)
         return this
     }
 
     fun setImageBitmap(id: Int, bitmap: Bitmap): SimpleViewHolder {
-        getView<ImageView>(id)?.setImageBitmap(bitmap)
+        getView<ImageView>(id).setImageBitmap(bitmap)
         return this
     }
 
     fun setVisibility(id: Int, visible: Int): SimpleViewHolder {
-        getView<View>(id)?.visibility = visible
+        getView<View>(id).visibility = visible
         return this
     }
 
@@ -84,14 +101,14 @@ open class SimpleViewHolder(contentView: View) : RecyclerView.ViewHolder(content
         for (i in 0 until clickables.size()) {
             val id = clickables.keyAt(i)
             val value = clickables.valueAt(i)
-            getView<View>(id)?.isClickable = value
+            getView<View>(id).isClickable = value
         }
         clickables.clear()
 
         for (i in 0 until longClickables.size()) {
             val id = longClickables.keyAt(i)
             val value = longClickables.valueAt(i)
-            getView<View>(id)?.isLongClickable = value
+            getView<View>(id).isLongClickable = value
         }
         longClickables.clear()
     }
