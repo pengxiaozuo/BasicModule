@@ -2,7 +2,7 @@ package com.peng.basicmodule.mvvm
 
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
-import com.peng.basic.mvvm.BasicAndroidViewModel
+import com.peng.basic.mvvm.BasicViewModel
 import com.peng.basicmodule.data.DataResult
 import com.peng.basicmodule.data.User
 import com.peng.basicmodule.data.UserModel
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val userModel: UserModel,
     application: Application
-) : BasicAndroidViewModel(application) {
+) : BasicViewModel(application) {
 
     val userLiveData = MutableLiveData<DataResult<User>>()
     val input = MutableLiveData<String>()

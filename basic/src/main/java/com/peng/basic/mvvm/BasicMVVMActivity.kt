@@ -6,21 +6,12 @@ import android.arch.lifecycle.ViewModelProviders
 import com.peng.basic.base.BasicActivity
 import java.lang.reflect.ParameterizedType
 
-abstract class BasicMVVMActivity<VM : ViewModel> : BasicActivity() {
+abstract class BasicMVVMActivity<VM : ViewModel> : BasicActivity(), IView<VM> {
 
     val viewModel: VM by lazy {
         initViewModel()
     }
 
-    abstract fun getViewModelFactory(): ViewModelProvider.Factory
-
-    open fun initViewModel() = ViewModelProviders.of(this, getViewModelFactory()).get(getViewModelClass())
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getViewModelClass(): Class<VM> {
-        val type: ParameterizedType = javaClass.genericSuperclass as ParameterizedType
-        val actualTypeArguments = type.actualTypeArguments
-        val tClass = actualTypeArguments[0]
-        return tClass as Class<VM>
-    }
+    override fun initViewModel() =
+        ViewModelProviders.of(this, getViewModelFactory()).get(getViewModelClass())
 }

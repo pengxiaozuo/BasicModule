@@ -57,6 +57,7 @@ class MainActivity : BasicActivity() {
         btn_tab.click {
             startActivity(TabActivity::class.java)
         }
+
     }
 
     override fun initData() {

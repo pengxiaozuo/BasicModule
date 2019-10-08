@@ -51,7 +51,7 @@ abstract class BasicActivity : AppCompatActivity(), ILifecycle by DefaultLifecyc
      * 初始化数据
      */
     @Deprecated("")
-    fun initData() {}
+    open fun initData() {}
 
     fun initData(savedInstanceState: Bundle?) {}
 
