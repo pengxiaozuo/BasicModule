@@ -7,7 +7,9 @@ import javax.inject.Inject
 abstract class BasicMvpFragment<P : IPresenter> : BasicFragment(), IView {
 
     var presenter: P? = null
-        @Inject set
+        @Inject set(value) {
+            field = value
+        }
 
     override fun onAttach(context: Context?) {
         inject()

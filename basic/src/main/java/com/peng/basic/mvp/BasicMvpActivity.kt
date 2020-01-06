@@ -7,7 +7,9 @@ import javax.inject.Inject
 abstract class BasicMvpActivity<P : IPresenter> : BasicActivity(), IView {
 
     var presenter: P? = null
-        @Inject set
+        @Inject set(value) {
+            field = value
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         inject()
