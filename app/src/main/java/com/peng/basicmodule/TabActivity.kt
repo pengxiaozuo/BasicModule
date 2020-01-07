@@ -30,7 +30,7 @@ class TabActivity : BasicActivity() {
         }
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
         tab2.badgeCount = 2
         tab2.badgeHidesWhenActive = true
         tab1.select(false)

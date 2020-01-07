@@ -46,7 +46,7 @@ class MultiTypeActivity : BasicActivity() {
         Image("http://img2.imgtn.bdimg.com/it/u=2309772032,1565890452&fm=200&gp=0.jpg")
     )
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
         mAdapter.registerType(StringTypeItemViewBinder())
         mAdapter.registerType(UserFemaleItemViewBinder())
         mAdapter.registerType(UserMaleItemViewBinder())

@@ -60,7 +60,7 @@ class MainActivity : BasicActivity() {
 
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
 
     }
 

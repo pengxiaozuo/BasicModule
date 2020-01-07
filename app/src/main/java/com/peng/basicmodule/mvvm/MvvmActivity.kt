@@ -40,7 +40,7 @@ class MvvmActivity : BasicMVVMActivity<UserViewModel>() {
         et_username.editorActions().subscribe { getUser() }.add()
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
     }
 
     override fun getLayoutId() = R.layout.activity_mvvm

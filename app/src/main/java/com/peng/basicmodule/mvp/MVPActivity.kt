@@ -51,7 +51,7 @@ class MVPActivity : BasicMvpActivity<MVPContract.Presenter>(), MVPContract.View 
         toast(msg)
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
     }
 
     override fun showLoading(msg: String?) {

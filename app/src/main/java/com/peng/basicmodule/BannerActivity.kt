@@ -44,7 +44,7 @@ class BannerActivity : BasicActivity() {
         banner.setPageTransformer(ScalePageTransformer(0.6f))
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
         adapter.data = data
         banner.setAdapter(adapter)
         adapter.notifyDataSetChanged()

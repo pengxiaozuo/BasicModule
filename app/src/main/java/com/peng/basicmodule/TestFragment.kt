@@ -16,7 +16,7 @@ class TestFragment : BasicFragment() {
         contentView.clicks().throttleFirst(2,TimeUnit.SECONDS).subscribe()
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
 
     }
 }

@@ -53,7 +53,7 @@ abstract class BasicActivity : AppCompatActivity(), ILifecycle by DefaultLifecyc
     @Deprecated("")
     open fun initData() {}
 
-    fun initData(savedInstanceState: Bundle?) {}
+    open fun initData(savedInstanceState: Bundle?) {}
 
     /**
      * 布局layout id

@@ -22,7 +22,7 @@ class DataFromMultiTypeActivity : BasicActivity() {
         recycler_view.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
     }
 
-    override fun initData() {
+    override fun initData(savedInstanceState: Bundle?) {
         mAdapter.registerType(bannerItemViewBinder)
         mAdapter.registerType(stringItemViewBinder)
         recycler_view.adapter = mAdapter
