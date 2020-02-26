@@ -2,12 +2,12 @@ package com.peng.basicmodule.mvvm
 
 import android.app.ProgressDialog
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.widget.editorActions
-import com.peng.basic.mvvm.BasicMVVMActivity
+import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.KeyboardUtils
 import com.peng.basic.util.click
 import com.peng.basic.util.toast
@@ -18,12 +18,13 @@ import com.peng.basicmodule.data.User
 import com.peng.basicmodule.databinding.ActivityMvvmBinding
 import kotlinx.android.synthetic.main.activity_mvvm.*
 
-class MvvmActivity : BasicMVVMActivity<UserViewModel>() {
+class MvvmActivity : BasicActivity() {
 
     private lateinit var binding: ActivityMvvmBinding
     private var dialog: ProgressDialog? = null
-
-    override fun getViewModelFactory(): ViewModelProvider.Factory = (application as MainApp).viewModelFactory
+    private val viewModel: UserViewModel by lazy {
+        initViewModel()
+    }
 
     override fun initContentView(layout: Int) {
         binding = DataBindingUtil.setContentView(this, layout)
@@ -45,6 +46,10 @@ class MvvmActivity : BasicMVVMActivity<UserViewModel>() {
 
     override fun getLayoutId() = R.layout.activity_mvvm
 
+    private fun initViewModel(): UserViewModel {
+        return ViewModelProviders.of(this, (application as MainApp).viewModelFactory)
+            .get(UserViewModel::class.java)
+    }
 
     private fun getUser() {
         KeyboardUtils.hideSoftInput(this, btn_get)
