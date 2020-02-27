@@ -1,10 +1,10 @@
 package com.peng.basic.base
 
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 import com.peng.basic.adapter.ItemViewBinder
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.util.TypeUtils

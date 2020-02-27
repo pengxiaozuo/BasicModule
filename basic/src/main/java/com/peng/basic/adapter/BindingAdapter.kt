@@ -1,13 +1,13 @@
 package com.peng.basic.adapter
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 
 abstract class BindingAdapter<T> : SimpleAdapter<T>() {
 
     override fun onCreateViewHolder(itemView: View, viewType: Int): SimpleViewHolder {
-        val binding:ViewDataBinding? = DataBindingUtil.bind(itemView)
+        val binding: ViewDataBinding? = DataBindingUtil.bind(itemView)
         assert(binding != null) { "ViewDataBinding is null" }
         val holder = SimpleViewHolder(binding!!)
         initListener(holder)

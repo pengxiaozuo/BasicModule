@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
 
@@ -17,7 +17,7 @@ abstract class BasicFragment : Fragment(), ILifecycle by DefaultLifecycle() {
     protected var activity: Activity? = null
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as Activity
     }

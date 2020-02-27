@@ -1,11 +1,11 @@
 package com.peng.basicmodule
 
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.peng.basic.adapter.MultiTypeAdapter
 import com.peng.basic.adapter.SimpleAdapter
 import com.peng.basic.adapter.SimpleViewHolder

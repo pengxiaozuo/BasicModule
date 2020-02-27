@@ -1,7 +1,7 @@
 package com.peng.basicmodule.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.peng.basic.mvvm.ViewModelFactory
 import com.peng.basic.mvvm.ViewModelKey
 import com.peng.basicmodule.mvvm.UserViewModel

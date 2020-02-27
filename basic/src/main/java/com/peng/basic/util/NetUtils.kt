@@ -2,7 +2,7 @@ package com.peng.basic.util
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.support.annotation.RequiresPermission
+import androidx.annotation.RequiresPermission
 
 /**
  * 网络工具类

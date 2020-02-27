@@ -1,15 +1,15 @@
 package com.peng.basic.adapter
 
 import android.content.Context
-import android.databinding.ViewDataBinding
 import android.graphics.Bitmap
-import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import com.peng.basic.lifecycle.DefaultLifecycle
 import com.peng.basic.lifecycle.ILifecycle
 import com.peng.basic.util.click

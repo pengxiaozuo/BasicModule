@@ -55,7 +55,6 @@ class MVPActivity : BasicMvpActivity<MVPContract.Presenter>(), MVPContract.View 
     }
 
     override fun showLoading(msg: String?) {
-        super.showLoading(msg)
         if (!isFinishing) {
 
             if (dialog?.isShowing == true) {
@@ -67,7 +66,7 @@ class MVPActivity : BasicMvpActivity<MVPContract.Presenter>(), MVPContract.View 
     }
 
     override fun hideLoading() {
-        super.hideLoading()
+
         if (dialog?.isShowing == true) {
             dialog?.dismiss()
         }

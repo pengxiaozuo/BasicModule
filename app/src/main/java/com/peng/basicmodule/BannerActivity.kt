@@ -1,10 +1,10 @@
 package com.peng.basicmodule
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import androidx.viewpager.widget.ViewPager
 import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.BarUtils
 import com.peng.basic.util.dp2px

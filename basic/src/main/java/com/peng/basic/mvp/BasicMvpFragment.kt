@@ -11,7 +11,7 @@ abstract class BasicMvpFragment<P : IPresenter> : BasicFragment(), IView {
             field = value
         }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         inject()
         presenter?.takeView(this)
         super.onAttach(context)

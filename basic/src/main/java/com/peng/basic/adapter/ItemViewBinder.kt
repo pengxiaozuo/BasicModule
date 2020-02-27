@@ -1,8 +1,8 @@
 package com.peng.basic.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 interface ItemViewBinder<T, VH : RecyclerView.ViewHolder> {
 

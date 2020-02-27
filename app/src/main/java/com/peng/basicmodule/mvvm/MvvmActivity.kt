@@ -1,11 +1,11 @@
 package com.peng.basicmodule.mvvm
 
 import android.app.ProgressDialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding3.widget.editorActions
 import com.peng.basic.base.BasicActivity
 import com.peng.basic.util.KeyboardUtils
@@ -47,8 +47,10 @@ class MvvmActivity : BasicActivity() {
     override fun getLayoutId() = R.layout.activity_mvvm
 
     private fun initViewModel(): UserViewModel {
-        return ViewModelProviders.of(this, (application as MainApp).viewModelFactory)
-            .get(UserViewModel::class.java)
+        return ViewModelProvider(
+            this,
+            (application as MainApp).viewModelFactory
+        ).get(UserViewModel::class.java)
     }
 
     private fun getUser() {

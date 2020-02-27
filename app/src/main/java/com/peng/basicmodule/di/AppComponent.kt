@@ -1,7 +1,7 @@
 package com.peng.basicmodule.di
 
 import android.app.Application
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import com.peng.basicmodule.MainApp
 import com.peng.basicmodule.api.GithubApiService
 import dagger.BindsInstance

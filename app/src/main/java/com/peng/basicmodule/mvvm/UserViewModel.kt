@@ -1,7 +1,7 @@
 package com.peng.basicmodule.mvvm
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.peng.basic.mvvm.BasicViewModel
 import com.peng.basicmodule.data.DataResult
 import com.peng.basicmodule.data.User

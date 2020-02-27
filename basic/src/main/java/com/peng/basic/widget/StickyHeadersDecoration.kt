@@ -2,10 +2,10 @@ package com.peng.basic.widget
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 
 class StickyHeadersDecoration(private val layoutId: Int, private var callback: StickyHeadersCallback?) :

@@ -1,13 +1,12 @@
 package com.peng.basic.widget.banner
 
 import android.content.Context
-import android.support.v4.view.ViewPager
-import android.support.v4.view.ViewPager.PageTransformer
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
 import android.widget.FrameLayout
 import android.widget.Scroller
+import androidx.viewpager.widget.ViewPager
 import com.peng.basic.R
 import com.peng.basic.util.logw
 import kotlin.math.abs
@@ -116,7 +115,7 @@ class BannerView @JvmOverloads constructor(
 
     }
 
-    fun setPageTransformer(transformer: PageTransformer) {
+    fun setPageTransformer(transformer: ViewPager.PageTransformer) {
         viewPager.setPageTransformer(true, transformer)
     }
 

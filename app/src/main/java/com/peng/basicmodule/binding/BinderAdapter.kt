@@ -1,8 +1,8 @@
 package com.peng.basicmodule.binding
 
-import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
 
 @BindingAdapter(value = ["url", "placeholder"])

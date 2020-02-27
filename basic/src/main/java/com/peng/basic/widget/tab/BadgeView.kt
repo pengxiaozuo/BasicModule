@@ -8,18 +8,16 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Build
-import android.support.annotation.ColorInt
-import android.support.annotation.IntRange
-import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.ViewCompat
 import com.peng.basic.util.dp2px
-import com.peng.basic.util.logd
 
-class BadgeView : TextView {
+class BadgeView : AppCompatTextView {
     private var _count: Int = -1
     private var _show = false
     private var _maxCount = 999
@@ -208,7 +206,7 @@ class BadgeView : TextView {
         }
     }
 
-    private fun delayAdjustSize(){
+    private fun delayAdjustSize() {
         val badgeContainer = parent as ViewGroup
         badgeContainer.viewTreeObserver
             ?.addOnGlobalLayoutListener(object :
@@ -235,7 +233,7 @@ class BadgeView : TextView {
         }
     }
 
-    private fun makeBackgroundCircle(@IntRange(from = 0) size: Int, @ColorInt color: Int): ShapeDrawable {
+    private fun makeBackgroundCircle(size: Int, @ColorInt color: Int): ShapeDrawable {
         val indicator = ShapeDrawable(OvalShape())
         indicator.intrinsicWidth = size
         indicator.intrinsicHeight = size
@@ -243,7 +241,7 @@ class BadgeView : TextView {
         return indicator
     }
 
-    private fun makeBackgroundRoundRect(@IntRange(from = 0) size: Int, @ColorInt color: Int): ShapeDrawable {
+    private fun makeBackgroundRoundRect(size: Int, @ColorInt color: Int): ShapeDrawable {
         var radius = height.toFloat() / 2f
         if (radius <= 0) {
             radius = context.dp2px(20f)
