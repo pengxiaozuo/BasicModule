@@ -10,6 +10,10 @@ interface MVPContract {
         fun getUserSuccess(user: User)
 
         fun getUserError(msg: String?)
+
+        fun showLoading(msg: String?)
+
+        fun hideLoading()
     }
 
     abstract class Presenter : BasicPresenter<View>() {
